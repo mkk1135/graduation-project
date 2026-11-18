@@ -111,7 +111,7 @@ def save(name, model, rows):
     print(json.dumps(result, indent=2))
 
 
-def evaluate(model_id, real_dir, ai_dir, name, jpeg=None):
+def evaluate(model_id, real_dir, ai_dir, name, jpeg=None, crop=None):
     from transformers.image_utils import load_image
 
     classify = load(model_id)
@@ -122,6 +122,10 @@ def evaluate(model_id, real_dir, ai_dir, name, jpeg=None):
             raise SystemExit(f"No images found in {folder}")
         for path in files:
             image = load_image(str(path))
+            if crop:  # what the browser demo analyses: the central part, at original resolution
+                w, h = min(image.width, crop), min(image.height, crop)
+                left, top = (image.width - w) // 2, (image.height - h) // 2
+                image = image.crop((left, top, left + w, top + h))
             if jpeg:  # afterwards the file format and compression history are the same for both classes
                 buffer = io.BytesIO()
                 image.save(buffer, "JPEG", quality=jpeg)
@@ -178,6 +182,7 @@ if __name__ == "__main__":
     parser.add_argument("--compare", metavar="NAME", help="test every model in the folder against this one")
     parser.add_argument("--out", default="results", help="folder for the output files")
     parser.add_argument("--jpeg", type=int, help="robustness check: first re-compress every image as JPEG at this quality")
+    parser.add_argument("--crop", type=int, help="analyse only the central CROP x CROP pixels, as the browser demo does")
     args = parser.parse_args()
     RESULTS = Path(args.out)
     if args.chart:
@@ -185,6 +190,6 @@ if __name__ == "__main__":
     elif args.compare:
         compare(args.compare)
     elif args.model and args.real and args.ai and args.name:
-        evaluate(args.model, args.real, args.ai, args.name, args.jpeg)
+        evaluate(args.model, args.real, args.ai, args.name, args.jpeg, args.crop)
     else:
         parser.error("give MODEL --real DIR --ai DIR --name NAME, or --chart, or --compare NAME")

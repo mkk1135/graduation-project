@@ -4,7 +4,13 @@ Graduation project (Bachelor of Cybersecurity). It measures eight ways of tellin
 
 Trained model: [mkk1135/ai-image-detector](https://huggingface.co/mkk1135/ai-image-detector)
 
+Online demo: [huggingface.co/spaces/mkk1135/ai-image-detector](https://huggingface.co/spaces/mkk1135/ai-image-detector)
+
 ## Try the detector
+
+**In the browser, with nothing to install:** open the [online demo](https://huggingface.co/spaces/mkk1135/ai-image-detector) and choose an image. The detector runs inside your browser, so the image never leaves your device. The first visit downloads the detector (about 110 MB). Of an image larger than 1024 px the demo analyses only the central 1024 x 1024 px; run that way the detector scores 78.9% on the main test set (`results/main/crop1024/`), against 80.0% for whole images. On eight test images its output matched the Python detector to within 0.0001.
+
+**On your own computer:**
 
 ```bash
 pip install -r requirements.txt
@@ -197,9 +203,11 @@ python evaluate.py --compare cnn_final --out results/main
 python evaluate.py --chart --out results/main
 python diagnose.py MODEL_ID
 python check_overlap.py
+python evaluate.py MODEL_ID --real data/main/real --ai data/main/ai --name short_name --out results/main/crop1024 --crop 1024
+python export_onnx.py
 ```
 
-Each evaluation run writes the metrics with a confidence interval, per-image predictions and a confusion matrix. `--compare` writes `significance.csv`, the McNemar test of every model in the folder against the named one. `diagnose.py` reports how blur, sharpening, downscaling and noise change a detector's answers on the check set. `check_overlap.py` checks that no real evaluation photograph is also a training image. `commfor.py` loads the published Community Forensics detector, which is not a standard Transformers model.
+Each evaluation run writes the metrics with a confidence interval, per-image predictions and a confusion matrix. `--compare` writes `significance.csv`, the McNemar test of every model in the folder against the named one. `diagnose.py` reports how blur, sharpening, downscaling and noise change a detector's answers on the check set. `check_overlap.py` checks that no real evaluation photograph is also a training image. `commfor.py` loads the published Community Forensics detector, which is not a standard Transformers model. `--crop 1024` scores a detector on the central 1024 x 1024 px only, as the online demo analyses images. `export_onnx.py` writes the detector as `space/model.onnx` for the online demo (`space/index.html`) and checks that it gives the same output as the PyTorch model; it needs `pip install onnx onnxscript onnxruntime`. `space/check_demo.py` uploads images to the demo page in a real browser and compares its answers with the Python detector (`results/demo_check.txt`).
 
 ## Blind test of a chat model
 

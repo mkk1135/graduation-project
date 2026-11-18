@@ -3,6 +3,7 @@ __pycache__/
 checkpoints/
 data/
 *.safetensors
+*.onnx
 *.bin
 .env
 # kept off the public repo: the report carries a student ID

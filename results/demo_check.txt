@@ -1,0 +1,10 @@
+https://mkk1135-ai-image-detector.static.hf.space/ | Ready. Choose an image. | threads: 4
+FLUX-dev_1.png             512x512    browser real=0.0003  PyTorch real=0.0003   1.3 s
+MidjourneyV6_1_1.png       1024x1024  browser real=0.0041  PyTorch real=0.0041   4.8 s
+MidjourneyV6_1_3.png       1024x1024  browser real=0.6823  PyTorch real=0.6822   4.5 s
+Firefly_Image2_1.jpg       2048x2048  browser real=0.0017  PyTorch real=0.0017   4.6 s
+openimages_1.jpg           1024x768   browser real=0.9772  PyTorch real=0.9772   3.4 s
+unsplash_10.jpg            1920x2868  browser real=0.9227  PyTorch real=0.9227   4.6 s
+buildings_5.jpg            1920x1396  browser real=0.9967  PyTorch real=0.9967   4.5 s
+GALIP_1.png                224x224    browser real=0.9517  PyTorch real=0.9517   0.3 s
+8 images: largest difference between browser and PyTorch 0.0001, slowest image 4.8 s

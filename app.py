@@ -3,6 +3,7 @@
   python app.py        # then open http://127.0.0.1:7860
 
 The image is analysed on this computer. Nothing is uploaded elsewhere.
+The public demo is a separate page that runs the detector inside the visitor's browser: space/index.html.
 """
 import os
 
@@ -12,7 +13,8 @@ from transformers import pipeline
 MODEL = "mkk1135/ai-image-detector"
 LARGEST = 2048  # of a bigger image only the central 2048 x 2048 pixels are analysed, at original resolution
 detector = pipeline("image-classification", model=MODEL)
-WHERE = "on Hugging Face's servers" if os.environ.get("SPACE_ID") else "on this computer and is not sent anywhere"
+WHERE = ("on Hugging Face's servers, and this page deletes it within two hours. Do not upload private images"
+         if os.environ.get("SPACE_ID") else "on this computer and is not sent anywhere")
 
 
 def analyse(image):
@@ -44,6 +46,7 @@ demo = gr.Interface(
     ),
     flagging_mode="never",
     analytics_enabled=False,
+    delete_cache=(3600, 3600),  # every hour, delete the temporary copies of uploads older than an hour
 )
 
 if __name__ == "__main__":

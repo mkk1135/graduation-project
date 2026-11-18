@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI-Generated Image Detection System</title>
+<link rel="icon" href="data:,">
+<style>
+  :root { color-scheme: light dark; --text: #1c1e21; --soft: #5a6068; --line: #d5d9de; --card: #f5f6f8; --page: #ffffff;
+          --accent: #c2410c; --real: #2f6fb0; --warn-bg: #fff4d6; --warn-text: #6b4a00; }
+  @media (prefers-color-scheme: dark) {
+    :root { --text: #e7e9ec; --soft: #a3aab3; --line: #3a4048; --card: #1d2025; --page: #121417;
+            --accent: #fb923c; --real: #7fb2e5; --warn-bg: #3d3110; --warn-text: #ffe29a; }
+  }
+  body { margin: 0; background: var(--page); color: var(--text); font: 16px/1.5 system-ui, "Segoe UI", Roboto, Arial, sans-serif; }
+  main { max-width: 760px; margin: 0 auto; padding: 24px 16px 48px; }
+  h1 { font-size: 1.6rem; margin: 0 0 12px; text-align: center; }
+  p { margin: 0 0 12px; }
+  .soft { color: var(--soft); font-size: 0.93rem; }
+  .card { border: 1px solid var(--line); border-radius: 10px; background: var(--card); padding: 16px; margin: 18px 0; }
+  input[type=file] { font: inherit; max-width: 100%; }
+  #preview { display: block; max-width: 100%; max-height: 420px; margin: 14px auto 0; border-radius: 6px; }
+  #answer { font-size: 1.5rem; font-weight: 700; margin: 0 0 12px; text-align: center; }
+  .row { display: grid; grid-template-columns: 9.5em 1fr 3.6em; gap: 10px; align-items: center; margin: 6px 0; }
+  .bar { height: 10px; border-radius: 5px; background: var(--line); overflow: hidden; }
+  .bar span { display: block; height: 100%; width: 0; }
+  #bar-ai { background: var(--accent); } #bar-real { background: var(--real); }
+  .num { text-align: right; font-variant-numeric: tabular-nums; }
+  #weak { background: var(--warn-bg); color: var(--warn-text); border-radius: 6px; padding: 8px 12px; margin: 12px 0 0; }
+  a { color: inherit; }
+</style>
+</head>
+<body>
+<main>
+  <h1>AI-Generated Image Detection System</h1>
+  <p>Choose an image to check whether it is a real photograph or AI-generated. The image is analysed inside your
+     browser, on your own device, and is not sent anywhere.</p>
+  <p>The answer is an indication, not proof. On a test of 384 images the detector was wrong about one time in five,
+     and it tends to call small, blurred or heavily edited photographs AI-generated.</p>
+
+  <div class="card">
+    <label for="file"><strong>Image (JPEG, PNG or WebP)</strong></label><br>
+    <input type="file" id="file" accept="image/jpeg,image/png,image/webp" disabled>
+    <p id="status" class="soft" role="status" aria-live="polite" style="margin:10px 0 0">Loading the detector…</p>
+    <img id="preview" alt="The image you chose" hidden>
+  </div>
+
+  <div class="card" id="result" hidden>
+    <p id="answer"></p>
+    <div class="row"><span>AI-generated</span><div class="bar"><span id="bar-ai"></span></div><span class="num" id="num-ai"></span></div>
+    <div class="row"><span>Real photograph</span><div class="bar"><span id="bar-real"></span></div><span class="num" id="num-real"></span></div>
+    <p id="sentence" style="margin:14px 0 0"></p>
+    <p id="weak" hidden>This is a weak decision. Treat the image as undetermined.</p>
+    <p id="cropped" class="soft" style="margin:10px 0 0" hidden></p>
+  </div>
+
+  <p class="soft">The detector is <a href="https://huggingface.co/mkk1135/ai-image-detector">mkk1135/ai-image-detector</a>,
+     a ConvNeXt-Tiny network fine-tuned for a Bachelor of Cybersecurity graduation project. The code, the lists of test
+     images and all results are at <a href="https://github.com/mkk1135/graduation-project">github.com/mkk1135/graduation-project</a>.
+     The first visit downloads the detector (about 110 MB). An image takes from a few seconds to about a minute,
+     depending on its size and on your device.</p>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.31.1/dist/ort.wasm.min.js"></script>
+<script>
+"use strict";
+const LARGEST = 1024;  // of a bigger image only the central 1024 x 1024 pixels are analysed, at original resolution
+const SMALLEST = 32;   // the network reduces the image 32 times
+const MEAN = [0.485, 0.456, 0.406], STD = [0.229, 0.224, 0.225];  // as in the model's preprocessor_config.json
+const $ = id => document.getElementById(id);
+let session;
+
+ort.env.wasm.wasmPaths = "https://cdn.jsdelivr.net/npm/onnxruntime-web@1.31.1/dist/";
+
+async function download(url) {
+  const response = await fetch(url);
+  if (!response.ok) throw new Error("the detector could not be downloaded (" + response.status + ")");
+  const total = Number(response.headers.get("Content-Length")) || 0, chunks = [];
+  let received = 0;
+  for (const reader = response.body.getReader();;) {
+    const {done, value} = await reader.read();
+    if (done) break;
+    chunks.push(value);
+    received += value.length;
+    $("status").textContent = "Loading the detector: " + Math.round(received / 1e6) + (total ? " of " + Math.round(total / 1e6) : "") + " MB";
+  }
+  const bytes = new Uint8Array(received);
+  let offset = 0;
+  for (const chunk of chunks) { bytes.set(chunk, offset); offset += chunk.length; }
+  return bytes;
+}
+
+function pixels(bitmap) {
+  // The central part of the image, at original resolution, as normalised RGB planes.
+  const w = Math.min(bitmap.width, LARGEST), h = Math.min(bitmap.height, LARGEST);
+  const left = Math.floor((bitmap.width - w) / 2), top = Math.floor((bitmap.height - h) / 2);
+  const canvas = document.createElement("canvas");
+  canvas.width = w; canvas.height = h;
+  const context = canvas.getContext("2d", {willReadFrequently: true});
+  context.drawImage(bitmap, left, top, w, h, 0, 0, w, h);
+  const rgba = context.getImageData(0, 0, w, h).data, n = w * h, planes = new Float32Array(3 * n);
+  for (let i = 0; i < n; i++)
+    for (let c = 0; c < 3; c++) planes[c * n + i] = (rgba[4 * i + c] / 255 - MEAN[c]) / STD[c];
+  return {planes, w, h};
+}
+
+async function analyse(file) {
+  $("result").hidden = true;
+  $("file").disabled = true;
+  try {
+    // No colour conversion: the detector was trained on the stored pixel values.
+    const bitmap = await createImageBitmap(file, {colorSpaceConversion: "none"});
+    $("preview").src = URL.createObjectURL(file);
+    $("preview").hidden = false;
+    if (bitmap.width < SMALLEST || bitmap.height < SMALLEST) throw new Error("the image is too small to analyse");
+    $("status").textContent = "Analysing " + bitmap.width + " x " + bitmap.height + " pixels. This can take up to a minute…";
+    await new Promise(resolve => setTimeout(resolve, 50));  // lets the browser show the message first
+    const started = performance.now(), {planes, w, h} = pixels(bitmap);
+    const output = await session.run({pixel_values: new ort.Tensor("float32", planes, [1, 3, h, w])});
+    const [a, r] = output.logits.data, top = Math.max(a, r);  // model output order: ai, real
+    const ai = Math.exp(a - top) / (Math.exp(a - top) + Math.exp(r - top)), real = 1 - ai;
+    const confidence = Math.max(ai, real), answer = real >= ai ? "a real photograph" : "AI-generated";
+    $("answer").textContent = real >= ai ? "Real photograph" : "AI-generated";
+    for (const [name, value] of [["ai", ai], ["real", real]]) {
+      $("bar-" + name).style.width = (100 * value).toFixed(1) + "%";
+      $("num-" + name).textContent = Math.round(100 * value) + "%";
+    }
+    $("sentence").innerHTML = "<strong>The detector judges this image to be " + answer + "</strong> (" + Math.round(100 * confidence) + "% confidence).";
+    $("weak").hidden = confidence >= 0.75;
+    $("cropped").hidden = w === bitmap.width && h === bitmap.height;
+    $("cropped").textContent = "The image is " + bitmap.width + " x " + bitmap.height + " pixels; only its central " + w + " x " + h + " pixels were analysed.";
+    Object.assign($("result").dataset, {real: real.toFixed(6), width: w, height: h});  // read by the automated test
+    $("result").hidden = false;
+    $("status").textContent = "Done in " + ((performance.now() - started) / 1000).toFixed(1) + " seconds. Choose another image to analyse it.";
+  } catch (error) {
+    $("status").textContent = "This image could not be analysed: " + (error.message || error) + ".";
+  }
+  $("file").disabled = false;
+}
+
+(async () => {
+  try {
+    session = await ort.InferenceSession.create(await download("model.onnx"), {executionProviders: ["wasm"]});
+    $("status").textContent = "Ready. Choose an image.";
+    $("file").disabled = false;
+    $("file").addEventListener("change", () => $("file").files[0] && analyse($("file").files[0]));
+  } catch (error) {
+    $("status").textContent = "The detector could not be started in this browser: " + (error.message || error) + ".";
+  }
+})();
+</script>
+</body>
+</html>
