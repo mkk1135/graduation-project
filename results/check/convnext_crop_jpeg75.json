@@ -1,0 +1,13 @@
+{
+  "model": "checkpoints/checkpoint-2007",
+  "name": "convnext_crop_jpeg75",
+  "images": 157,
+  "tp": 40,
+  "fn": 29,
+  "fp": 3,
+  "tn": 85,
+  "accuracy": 79.62,
+  "precision": 93.02,
+  "recall": 57.97,
+  "f1": 71.43
+}

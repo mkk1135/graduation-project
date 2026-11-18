@@ -1,0 +1,13 @@
+{
+  "model": "models/convnext_resize",
+  "name": "cnn_first",
+  "images": 48,
+  "tp": 15,
+  "fn": 11,
+  "fp": 4,
+  "tn": 18,
+  "accuracy": 68.75,
+  "precision": 78.95,
+  "recall": 57.69,
+  "f1": 66.67
+}

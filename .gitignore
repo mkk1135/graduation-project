@@ -9,3 +9,4 @@ data/
 report/
 PROJECT_PROMPT.md
 *.log
+models/

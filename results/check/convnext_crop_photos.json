@@ -1,0 +1,13 @@
+{
+  "model": "models/convnext_crop_photos",
+  "name": "convnext_crop_photos",
+  "images": 157,
+  "tp": 58,
+  "fn": 11,
+  "fp": 7,
+  "tn": 81,
+  "accuracy": 88.54,
+  "precision": 89.23,
+  "recall": 84.06,
+  "f1": 86.57
+}

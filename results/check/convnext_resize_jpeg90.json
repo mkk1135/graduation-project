@@ -1,0 +1,13 @@
+{
+  "model": "models/convnext_resize",
+  "name": "convnext_resize_jpeg90",
+  "images": 157,
+  "tp": 42,
+  "fn": 27,
+  "fp": 5,
+  "tn": 83,
+  "accuracy": 79.62,
+  "precision": 89.36,
+  "recall": 60.87,
+  "f1": 72.41
+}

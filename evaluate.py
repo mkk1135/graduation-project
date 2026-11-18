@@ -7,8 +7,11 @@
 """
 import argparse
 import csv
+import io
 import json
 from pathlib import Path
+
+from PIL import Image
 
 RESULTS = Path("results")
 IMAGE_TYPES = {".jpg", ".jpeg", ".png", ".webp", ".bmp"}
@@ -70,8 +73,9 @@ def save(name, model, rows):
     print(json.dumps(result, indent=2))
 
 
-def evaluate(model_id, real_dir, ai_dir, name):
+def evaluate(model_id, real_dir, ai_dir, name, jpeg=None):
     from transformers import pipeline
+    from transformers.image_utils import load_image
 
     classify = pipeline("image-classification", model=model_id)
     labels = set(classify.model.config.id2label.values())
@@ -84,7 +88,12 @@ def evaluate(model_id, real_dir, ai_dir, name):
         if not files:
             raise SystemExit(f"No images found in {folder}")
         for path in files:
-            top = classify(str(path))[0]
+            image = load_image(str(path))
+            if jpeg:  # afterwards the file format and compression history are the same for both classes
+                buffer = io.BytesIO()
+                image.save(buffer, "JPEG", quality=jpeg)
+                image = load_image(Image.open(buffer))
+            top = classify(image)[0]
             rows.append([path.name, truth, to_class(top["label"]), round(top["score"], 4)])
     save(name, model_id, rows)
 
@@ -113,10 +122,13 @@ if __name__ == "__main__":
     parser.add_argument("--ai", help="folder of AI-generated images")
     parser.add_argument("--name", help="short name used for the output files")
     parser.add_argument("--chart", action="store_true", help="draw the combined comparison chart")
+    parser.add_argument("--out", default="results", help="folder for the output files")
+    parser.add_argument("--jpeg", type=int, help="robustness check: first re-compress every image as JPEG at this quality")
     args = parser.parse_args()
+    RESULTS = Path(args.out)
     if args.chart:
         chart()
     elif args.model and args.real and args.ai and args.name:
-        evaluate(args.model, args.real, args.ai, args.name)
+        evaluate(args.model, args.real, args.ai, args.name, args.jpeg)
     else:
         parser.error("give MODEL --real DIR --ai DIR --name NAME, or --chart")

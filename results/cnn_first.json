@@ -1,6 +1,6 @@
 {
-  "model": "checkpoints/checkpoint-2007",
-  "name": "convnext_finetuned",
+  "model": "models/convnext_resize",
+  "name": "cnn_first",
   "images": 48,
   "tp": 14,
   "fn": 12,

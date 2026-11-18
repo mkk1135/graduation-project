@@ -1,0 +1,13 @@
+{
+  "model": "Manish18/deepfake-detection-model",
+  "name": "vit_baseline",
+  "images": 157,
+  "tp": 35,
+  "fn": 34,
+  "fp": 3,
+  "tn": 85,
+  "accuracy": 76.43,
+  "precision": 92.11,
+  "recall": 50.72,
+  "f1": 65.42
+}
