@@ -40,26 +40,12 @@ def to_class(label):
     return "real" if "real" in label.lower() else "ai"
 
 
-def evaluate(model_id, real_dir, ai_dir, name):
+def save(name, model, rows):
+    """Write the metrics, per-image predictions and confusion matrix. rows: [file, truth, predicted, score]."""
     import matplotlib.pyplot as plt
-    from transformers import pipeline
-
-    classify = pipeline("image-classification", model=model_id)
-    labels = set(classify.model.config.id2label.values())
-    if {to_class(label) for label in labels} != {"real", "ai"}:
-        raise SystemExit(f"Cannot map the labels {labels} of {model_id} to real / ai")
-
-    rows = []
-    for truth, folder in (("real", real_dir), ("ai", ai_dir)):
-        files = sorted(p for p in Path(folder).iterdir() if p.suffix.lower() in IMAGE_TYPES)
-        if not files:
-            raise SystemExit(f"No images found in {folder}")
-        for path in files:
-            top = classify(str(path))[0]
-            rows.append([path.name, truth, to_class(top["label"]), round(top["score"], 4)])
 
     count = lambda truth, predicted: sum(r[1] == truth and r[2] == predicted for r in rows)
-    result = {"model": model_id, "name": name, "images": len(rows),
+    result = {"model": model, "name": name, "images": len(rows),
               **metrics(count("real", "real"), count("real", "ai"), count("ai", "real"), count("ai", "ai"))}
 
     RESULTS.mkdir(exist_ok=True)
@@ -84,6 +70,25 @@ def evaluate(model_id, real_dir, ai_dir, name):
     print(json.dumps(result, indent=2))
 
 
+def evaluate(model_id, real_dir, ai_dir, name):
+    from transformers import pipeline
+
+    classify = pipeline("image-classification", model=model_id)
+    labels = set(classify.model.config.id2label.values())
+    if {to_class(label) for label in labels} != {"real", "ai"}:
+        raise SystemExit(f"Cannot map the labels {labels} of {model_id} to real / ai")
+
+    rows = []
+    for truth, folder in (("real", real_dir), ("ai", ai_dir)):
+        files = sorted(p for p in Path(folder).iterdir() if p.suffix.lower() in IMAGE_TYPES)
+        if not files:
+            raise SystemExit(f"No images found in {folder}")
+        for path in files:
+            top = classify(str(path))[0]
+            rows.append([path.name, truth, to_class(top["label"]), round(top["score"], 4)])
+    save(name, model_id, rows)
+
+
 def chart():
     import matplotlib.pyplot as plt
 
@@ -96,7 +101,7 @@ def chart():
     ax.set_xticks([x + 0.4 - width / 2 for x in range(4)], ["Accuracy", "Precision", "Recall", "F1-score"])
     ax.set_ylabel("%")
     ax.set_ylim(0, 105)
-    ax.legend()
+    ax.legend(loc="lower center", bbox_to_anchor=(0.5, 1.0), ncol=len(results), frameon=False)  # above the bars
     fig.savefig(RESULTS / "comparison.png", dpi=300, bbox_inches="tight")
     print("wrote", RESULTS / "comparison.png")
 

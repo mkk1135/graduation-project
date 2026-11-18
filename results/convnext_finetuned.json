@@ -1,0 +1,13 @@
+{
+  "model": "checkpoints/checkpoint-2007",
+  "name": "convnext_finetuned",
+  "images": 48,
+  "tp": 14,
+  "fn": 12,
+  "fp": 2,
+  "tn": 20,
+  "accuracy": 70.83,
+  "precision": 87.5,
+  "recall": 53.85,
+  "f1": 66.67
+}

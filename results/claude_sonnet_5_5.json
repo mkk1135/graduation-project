@@ -1,0 +1,13 @@
+{
+  "model": "Claude Sonnet 5.5 (claude-sonnet-5-5), blind test",
+  "name": "claude_sonnet_5_5",
+  "images": 48,
+  "tp": 26,
+  "fn": 0,
+  "fp": 1,
+  "tn": 21,
+  "accuracy": 97.92,
+  "precision": 96.3,
+  "recall": 100.0,
+  "f1": 98.11
+}
