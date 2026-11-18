@@ -5,3 +5,5 @@ datasets
 accelerate
 pillow
 matplotlib
+timm
+gradio

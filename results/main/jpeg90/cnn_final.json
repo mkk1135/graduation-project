@@ -1,0 +1,17 @@
+{
+  "model": "mkk1135/ai-image-detector",
+  "name": "cnn_final",
+  "images": 384,
+  "tp": 150,
+  "fn": 42,
+  "fp": 28,
+  "tn": 164,
+  "accuracy": 81.77,
+  "precision": 84.27,
+  "recall": 78.12,
+  "f1": 81.08,
+  "accuracy_ci95": [
+    77.6,
+    85.3
+  ]
+}

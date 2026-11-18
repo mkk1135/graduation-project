@@ -11,9 +11,8 @@ from pathlib import Path
 
 import numpy as np
 from PIL import Image, ImageFilter
-from transformers import pipeline
-
-from evaluate import IMAGE_TYPES, to_class
+from evaluate import IMAGE_TYPES
+from evaluate import load as load_detector
 
 STEPS = {
     "as downloaded": lambda im: im,
@@ -33,9 +32,9 @@ def load(folder):
 if __name__ == "__main__":
     real, ai = load("data/check/real"), load("data/check/ai")
     for model in sys.argv[1:]:
-        classify = pipeline("image-classification", model=model)
+        classify = load_detector(model)
         print(f"\n{model}")
         for name, step in STEPS.items():
-            right_real = sum(to_class(classify(step(im))[0]["label"]) == "real" for im in real)
-            right_ai = sum(to_class(classify(step(im))[0]["label"]) == "ai" for im in ai)
+            right_real = sum(classify(step(im))[0] == "real" for im in real)
+            right_ai = sum(classify(step(im))[0] == "ai" for im in ai)
             print(f"  {name:28s} real correct {right_real:2d}/{len(real)}   AI correct {right_ai:2d}/{len(ai)}")

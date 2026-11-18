@@ -12,10 +12,17 @@ Setting 2: crops at original resolution
   unsharp mask (sharpen)       real correct 43/69   AI correct 87/88
   downscaled to half size      real correct 34/69   AI correct 87/88
   Gaussian noise, sd 3         real correct 27/69   AI correct 88/88
-Setting 3: final model (mkk1135/ai-image-detector)
+Setting 3: setting 2 with extended training data
   as downloaded                real correct 58/69   AI correct 81/88
   Gaussian blur, radius 0.6    real correct 34/69   AI correct 82/88
   Gaussian blur, radius 1.0    real correct 23/69   AI correct 81/88
   unsharp mask (sharpen)       real correct 64/69   AI correct 81/88
   downscaled to half size      real correct 50/69   AI correct 83/88
   Gaussian noise, sd 3         real correct 32/69   AI correct 84/88
+Setting 4: setting 3 with blur and noise augmentation (final model, mkk1135/ai-image-detector)
+  as downloaded                real correct 59/69   AI correct 81/88
+  Gaussian blur, radius 0.6    real correct 40/69   AI correct 81/88
+  Gaussian blur, radius 1.0    real correct 45/69   AI correct 78/88
+  unsharp mask (sharpen)       real correct 62/69   AI correct 80/88
+  downscaled to half size      real correct 41/69   AI correct 86/88
+  Gaussian noise, sd 3         real correct 63/69   AI correct 78/88

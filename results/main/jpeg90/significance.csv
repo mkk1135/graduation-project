@@ -1,0 +1,9 @@
+model,accuracy,ci95_low,ci95_high,only_cnn_final_right,only_this_model_right,p_value
+ateeqq,74.74,70.2,78.8,63,36,0.008634
+cnn_final,81.77,77.6,85.3,0,0,
+cnn_first,73.44,68.8,77.6,62,30,0.001111
+cnn_setting3,80.21,75.9,83.9,20,14,0.3915
+commfor,80.99,76.8,84.6,58,55,0.8509
+siglip2_baseline,47.92,43.0,52.9,161,31,2.236e-22
+umm_maybe,58.07,53.1,62.9,138,47,1.41e-11
+vit_baseline,60.94,56.0,65.7,109,29,4.202e-12

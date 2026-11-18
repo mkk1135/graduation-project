@@ -1,0 +1,394 @@
+file,class,source,author_or_generator,licence,url
+ai/Dalle3_1.png,ai,Community Forensics-Eval,Dalle3,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00099-of-00413.parquet (00000446.png)
+ai/Dalle3_2.png,ai,Community Forensics-Eval,Dalle3,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00099-of-00413.parquet (00000103.png)
+ai/Dalle3_3.png,ai,Community Forensics-Eval,Dalle3,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00099-of-00413.parquet (00000373.png)
+ai/Dalle3_4.png,ai,Community Forensics-Eval,Dalle3,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00099-of-00413.parquet (00000667.png)
+ai/Dalle3_5.png,ai,Community Forensics-Eval,Dalle3,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00099-of-00413.parquet (00000400.png)
+ai/Dalle3_6.png,ai,Community Forensics-Eval,Dalle3,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00099-of-00413.parquet (00000225.png)
+ai/Dalle3_7.png,ai,Community Forensics-Eval,Dalle3,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00099-of-00413.parquet (00000696.png)
+ai/Dalle3_8.png,ai,Community Forensics-Eval,Dalle3,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00099-of-00413.parquet (00000483.png)
+ai/Dalle3_9.png,ai,Community Forensics-Eval,Dalle3,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00099-of-00413.parquet (00000981.png)
+ai/Dalle3_10.png,ai,Community Forensics-Eval,Dalle3,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00099-of-00413.parquet (00000159.png)
+ai/Dalle3_11.png,ai,Community Forensics-Eval,Dalle3,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00099-of-00413.parquet (00000394.png)
+ai/Dalle3_12.png,ai,Community Forensics-Eval,Dalle3,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00099-of-00413.parquet (00000811.png)
+ai/IdeogramV2_1.png,ai,Community Forensics-Eval,IdeogramV2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00150-of-00413.parquet (00000905.png)
+ai/FLUX-dev_1.png,ai,Community Forensics-Eval,FLUX-dev,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00294-of-00413.parquet (00000144.png)
+ai/FLUX-dev_2.png,ai,Community Forensics-Eval,FLUX-dev,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00294-of-00413.parquet (00000162.png)
+ai/FLUX-dev_3.png,ai,Community Forensics-Eval,FLUX-dev,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00294-of-00413.parquet (00000147.png)
+ai/FLUX-dev_4.png,ai,Community Forensics-Eval,FLUX-dev,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00294-of-00413.parquet (00000305.png)
+ai/FLUX-dev_5.png,ai,Community Forensics-Eval,FLUX-dev,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00294-of-00413.parquet (00000645.png)
+ai/FLUX-dev_6.png,ai,Community Forensics-Eval,FLUX-dev,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00294-of-00413.parquet (00000972.png)
+ai/FLUX-dev_7.png,ai,Community Forensics-Eval,FLUX-dev,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00294-of-00413.parquet (00000714.png)
+ai/FLUX-dev_8.png,ai,Community Forensics-Eval,FLUX-dev,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00294-of-00413.parquet (00000845.png)
+ai/FLUX-dev_9.png,ai,Community Forensics-Eval,FLUX-dev,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00294-of-00413.parquet (00000659.png)
+ai/FLUX-dev_10.png,ai,Community Forensics-Eval,FLUX-dev,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00294-of-00413.parquet (00000771.png)
+ai/FLUX-dev_11.png,ai,Community Forensics-Eval,FLUX-dev,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00294-of-00413.parquet (00000171.png)
+ai/FLUX-dev_12.png,ai,Community Forensics-Eval,FLUX-dev,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00294-of-00413.parquet (00000893.png)
+ai/IdeogramV2_2.png,ai,Community Forensics-Eval,IdeogramV2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00387-of-00413.parquet (00000270.png)
+ai/IdeogramV2_3.png,ai,Community Forensics-Eval,IdeogramV2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00387-of-00413.parquet (00000451.png)
+ai/IdeogramV2_4.png,ai,Community Forensics-Eval,IdeogramV2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00387-of-00413.parquet (00000386.png)
+ai/IdeogramV2_5.png,ai,Community Forensics-Eval,IdeogramV2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00387-of-00413.parquet (00000195.png)
+ai/IdeogramV2_6.png,ai,Community Forensics-Eval,IdeogramV2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00387-of-00413.parquet (00000758.png)
+ai/IdeogramV2_7.png,ai,Community Forensics-Eval,IdeogramV2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00387-of-00413.parquet (00000647.png)
+ai/IdeogramV2_8.png,ai,Community Forensics-Eval,IdeogramV2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00387-of-00413.parquet (00000387.png)
+ai/IdeogramV2_9.png,ai,Community Forensics-Eval,IdeogramV2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00387-of-00413.parquet (00000170.png)
+ai/IdeogramV2_10.png,ai,Community Forensics-Eval,IdeogramV2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00387-of-00413.parquet (00000551.png)
+ai/IdeogramV2_11.png,ai,Community Forensics-Eval,IdeogramV2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00387-of-00413.parquet (00000042.png)
+ai/IdeogramV2_12.png,ai,Community Forensics-Eval,IdeogramV2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00387-of-00413.parquet (00000959.png)
+ai/GALIP_1.png,ai,Community Forensics-Eval,GALIP,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00047-of-00413.parquet (000636.png)
+ai/GALIP_2.png,ai,Community Forensics-Eval,GALIP,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00047-of-00413.parquet (000686.png)
+ai/GALIP_3.png,ai,Community Forensics-Eval,GALIP,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00047-of-00413.parquet (000503.png)
+ai/GALIP_4.png,ai,Community Forensics-Eval,GALIP,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00047-of-00413.parquet (000039.png)
+ai/GALIP_5.png,ai,Community Forensics-Eval,GALIP,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00047-of-00413.parquet (000964.png)
+ai/GALIP_6.png,ai,Community Forensics-Eval,GALIP,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00047-of-00413.parquet (000508.png)
+ai/MidjourneyV5_2_1.png,ai,Community Forensics-Eval,MidjourneyV5_2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00047-of-00413.parquet (00000036_1.png)
+ai/MidjourneyV5_2_2.png,ai,Community Forensics-Eval,MidjourneyV5_2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00047-of-00413.parquet (00000299_0.png)
+ai/MidjourneyV5_2_3.png,ai,Community Forensics-Eval,MidjourneyV5_2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00047-of-00413.parquet (00000040_1.png)
+ai/MidjourneyV5_2_4.png,ai,Community Forensics-Eval,MidjourneyV5_2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00047-of-00413.parquet (00000050_1.png)
+ai/MidjourneyV5_2_5.png,ai,Community Forensics-Eval,MidjourneyV5_2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00047-of-00413.parquet (00000431_1.png)
+ai/MidjourneyV5_2_6.png,ai,Community Forensics-Eval,MidjourneyV5_2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00047-of-00413.parquet (00000157_0.png)
+ai/MidjourneyV5_2_7.png,ai,Community Forensics-Eval,MidjourneyV5_2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00047-of-00413.parquet (00000191_3.png)
+ai/MidjourneyV5_2_8.png,ai,Community Forensics-Eval,MidjourneyV5_2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00047-of-00413.parquet (00000214_0.png)
+ai/MidjourneyV5_2_9.png,ai,Community Forensics-Eval,MidjourneyV5_2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00047-of-00413.parquet (00000254_2.png)
+ai/MidjourneyV5_2_10.png,ai,Community Forensics-Eval,MidjourneyV5_2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00047-of-00413.parquet (00000494_1.png)
+ai/MidjourneyV5_2_11.png,ai,Community Forensics-Eval,MidjourneyV5_2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00047-of-00413.parquet (00000380_0.png)
+ai/MidjourneyV5_2_12.png,ai,Community Forensics-Eval,MidjourneyV5_2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00047-of-00413.parquet (00000181_2.png)
+ai/FLUX-schnell_1.png,ai,Community Forensics-Eval,FLUX-schnell,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00139-of-00413.parquet (00000097.png)
+ai/FLUX-schnell_2.png,ai,Community Forensics-Eval,FLUX-schnell,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00139-of-00413.parquet (00000680.png)
+ai/FLUX-schnell_3.png,ai,Community Forensics-Eval,FLUX-schnell,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00139-of-00413.parquet (00000086.png)
+ai/FLUX-schnell_4.png,ai,Community Forensics-Eval,FLUX-schnell,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00139-of-00413.parquet (00000720.png)
+ai/FLUX-schnell_5.png,ai,Community Forensics-Eval,FLUX-schnell,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00139-of-00413.parquet (00000723.png)
+ai/FLUX-schnell_6.png,ai,Community Forensics-Eval,FLUX-schnell,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00139-of-00413.parquet (00000711.png)
+ai/FLUX-schnell_7.png,ai,Community Forensics-Eval,FLUX-schnell,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00139-of-00413.parquet (00000606.png)
+ai/FLUX-schnell_8.png,ai,Community Forensics-Eval,FLUX-schnell,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00139-of-00413.parquet (00000475.png)
+ai/FLUX-schnell_9.png,ai,Community Forensics-Eval,FLUX-schnell,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00139-of-00413.parquet (00000978.png)
+ai/FLUX-schnell_10.png,ai,Community Forensics-Eval,FLUX-schnell,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00139-of-00413.parquet (00000137.png)
+ai/FLUX-schnell_11.png,ai,Community Forensics-Eval,FLUX-schnell,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00139-of-00413.parquet (00000692.png)
+ai/FLUX-schnell_12.png,ai,Community Forensics-Eval,FLUX-schnell,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00139-of-00413.parquet (00000448.png)
+ai/Imagen3_1.png,ai,Community Forensics-Eval,Imagen3,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00175-of-00413.parquet (00000014_2.png)
+ai/Imagen3_2.png,ai,Community Forensics-Eval,Imagen3,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00175-of-00413.parquet (00000268_2.png)
+ai/Imagen3_3.png,ai,Community Forensics-Eval,Imagen3,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00175-of-00413.parquet (00000254_3.png)
+ai/Imagen3_4.png,ai,Community Forensics-Eval,Imagen3,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00175-of-00413.parquet (00000098_0.png)
+ai/Imagen3_5.png,ai,Community Forensics-Eval,Imagen3,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00175-of-00413.parquet (00000257_1.png)
+ai/Imagen3_6.png,ai,Community Forensics-Eval,Imagen3,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00175-of-00413.parquet (00000173_2.png)
+ai/Imagen3_7.png,ai,Community Forensics-Eval,Imagen3,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00175-of-00413.parquet (00000163_1.png)
+ai/Imagen3_8.png,ai,Community Forensics-Eval,Imagen3,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00175-of-00413.parquet (00000213_0.png)
+ai/Imagen3_9.png,ai,Community Forensics-Eval,Imagen3,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00175-of-00413.parquet (00000037_3.png)
+ai/Imagen3_10.png,ai,Community Forensics-Eval,Imagen3,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00175-of-00413.parquet (00000033_1.png)
+ai/Imagen3_11.png,ai,Community Forensics-Eval,Imagen3,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00175-of-00413.parquet (00000161_1.png)
+ai/Imagen3_12.png,ai,Community Forensics-Eval,Imagen3,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00175-of-00413.parquet (00000167_0.png)
+ai/Firefly_Image2_1.jpg,ai,Community Forensics-Eval,Firefly_Image2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00207-of-00413.parquet (00000305_1.jpg)
+ai/Firefly_Image2_2.jpg,ai,Community Forensics-Eval,Firefly_Image2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00207-of-00413.parquet (00000056_2.jpg)
+ai/Firefly_Image2_3.jpg,ai,Community Forensics-Eval,Firefly_Image2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00207-of-00413.parquet (00000470_3.jpg)
+ai/Firefly_Image2_4.jpg,ai,Community Forensics-Eval,Firefly_Image2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00207-of-00413.parquet (00000007_1.jpg)
+ai/Firefly_Image2_5.jpg,ai,Community Forensics-Eval,Firefly_Image2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00207-of-00413.parquet (00000214_0.jpg)
+ai/Firefly_Image2_6.jpg,ai,Community Forensics-Eval,Firefly_Image2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00207-of-00413.parquet (00000374_2.jpg)
+ai/Firefly_Image2_7.jpg,ai,Community Forensics-Eval,Firefly_Image2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00207-of-00413.parquet (00000339_1.jpg)
+ai/Firefly_Image2_8.jpg,ai,Community Forensics-Eval,Firefly_Image2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00207-of-00413.parquet (00000494_3.jpg)
+ai/Firefly_Image2_9.jpg,ai,Community Forensics-Eval,Firefly_Image2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00207-of-00413.parquet (00000179_0.jpg)
+ai/Firefly_Image2_10.jpg,ai,Community Forensics-Eval,Firefly_Image2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00207-of-00413.parquet (00000171_1.jpg)
+ai/Firefly_Image2_11.jpg,ai,Community Forensics-Eval,Firefly_Image2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00207-of-00413.parquet (00000426_1.jpg)
+ai/Firefly_Image2_12.jpg,ai,Community Forensics-Eval,Firefly_Image2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00207-of-00413.parquet (00000454_1.jpg)
+ai/MidjourneyV6_1_1.png,ai,Community Forensics-Eval,MidjourneyV6_1,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00282-of-00413.parquet (00000129_2.png)
+ai/MidjourneyV6_1_2.png,ai,Community Forensics-Eval,MidjourneyV6_1,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00282-of-00413.parquet (00000401_2.png)
+ai/MidjourneyV6_1_3.png,ai,Community Forensics-Eval,MidjourneyV6_1,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00282-of-00413.parquet (00000183_2.png)
+ai/MidjourneyV6_1_4.png,ai,Community Forensics-Eval,MidjourneyV6_1,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00282-of-00413.parquet (00000373_2.png)
+ai/MidjourneyV6_1_5.png,ai,Community Forensics-Eval,MidjourneyV6_1,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00282-of-00413.parquet (00000170_1.png)
+ai/Firefly_Image3_1.jpg,ai,Community Forensics-Eval,Firefly_Image3,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00330-of-00413.parquet (00000396_2.jpg)
+ai/Firefly_Image3_2.jpg,ai,Community Forensics-Eval,Firefly_Image3,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00330-of-00413.parquet (00000084_1.jpg)
+ai/Firefly_Image3_3.jpg,ai,Community Forensics-Eval,Firefly_Image3,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00330-of-00413.parquet (00000432_0.jpg)
+ai/Firefly_Image3_4.jpg,ai,Community Forensics-Eval,Firefly_Image3,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00330-of-00413.parquet (00000386_0.jpg)
+ai/Firefly_Image3_5.jpg,ai,Community Forensics-Eval,Firefly_Image3,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00330-of-00413.parquet (00000246_1.jpg)
+ai/Firefly_Image3_6.jpg,ai,Community Forensics-Eval,Firefly_Image3,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00330-of-00413.parquet (00000162_1.jpg)
+ai/Firefly_Image3_7.jpg,ai,Community Forensics-Eval,Firefly_Image3,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00330-of-00413.parquet (00000045_0.jpg)
+ai/Firefly_Image3_8.jpg,ai,Community Forensics-Eval,Firefly_Image3,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00330-of-00413.parquet (00000350_1.jpg)
+ai/Firefly_Image3_9.jpg,ai,Community Forensics-Eval,Firefly_Image3,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00330-of-00413.parquet (00000326_1.jpg)
+ai/Firefly_Image3_10.jpg,ai,Community Forensics-Eval,Firefly_Image3,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00330-of-00413.parquet (00000035_0.jpg)
+ai/Firefly_Image3_11.jpg,ai,Community Forensics-Eval,Firefly_Image3,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00330-of-00413.parquet (00000342_1.jpg)
+ai/Firefly_Image3_12.jpg,ai,Community Forensics-Eval,Firefly_Image3,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00330-of-00413.parquet (00000368_3.jpg)
+ai/IdeogramV1_1.png,ai,Community Forensics-Eval,IdeogramV1,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00384-of-00413.parquet (00000358.png)
+ai/IdeogramV1_2.png,ai,Community Forensics-Eval,IdeogramV1,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00384-of-00413.parquet (00000446.png)
+ai/IdeogramV1_3.png,ai,Community Forensics-Eval,IdeogramV1,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00384-of-00413.parquet (00000103.png)
+ai/IdeogramV1_4.png,ai,Community Forensics-Eval,IdeogramV1,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00384-of-00413.parquet (00000373.png)
+ai/IdeogramV1_5.png,ai,Community Forensics-Eval,IdeogramV1,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00384-of-00413.parquet (00000188.png)
+ai/IdeogramV1_6.png,ai,Community Forensics-Eval,IdeogramV1,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00384-of-00413.parquet (00000667.png)
+ai/IdeogramV1_7.png,ai,Community Forensics-Eval,IdeogramV1,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00384-of-00413.parquet (00000225.png)
+ai/IdeogramV1_8.png,ai,Community Forensics-Eval,IdeogramV1,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00384-of-00413.parquet (00000696.png)
+ai/IdeogramV1_9.png,ai,Community Forensics-Eval,IdeogramV1,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00384-of-00413.parquet (00000483.png)
+ai/IdeogramV1_10.png,ai,Community Forensics-Eval,IdeogramV1,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00384-of-00413.parquet (00000981.png)
+ai/IdeogramV1_11.png,ai,Community Forensics-Eval,IdeogramV1,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00384-of-00413.parquet (00000159.png)
+ai/IdeogramV1_12.png,ai,Community Forensics-Eval,IdeogramV1,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00384-of-00413.parquet (00000394.png)
+ai/DFGAN_1.png,ai,Community Forensics-Eval,DFGAN,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00007-of-00413.parquet (000869.png)
+ai/DFGAN_2.png,ai,Community Forensics-Eval,DFGAN,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00007-of-00413.parquet (000371.png)
+ai/DFGAN_3.png,ai,Community Forensics-Eval,DFGAN,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00007-of-00413.parquet (000376.png)
+ai/DFGAN_4.png,ai,Community Forensics-Eval,DFGAN,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00007-of-00413.parquet (000823.png)
+ai/DFGAN_5.png,ai,Community Forensics-Eval,DFGAN,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00007-of-00413.parquet (000460.png)
+ai/DFGAN_6.png,ai,Community Forensics-Eval,DFGAN,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00007-of-00413.parquet (000043.png)
+ai/stable_cascade_1.png,ai,Community Forensics-Eval,stable_cascade,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00021-of-00413.parquet (000318.png)
+ai/stable_cascade_2.png,ai,Community Forensics-Eval,stable_cascade,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00021-of-00413.parquet (000552.png)
+ai/stable_cascade_3.png,ai,Community Forensics-Eval,stable_cascade,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00021-of-00413.parquet (000026.png)
+ai/stable_cascade_4.png,ai,Community Forensics-Eval,stable_cascade,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00021-of-00413.parquet (000878.png)
+ai/stable_cascade_5.png,ai,Community Forensics-Eval,stable_cascade,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00021-of-00413.parquet (000885.png)
+ai/stable_cascade_6.png,ai,Community Forensics-Eval,stable_cascade,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00021-of-00413.parquet (000611.png)
+ai/LCM_lora_sdxl_1.png,ai,Community Forensics-Eval,LCM_lora_sdxl,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00055-of-00413.parquet (000339.png)
+ai/LCM_lora_sdxl_2.png,ai,Community Forensics-Eval,LCM_lora_sdxl,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00055-of-00413.parquet (000373.png)
+ai/LCM_lora_sdxl_3.png,ai,Community Forensics-Eval,LCM_lora_sdxl,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00055-of-00413.parquet (000232.png)
+ai/LCM_lora_sdxl_4.png,ai,Community Forensics-Eval,LCM_lora_sdxl,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00055-of-00413.parquet (000561.png)
+ai/LCM_lora_sdxl_5.png,ai,Community Forensics-Eval,LCM_lora_sdxl,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00055-of-00413.parquet (000667.png)
+ai/LCM_lora_sdxl_6.png,ai,Community Forensics-Eval,LCM_lora_sdxl,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00055-of-00413.parquet (000463.png)
+ai/MidjourneyV6_1_6.png,ai,Community Forensics-Eval,MidjourneyV6_1,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00071-of-00413.parquet (00000499_2.png)
+ai/MidjourneyV6_1_7.png,ai,Community Forensics-Eval,MidjourneyV6_1,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00071-of-00413.parquet (00000080_2.png)
+ai/MidjourneyV6_1_8.png,ai,Community Forensics-Eval,MidjourneyV6_1,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00071-of-00413.parquet (00000220_0.png)
+ai/MidjourneyV6_1_9.png,ai,Community Forensics-Eval,MidjourneyV6_1,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00071-of-00413.parquet (00000057_1.png)
+ai/MidjourneyV6_1_10.png,ai,Community Forensics-Eval,MidjourneyV6_1,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00071-of-00413.parquet (00000148_2.png)
+ai/MidjourneyV6_1_11.png,ai,Community Forensics-Eval,MidjourneyV6_1,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00071-of-00413.parquet (00000043_0.png)
+ai/MidjourneyV6_1_12.png,ai,Community Forensics-Eval,MidjourneyV6_1,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00071-of-00413.parquet (00000178_3.png)
+ai/Hourglass_1.png,ai,Community Forensics-Eval,Hourglass,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00080-of-00413.parquet (000602.png)
+ai/Hourglass_2.png,ai,Community Forensics-Eval,Hourglass,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00080-of-00413.parquet (000904.png)
+ai/Hourglass_3.png,ai,Community Forensics-Eval,Hourglass,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00080-of-00413.parquet (000419.png)
+ai/Hourglass_4.png,ai,Community Forensics-Eval,Hourglass,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00080-of-00413.parquet (000249.png)
+ai/Hourglass_5.png,ai,Community Forensics-Eval,Hourglass,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00080-of-00413.parquet (000818.png)
+ai/Hourglass_6.png,ai,Community Forensics-Eval,Hourglass,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00080-of-00413.parquet (000207.png)
+ai/kvikontent_midjourney_v6_1.png,ai,Community Forensics-Eval,kvikontent_midjourney_v6,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00214-of-00413.parquet (000638.png)
+ai/kvikontent_midjourney_v6_2.png,ai,Community Forensics-Eval,kvikontent_midjourney_v6,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00214-of-00413.parquet (000454.png)
+ai/kvikontent_midjourney_v6_3.png,ai,Community Forensics-Eval,kvikontent_midjourney_v6,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00214-of-00413.parquet (000936.png)
+ai/kvikontent_midjourney_v6_4.png,ai,Community Forensics-Eval,kvikontent_midjourney_v6,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00214-of-00413.parquet (000005.png)
+ai/kvikontent_midjourney_v6_5.png,ai,Community Forensics-Eval,kvikontent_midjourney_v6,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00214-of-00413.parquet (000411.png)
+ai/kvikontent_midjourney_v6_6.png,ai,Community Forensics-Eval,kvikontent_midjourney_v6,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00214-of-00413.parquet (000520.png)
+ai/kandinsky_2_2_1.png,ai,Community Forensics-Eval,kandinsky_2_2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00246-of-00413.parquet (000477.png)
+ai/kandinsky_2_2_2.png,ai,Community Forensics-Eval,kandinsky_2_2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00246-of-00413.parquet (000733.png)
+ai/kandinsky_2_2_3.png,ai,Community Forensics-Eval,kandinsky_2_2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00246-of-00413.parquet (000935.png)
+ai/kandinsky_2_2_4.png,ai,Community Forensics-Eval,kandinsky_2_2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00246-of-00413.parquet (000968.png)
+ai/kandinsky_2_2_5.png,ai,Community Forensics-Eval,kandinsky_2_2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00246-of-00413.parquet (000038.png)
+ai/kandinsky_2_2_6.png,ai,Community Forensics-Eval,kandinsky_2_2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00246-of-00413.parquet (000431.png)
+ai/Dalle2_1.png,ai,Community Forensics-Eval,Dalle2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00246-of-00413.parquet (00000386.png)
+ai/Dalle2_2.png,ai,Community Forensics-Eval,Dalle2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00246-of-00413.parquet (00000195.png)
+ai/Dalle2_3.png,ai,Community Forensics-Eval,Dalle2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00246-of-00413.parquet (00000758.png)
+ai/Dalle2_4.png,ai,Community Forensics-Eval,Dalle2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00246-of-00413.parquet (00000647.png)
+ai/Dalle2_5.png,ai,Community Forensics-Eval,Dalle2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00246-of-00413.parquet (00000387.png)
+ai/Dalle2_6.png,ai,Community Forensics-Eval,Dalle2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00246-of-00413.parquet (00000170.png)
+ai/Dalle2_7.png,ai,Community Forensics-Eval,Dalle2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00246-of-00413.parquet (00000551.png)
+ai/Dalle2_8.png,ai,Community Forensics-Eval,Dalle2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00246-of-00413.parquet (00000042.png)
+ai/Dalle2_9.png,ai,Community Forensics-Eval,Dalle2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00246-of-00413.parquet (00000959.png)
+ai/Dalle2_10.png,ai,Community Forensics-Eval,Dalle2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00246-of-00413.parquet (00000852.png)
+ai/Dalle2_11.png,ai,Community Forensics-Eval,Dalle2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00246-of-00413.parquet (00000858.png)
+ai/Dalle2_12.png,ai,Community Forensics-Eval,Dalle2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00246-of-00413.parquet (00000746.png)
+ai/DeciDiffusionV2_1.png,ai,Community Forensics-Eval,DeciDiffusionV2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00311-of-00413.parquet (000270.png)
+ai/DeciDiffusionV2_2.png,ai,Community Forensics-Eval,DeciDiffusionV2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00311-of-00413.parquet (000791.png)
+ai/DeciDiffusionV2_3.png,ai,Community Forensics-Eval,DeciDiffusionV2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00311-of-00413.parquet (000925.png)
+ai/DeciDiffusionV2_4.png,ai,Community Forensics-Eval,DeciDiffusionV2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00311-of-00413.parquet (000689.png)
+ai/DeciDiffusionV2_5.png,ai,Community Forensics-Eval,DeciDiffusionV2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00311-of-00413.parquet (000814.png)
+ai/DeciDiffusionV2_6.png,ai,Community Forensics-Eval,DeciDiffusionV2,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00311-of-00413.parquet (000259.png)
+ai/LCM_lora_sdv15_1.png,ai,Community Forensics-Eval,LCM_lora_sdv15,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00357-of-00413.parquet (000332.png)
+ai/LCM_lora_sdv15_2.png,ai,Community Forensics-Eval,LCM_lora_sdv15,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00357-of-00413.parquet (000586.png)
+ai/LCM_lora_sdv15_3.png,ai,Community Forensics-Eval,LCM_lora_sdv15,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00357-of-00413.parquet (000190.png)
+ai/LCM_lora_sdv15_4.png,ai,Community Forensics-Eval,LCM_lora_sdv15,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00357-of-00413.parquet (000373.png)
+ai/LCM_lora_sdv15_5.png,ai,Community Forensics-Eval,LCM_lora_sdv15,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00357-of-00413.parquet (000995.png)
+ai/LCM_lora_sdv15_6.png,ai,Community Forensics-Eval,LCM_lora_sdv15,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00357-of-00413.parquet (000440.png)
+ai/LCM_lora_ssd1b_1.png,ai,Community Forensics-Eval,LCM_lora_ssd1b,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00381-of-00413.parquet (000883.png)
+ai/LCM_lora_ssd1b_2.png,ai,Community Forensics-Eval,LCM_lora_ssd1b,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00381-of-00413.parquet (000507.png)
+ai/LCM_lora_ssd1b_3.png,ai,Community Forensics-Eval,LCM_lora_ssd1b,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00381-of-00413.parquet (000451.png)
+ai/LCM_lora_ssd1b_4.png,ai,Community Forensics-Eval,LCM_lora_ssd1b,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00381-of-00413.parquet (000070.png)
+ai/LCM_lora_ssd1b_5.png,ai,Community Forensics-Eval,LCM_lora_ssd1b,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00381-of-00413.parquet (000003.png)
+ai/LCM_lora_ssd1b_6.png,ai,Community Forensics-Eval,LCM_lora_ssd1b,CC BY-NC-SA 4.0,https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval/blob/main/data/CompEval-00381-of-00413.parquet (000393.png)
+real/unsplash_1.jpg,real,Unsplash Lite,Paulo Rodrigues,Unsplash License,https://unsplash.com/photos/ANyAligrI6Y
+real/unsplash_2.jpg,real,Unsplash Lite,lilartsy,Unsplash License,https://unsplash.com/photos/TdAfVvGXelo
+real/unsplash_3.jpg,real,Unsplash Lite,Jason Leung,Unsplash License,https://unsplash.com/photos/k7zD_S9mIHk
+real/unsplash_4.jpg,real,Unsplash Lite,Eugene Chystiakov,Unsplash License,https://unsplash.com/photos/l-xbNPTlGi0
+real/unsplash_5.jpg,real,Unsplash Lite,Stephanie LeBlanc,Unsplash License,https://unsplash.com/photos/xljjB3E2C5M
+real/unsplash_6.jpg,real,Unsplash Lite,Eric Masur,Unsplash License,https://unsplash.com/photos/8pgK9350lv4
+real/unsplash_7.jpg,real,Unsplash Lite,Ansgar Scheffold,Unsplash License,https://unsplash.com/photos/KTLa_fSO5Z0
+real/unsplash_8.jpg,real,Unsplash Lite,Aaron Burden,Unsplash License,https://unsplash.com/photos/tb4wis6XoQk
+real/unsplash_9.jpg,real,Unsplash Lite,Casey Horner,Unsplash License,https://unsplash.com/photos/vPiz8ZQ9Wf8
+real/unsplash_10.jpg,real,Unsplash Lite,Lisa Amann,Unsplash License,https://unsplash.com/photos/pRrwpCcisjk
+real/unsplash_11.jpg,real,Unsplash Lite,おにぎり,Unsplash License,https://unsplash.com/photos/cHP9WBFKm9o
+real/unsplash_12.jpg,real,Unsplash Lite,Ales Krivec,Unsplash License,https://unsplash.com/photos/qzj2SNRNqeY
+real/unsplash_13.jpg,real,Unsplash Lite,Ryan Heuer,Unsplash License,https://unsplash.com/photos/oadGu3tBr44
+real/unsplash_14.jpg,real,Unsplash Lite,Matthias Oberholzer,Unsplash License,https://unsplash.com/photos/j4KdczFRU3k
+real/unsplash_15.jpg,real,Unsplash Lite,Stefan Hiienurm,Unsplash License,https://unsplash.com/photos/sGkbB4Ul5hM
+real/unsplash_16.jpg,real,Unsplash Lite,Hans Ripa,Unsplash License,https://unsplash.com/photos/eHCtPyFcYFI
+real/unsplash_17.jpg,real,Unsplash Lite,Jon Flobrant,Unsplash License,https://unsplash.com/photos/M72A61geqVo
+real/unsplash_18.jpg,real,Unsplash Lite,Patrick Hendry,Unsplash License,https://unsplash.com/photos/-Fvz2Rg9rtI
+real/unsplash_19.jpg,real,Unsplash Lite,Jon Tyson,Unsplash License,https://unsplash.com/photos/un5DGskIJuE
+real/unsplash_20.jpg,real,Unsplash Lite,David Dvořáček,Unsplash License,https://unsplash.com/photos/6fC-sRlz-pw
+real/unsplash_21.jpg,real,Unsplash Lite,shawnanggg,Unsplash License,https://unsplash.com/photos/9a4QuXlPOSQ
+real/unsplash_22.jpg,real,Unsplash Lite,Franco Mariuzza,Unsplash License,https://unsplash.com/photos/QbDXTPCB4Q0
+real/unsplash_23.jpg,real,Unsplash Lite,Drew Dau,Unsplash License,https://unsplash.com/photos/8LuoGiFK02E
+real/unsplash_24.jpg,real,Unsplash Lite,Jared Evans,Unsplash License,https://unsplash.com/photos/f2G2dpmdrpk
+real/unsplash_25.jpg,real,Unsplash Lite,Brady Bellini,Unsplash License,https://unsplash.com/photos/05nPKZbBArI
+real/unsplash_26.jpg,real,Unsplash Lite,Jakob Owens,Unsplash License,https://unsplash.com/photos/j-cB6FHstww
+real/unsplash_27.jpg,real,Unsplash Lite,Roberto Nickson,Unsplash License,https://unsplash.com/photos/T92YFbo07-Q
+real/unsplash_28.jpg,real,Unsplash Lite,Genevieve Rusnac,Unsplash License,https://unsplash.com/photos/JJkDsbN3FQ0
+real/unsplash_29.jpg,real,Unsplash Lite,Matthew Smith,Unsplash License,https://unsplash.com/photos/a7FiLP1hgOc
+real/unsplash_30.jpg,real,Unsplash Lite,Ben Kitching,Unsplash License,https://unsplash.com/photos/NIR-knPNFrM
+real/unsplash_31.jpg,real,Unsplash Lite,Meghan Schiereck,Unsplash License,https://unsplash.com/photos/WOrpHzyEhAc
+real/unsplash_32.jpg,real,Unsplash Lite,Cristina Gottardi,Unsplash License,https://unsplash.com/photos/XFJjX6RfgMw
+real/unsplash_33.jpg,real,Unsplash Lite,Kseniia Shikhova,Unsplash License,https://unsplash.com/photos/Z7ks0_g-gHU
+real/unsplash_34.jpg,real,Unsplash Lite,Angela Compagnone,Unsplash License,https://unsplash.com/photos/l9cneQNE03Y
+real/unsplash_35.jpg,real,Unsplash Lite,Agto Nugroho,Unsplash License,https://unsplash.com/photos/wuDvhtaAYYI
+real/unsplash_36.jpg,real,Unsplash Lite,Pongsawat Pasom,Unsplash License,https://unsplash.com/photos/6EW_D2cdtcQ
+real/unsplash_37.jpg,real,Unsplash Lite,Mae Mu,Unsplash License,https://unsplash.com/photos/Vf9gbsLZyf0
+real/unsplash_38.jpg,real,Unsplash Lite,Tomas Kirvėla,Unsplash License,https://unsplash.com/photos/7WsOA1rFJ48
+real/unsplash_39.jpg,real,Unsplash Lite,Iswanto Arif,Unsplash License,https://unsplash.com/photos/pW-xgAxA6vM
+real/unsplash_40.jpg,real,Unsplash Lite,Hussain Faruhaan,Unsplash License,https://unsplash.com/photos/nh-SCu_iVuQ
+real/unsplash_41.jpg,real,Unsplash Lite,Valentin Pinisoara,Unsplash License,https://unsplash.com/photos/R2wICAnd_PU
+real/unsplash_42.jpg,real,Unsplash Lite,Hoodh Ahmed,Unsplash License,https://unsplash.com/photos/QcRIbY2XqPE
+real/unsplash_43.jpg,real,Unsplash Lite,Casey Horner,Unsplash License,https://unsplash.com/photos/fsJB3KT2rj8
+real/unsplash_44.jpg,real,Unsplash Lite,Faris Mohammed,Unsplash License,https://unsplash.com/photos/C_riIEq7c94
+real/unsplash_45.jpg,real,Unsplash Lite,Rowan Heuvel,Unsplash License,https://unsplash.com/photos/xYYBo69fvQE
+real/unsplash_46.jpg,real,Unsplash Lite,Kevin Wolf,Unsplash License,https://unsplash.com/photos/rR05vMl13gI
+real/unsplash_47.jpg,real,Unsplash Lite,Cristina Gottardi,Unsplash License,https://unsplash.com/photos/SdM7lgSVfS4
+real/unsplash_48.jpg,real,Unsplash Lite,Guillaume Bleyer,Unsplash License,https://unsplash.com/photos/1OZOyai2HMo
+real/unsplash_49.jpg,real,Unsplash Lite,Dan Seddon,Unsplash License,https://unsplash.com/photos/YQ9NLMg4Wus
+real/unsplash_50.jpg,real,Unsplash Lite,White.Rainforest ™︎ ∙ 易雨白林.,Unsplash License,https://unsplash.com/photos/Xwsm10G8MVw
+real/unsplash_51.jpg,real,Unsplash Lite,Eric Garcia,Unsplash License,https://unsplash.com/photos/gCYler8QUFE
+real/unsplash_52.jpg,real,Unsplash Lite,Julia Solonina,Unsplash License,https://unsplash.com/photos/cR88oyyXdPk
+real/unsplash_53.jpg,real,Unsplash Lite,Angèle Kamp,Unsplash License,https://unsplash.com/photos/7bCaUv-lLFU
+real/unsplash_54.jpg,real,Unsplash Lite,Daniel McCarthy @themccarthy,Unsplash License,https://unsplash.com/photos/aI0L-I76mVo
+real/unsplash_55.jpg,real,Unsplash Lite,Jeff Sheldon,Unsplash License,https://unsplash.com/photos/sD--EGHBvqw
+real/unsplash_56.jpg,real,Unsplash Lite,Lester Salmins,Unsplash License,https://unsplash.com/photos/pGCwAAk04BU
+real/unsplash_57.jpg,real,Unsplash Lite,Ferdinand Stöhr,Unsplash License,https://unsplash.com/photos/jlG3A34mvRE
+real/unsplash_58.jpg,real,Unsplash Lite,CHUTTERSNAP,Unsplash License,https://unsplash.com/photos/A7jl4ewTrCw
+real/unsplash_59.jpg,real,Unsplash Lite,James Adams,Unsplash License,https://unsplash.com/photos/ci9flZ-rVjU
+real/unsplash_60.jpg,real,Unsplash Lite,Simon Tartarotti,Unsplash License,https://unsplash.com/photos/kVTjViVTaV8
+real/unsplash_61.jpg,real,Unsplash Lite,Noah Phung,Unsplash License,https://unsplash.com/photos/tVRIFEnO9pM
+real/unsplash_62.jpg,real,Unsplash Lite,Tyler Lillico,Unsplash License,https://unsplash.com/photos/j4dkPAh4TW8
+real/unsplash_63.jpg,real,Unsplash Lite,Bence Balla-Schottner,Unsplash License,https://unsplash.com/photos/aF7gOtr-if0
+real/unsplash_64.jpg,real,Unsplash Lite,Kristaps Ungurs,Unsplash License,https://unsplash.com/photos/mIlZYhjUniU
+real/openimages_1.jpg,real,Open Images V7 validation set,H.L.I.T.,CC BY 2.0,https://www.flickr.com/photos/29311691@N05/3590655903
+real/openimages_2.jpg,real,Open Images V7 validation set,Felipe Triton - Eco Design,CC BY 2.0,https://www.flickr.com/photos/felipetriton/4266125725
+real/openimages_3.jpg,real,Open Images V7 validation set,Spanish Coches,CC BY 2.0,https://www.flickr.com/photos/39302751@N06/4454558193
+real/openimages_4.jpg,real,Open Images V7 validation set,Michael Reuter,CC BY 2.0,https://www.flickr.com/photos/michaelreuter/4857389063
+real/openimages_5.jpg,real,Open Images V7 validation set,Ian Brito,CC BY 2.0,https://www.flickr.com/photos/ian_brito/6593491037
+real/openimages_6.jpg,real,Open Images V7 validation set,M&amp;R Glasgow,CC BY 2.0,https://www.flickr.com/photos/glasgows/227700724
+real/openimages_7.jpg,real,Open Images V7 validation set,Dominic Sayers,CC BY 2.0,https://www.flickr.com/photos/dominicsayers/2385033433
+real/openimages_8.jpg,real,Open Images V7 validation set,Ezra S F,CC BY 2.0,https://www.flickr.com/photos/sneezypb/441536409
+real/openimages_9.jpg,real,Open Images V7 validation set,Herb Real,CC BY 2.0,https://www.flickr.com/photos/herbrealphotography/8607620083
+real/openimages_10.jpg,real,Open Images V7 validation set,SAN_DRINO,CC BY 2.0,https://www.flickr.com/photos/san_drino/7015222693
+real/openimages_11.jpg,real,Open Images V7 validation set,far closer,CC BY 2.0,https://www.flickr.com/photos/farcloser/5476222912
+real/openimages_12.jpg,real,Open Images V7 validation set,Joe Lodge,CC BY 2.0,https://www.flickr.com/photos/joe57spike/4790758010/
+real/openimages_13.jpg,real,Open Images V7 validation set,SD Dirk,CC BY 2.0,https://www.flickr.com/photos/dirkhansen/5660442646
+real/openimages_14.jpg,real,Open Images V7 validation set,neekoh.fi,CC BY 2.0,https://www.flickr.com/photos/neekohfi/8200041925
+real/openimages_15.jpg,real,Open Images V7 validation set,Meagan Kieffer,CC BY 2.0,https://www.flickr.com/photos/meagankieffer/3349388701
+real/openimages_16.jpg,real,Open Images V7 validation set,Joe Anderson,CC BY 2.0,https://www.flickr.com/photos/webbysworld/3263959083
+real/openimages_17.jpg,real,Open Images V7 validation set,Zac Bowling,CC BY 2.0,https://www.flickr.com/photos/zbowling/6820961330
+real/openimages_18.jpg,real,Open Images V7 validation set,Kurtis Garbutt,CC BY 2.0,https://www.flickr.com/photos/kjgarbutt/15257066871
+real/openimages_19.jpg,real,Open Images V7 validation set,Rob Holland,CC BY 2.0,https://www.flickr.com/photos/robh/151908
+real/openimages_20.jpg,real,Open Images V7 validation set,William Beutler,CC BY 2.0,https://www.flickr.com/photos/washingtoncanard/16170197510/
+real/openimages_21.jpg,real,Open Images V7 validation set,dave.see,CC BY 2.0,https://www.flickr.com/photos/dave_see/15558667478
+real/openimages_22.jpg,real,Open Images V7 validation set,nociveglia,CC BY 2.0,https://www.flickr.com/photos/40385177@N07/13651124835
+real/openimages_23.jpg,real,Open Images V7 validation set,kathia shieh,CC BY 2.0,https://www.flickr.com/photos/janela_da_alma/3706433928
+real/openimages_24.jpg,real,Open Images V7 validation set,Club Nautic Sant Feliu,CC BY 2.0,https://www.flickr.com/photos/cnsfg/16807814986
+real/openimages_25.jpg,real,Open Images V7 validation set,James St. John,CC BY 2.0,https://www.flickr.com/photos/jsjgeology/8324771623
+real/openimages_26.jpg,real,Open Images V7 validation set,Media Mike Hazard,CC BY 2.0,https://www.flickr.com/photos/88709139@N08/14391511662
+real/openimages_27.jpg,real,Open Images V7 validation set,www.GlynLowe.com,CC BY 2.0,https://www.flickr.com/photos/glynlowe/14642114925
+real/openimages_28.jpg,real,Open Images V7 validation set,Larry &amp; Teddy Page,CC BY 2.0,https://www.flickr.com/photos/igboo/4361237077
+real/openimages_29.jpg,real,Open Images V7 validation set,SantiH,CC BY 2.0,https://www.flickr.com/photos/santih/19090334369
+real/openimages_30.jpg,real,Open Images V7 validation set,benketaro,CC BY 2.0,https://www.flickr.com/photos/misskei/2231689162
+real/openimages_31.jpg,real,Open Images V7 validation set,Michael Pereckas,CC BY 2.0,https://www.flickr.com/photos/beigephotos/2568774514
+real/openimages_32.jpg,real,Open Images V7 validation set,TEDx Manhattan,CC BY 2.0,https://www.flickr.com/photos/tedxmanhattan/8495982008
+real/openimages_33.jpg,real,Open Images V7 validation set,Elpidoforos Papanikolopoulos,CC BY 2.0,https://www.flickr.com/photos/elpidoforos/914272081
+real/openimages_34.jpg,real,Open Images V7 validation set,thefamily8,CC BY 2.0,https://www.flickr.com/photos/90494562@N05/8221665061
+real/openimages_35.jpg,real,Open Images V7 validation set,Katherine Lim,CC BY 2.0,https://www.flickr.com/photos/ultrakml/6850300481
+real/openimages_36.jpg,real,Open Images V7 validation set,Valentin Hintikka,CC BY 2.0,https://www.flickr.com/photos/valentinhintikka/15212425176
+real/openimages_37.jpg,real,Open Images V7 validation set,Damian Gadal,CC BY 2.0,https://www.flickr.com/photos/23024164@N06/5033688588
+real/openimages_38.jpg,real,Open Images V7 validation set,Jeff Hart,CC BY 2.0,https://www.flickr.com/photos/ipeguy/7666464746/
+real/openimages_39.jpg,real,Open Images V7 validation set,K M,CC BY 2.0,https://www.flickr.com/photos/131880272@N06/22177135865
+real/openimages_40.jpg,real,Open Images V7 validation set,Tatsuo Yamashita,CC BY 2.0,https://www.flickr.com/photos/yto/11638131753
+real/openimages_41.jpg,real,Open Images V7 validation set,Grant.C,CC BY 2.0,https://www.flickr.com/photos/grant_subaru/4740780087
+real/openimages_42.jpg,real,Open Images V7 validation set,Enrique Bosquet,CC BY 2.0,https://www.flickr.com/photos/bosquet/8356914790
+real/openimages_43.jpg,real,Open Images V7 validation set,Damian Gadal,CC BY 2.0,https://www.flickr.com/photos/23024164@N06/15044175009/
+real/openimages_44.jpg,real,Open Images V7 validation set,Charmaine Sylvia Photography,CC BY 2.0,https://www.flickr.com/photos/sylviajade/10053852165
+real/openimages_45.jpg,real,Open Images V7 validation set,Jitze Couperus,CC BY 2.0,https://www.flickr.com/photos/jitze1942/16631331992
+real/openimages_46.jpg,real,Open Images V7 validation set,Nacho,CC BY 2.0,https://www.flickr.com/photos/gonmi/12776439015
+real/openimages_47.jpg,real,Open Images V7 validation set,Jacques,CC BY 2.0,https://www.flickr.com/photos/alternativeroute/8493865837
+real/openimages_48.jpg,real,Open Images V7 validation set,Dana Moos,CC BY 2.0,https://www.flickr.com/photos/dana_moos/5883599987
+real/openimages_49.jpg,real,Open Images V7 validation set,Kenneth Lu,CC BY 2.0,https://www.flickr.com/photos/toasty/1571656910
+real/openimages_50.jpg,real,Open Images V7 validation set,morten thomsen,CC BY 2.0,https://www.flickr.com/photos/98044123@N06/14374270907/
+real/openimages_51.jpg,real,Open Images V7 validation set,Mahesh Kularatne,CC BY 2.0,https://www.flickr.com/photos/lkmal/3917821131
+real/openimages_52.jpg,real,Open Images V7 validation set,Debbie Tingzon,CC BY 2.0,https://www.flickr.com/photos/ilove9and23/15186929351
+real/openimages_53.jpg,real,Open Images V7 validation set,barbara fister,CC BY 2.0,https://www.flickr.com/photos/41507974@N00/8796776427
+real/openimages_54.jpg,real,Open Images V7 validation set,Hypnotica Studios Infinite,CC BY 2.0,https://www.flickr.com/photos/stinkiepinkie_infinity/8246059604
+real/openimages_55.jpg,real,Open Images V7 validation set,wagwagwoolly,CC BY 2.0,https://www.flickr.com/photos/26469640@N03/14837586462
+real/openimages_56.jpg,real,Open Images V7 validation set,Sam Churchill,CC BY 2.0,https://www.flickr.com/photos/samchurchill/5189904715
+real/openimages_57.jpg,real,Open Images V7 validation set,kaythaney,CC BY 2.0,https://www.flickr.com/photos/kaythaney/9445233205
+real/openimages_58.jpg,real,Open Images V7 validation set,bobistraveling,CC BY 2.0,https://www.flickr.com/photos/bobistraveling/3239215257
+real/openimages_59.jpg,real,Open Images V7 validation set,Denise Krebs,CC BY 2.0,https://www.flickr.com/photos/mrsdkrebs/8696328725
+real/openimages_60.jpg,real,Open Images V7 validation set,tearsxintherain,CC BY 2.0,https://www.flickr.com/photos/tearsxintherain/3167777901
+real/openimages_61.jpg,real,Open Images V7 validation set,Allie_Caulfield,CC BY 2.0,https://www.flickr.com/photos/wm_archiv/2709873949
+real/openimages_62.jpg,real,Open Images V7 validation set,Kai Hendry,CC BY 2.0,https://www.flickr.com/photos/hendry/6758270365
+real/openimages_63.jpg,real,Open Images V7 validation set,Nadia,CC BY 2.0,https://www.flickr.com/photos/theoneandonlynadia/10395294405
+real/openimages_64.jpg,real,Open Images V7 validation set,Becks,CC BY 2.0,https://www.flickr.com/photos/littlemisspurps/7289095752
+real/people_1.jpg,real,Wikimedia Commons: Quality images of people,"Original:  Liming Huang
+Derivative work:  Radomianin",CC BY-SA 4.0,https://commons.wikimedia.org/wiki/File:Slow_Life_in_A_Tea_House_01_edited.jpg
+real/people_2.jpg,real,Wikimedia Commons: Quality images of people,Steffen Prößdorf,CC BY-SA 4.0,"https://commons.wikimedia.org/wiki/File:2022-05-13_Bahnradsport,_Steherrennen,_Sparkasse_Steher_Grand_Prix_1DX_8860_by_Stepro.jpg"
+real/people_3.jpg,real,Wikimedia Commons: Quality images of people,Satdeep Gill,CC BY-SA 4.0,"https://commons.wikimedia.org/wiki/File:Khairdeen_urf_Pritam,_Black_and_White.jpg"
+real/people_4.jpg,real,Wikimedia Commons: Quality images of people,"This Photo was taken by Timothy A. Gonsalves.  Feel free to use my photos, but please mention me as the author.  I would much appreciate if you send me an email tagooty@yahoo.com or write on my talk page, for my information.  Please contact me before commercial use.
+
+
+
+Please do not upload an edited image here without consulting me.  I would like to make corrections only at my own source to ensure that the changes improve the image and are preserved.Otherwise you may upload an edited image with a new name. Please use one of the templates derivative or extract.",CC BY-SA 4.0,https://commons.wikimedia.org/wiki/File:Exit_Old_NH7_MGR_Bus_Stand_2Wheelers_Tirunelveli_Apr22_A7C_01865.jpg
+real/people_5.jpg,real,Wikimedia Commons: Quality images of people,Alexis Lours,CC BY 4.0,https://commons.wikimedia.org/wiki/File:Hitchhiker%27s_thumb.jpg
+real/people_6.jpg,real,Wikimedia Commons: Quality images of people,kallerna,CC BY-SA 4.0,https://commons.wikimedia.org/wiki/File:Jigsaw_puzzle_solving_2.jpg
+real/people_7.jpg,real,Wikimedia Commons: Quality images of people,Dmitry Makeev,CC BY-SA 4.0,"https://commons.wikimedia.org/wiki/File:Young_men_smiling_with_teeth,_studio_portrait.jpg"
+real/people_8.jpg,real,Wikimedia Commons: Quality images of people,Maksim Sokolov (maxergon.com),CC BY-SA 4.0,https://commons.wikimedia.org/wiki/File:Tilley_Hats_and_Silence.jpg
+real/people_9.jpg,real,Wikimedia Commons: Quality images of people,Ewien van Bergeijk - Kwant,CC BY-SA 4.0,https://commons.wikimedia.org/wiki/File:Crazy_Love.jpg
+real/people_10.jpg,real,Wikimedia Commons: Quality images of people,Granada,CC BY-SA 4.0,https://commons.wikimedia.org/wiki/File:20200222_FIS_NC_COC_Eisenerz_PRC_HS109_Women_Sana_Azegami_850_4080.jpg
+real/landscapes_1.jpg,real,Wikimedia Commons: Quality images of landscapes,Rbrechko,CC BY-SA 4.0,https://commons.wikimedia.org/wiki/File:61-208-5089_Dniester_Canyon_2_RB_18_1.jpg
+real/landscapes_2.jpg,real,Wikimedia Commons: Quality images of landscapes,NiaPol,CC BY-SA 4.0,https://commons.wikimedia.org/wiki/File:Elbrus_region_%D0%9F%D1%80%D0%B8%D1%8D%D0%BB%D1%8C%D0%B1%D1%80%D1%83%D1%81%D1%8C%D0%B5.jpg
+real/landscapes_3.jpg,real,Wikimedia Commons: Quality images of landscapes,LG Nyqvist,CC BY-SA 4.0,https://commons.wikimedia.org/wiki/File:Hanstholm_-_Danmark.jpg
+real/landscapes_4.jpg,real,Wikimedia Commons: Quality images of landscapes,Pudelek,CC BY-SA 4.0,"https://commons.wikimedia.org/wiki/File:Lake_Ulza,_Albania.jpg"
+real/landscapes_5.jpg,real,Wikimedia Commons: Quality images of landscapes,Webysther Nunes,CC BY-SA 4.0,https://commons.wikimedia.org/wiki/File:Webysther_20170619072151_-_Pedra_do_ba%C3%BA_e_a_direita_Vale_do_Paiol_Grande.jpg
+real/landscapes_6.jpg,real,Wikimedia Commons: Quality images of landscapes,Jacek Halicki,CC BY-SA 4.0,https://commons.wikimedia.org/wiki/File:2017_Kamienio%C5%82om_Romanowo_6.jpg
+real/landscapes_7.jpg,real,Wikimedia Commons: Quality images of landscapes,Пивовар Павло,CC BY-SA 4.0,https://commons.wikimedia.org/wiki/File:%D0%9F%D0%BE%D0%BB%D1%8F%D0%BD%D0%B8%D1%86%D1%8C%D0%BA%D0%B8%D0%B9_%D1%80%D0%B5%D0%B3%D1%96%D0%BE%D0%BD%D0%B0%D0%BB%D1%8C%D0%BD%D0%B8%D0%B9_%D0%BF%D0%B0%D1%80%D0%BA._%D0%A1%D0%BA%D0%B5%D0%BB%D1%96_%D0%94%D0%BE%D0%B2%D0%B1%D1%83%D1%88%D0%B0.jpg
+real/landscapes_8.jpg,real,Wikimedia Commons: Quality images of landscapes,Виктор Габышев,CC BY-SA 4.0,https://commons.wikimedia.org/wiki/File:%D0%92_%D0%BF%D0%BE%D0%BB%D0%BD%D0%BE%D1%87%D1%8C_%D1%83_%D0%BE%D0%B7%D0%B5%D1%80%D0%B0_%D0%9E%D0%B6%D0%BE%D0%B3%D0%B8%D0%BD%D0%BE.jpg
+real/landscapes_9.jpg,real,Wikimedia Commons: Quality images of landscapes,Pierre André Leclercq,CC BY-SA 4.0,https://commons.wikimedia.org/wiki/File:Alpensee_view_from_Schloss_Hohenschwangau_(_Bavaria)_(2).jpg
+real/landscapes_10.jpg,real,Wikimedia Commons: Quality images of landscapes,Calle Eklund,CC BY-SA 4.0,https://commons.wikimedia.org/wiki/File:Gr%C3%A5d%C3%B6_skans_2016-09-27.jpg
+real/buildings_1.jpg,real,Wikimedia Commons: Quality images of buildings,Friedrich Haag,CC BY-SA 4.0,https://commons.wikimedia.org/wiki/File:Haardt_an_der_Weinstra%C3%9Fe_Mandelring_067_069_006_2021_07_20.jpg
+real/buildings_2.jpg,real,Wikimedia Commons: Quality images of buildings,Damian Pankowiec,CC BY-SA 4.0,https://commons.wikimedia.org/wiki/File:Sarawak_New_Parliament_Building_at_night.jpg
+real/buildings_3.jpg,real,Wikimedia Commons: Quality images of buildings,T meltzer,CC BY-SA 4.0,https://commons.wikimedia.org/wiki/File:Barcelona_1800.jpg
+real/buildings_4.jpg,real,Wikimedia Commons: Quality images of buildings,Rodhullandemu,CC BY-SA 4.0,https://commons.wikimedia.org/wiki/File:Captain%27s_Pit_20210123.jpg
+real/buildings_5.jpg,real,Wikimedia Commons: Quality images of buildings,Fischer.H,CC BY-SA 4.0,https://commons.wikimedia.org/wiki/File:Reiterstellwerk_IMG_2896.jpg
+real/buildings_6.jpg,real,Wikimedia Commons: Quality images of buildings,PantheraLeo1359531,CC BY 4.0,https://commons.wikimedia.org/wiki/File:Klosterstra%C3%9Fe_30_(Sex-Shop)_Hof_20201027_DSC5220.jpg
+real/buildings_7.jpg,real,Wikimedia Commons: Quality images of buildings,Nheyob,CC BY-SA 4.0,"https://commons.wikimedia.org/wiki/File:Holy_Cross_Church_(Columbus,_Ohio)_-_winter.jpg"
+real/buildings_8.jpg,real,Wikimedia Commons: Quality images of buildings,Amir Pashaei,CC BY-SA 4.0,"https://commons.wikimedia.org/wiki/File:Tabatabaee_mosque_at_Fatima_Masumeh_Shrine2,_qom,_iran.jpg"
+real/buildings_9.jpg,real,Wikimedia Commons: Quality images of buildings,Benoît Prieur,CC0,https://commons.wikimedia.org/wiki/File:Entr%C3%A9e_dans_Mont-Dauphin_(juillet_2020).jpg
+real/buildings_10.jpg,real,Wikimedia Commons: Quality images of buildings,".mw-parser-output .messagebox{margin:4px 0;width:auto;border-collapse:collapse;border:2px solid var(--border-color-progressive,#6485d1);background-color:var(--background-color-neutral-subtle,#fbfcff);color:var(--color-base,#202122);box-sizing:border-box;border-inline-start-width:8px}.mw-parser-output .messagebox.mbox-small{font-size:88%;line-height:1.25em}.mw-parser-output .mbox-warning,.mw-parser-output .mbox-speedy{border:2px solid var(--border-color-error,#b22222);background:var(--background-color-error-subtle,#ffdbdb);border-inline-start-width:8px}.mw-parser-output .mbox-serious,.mw-parser-output .mbox-delete,.mw-parser-output .mbox-stop{border:2px solid var(--border-color-error,#b22222);border-inline-start-width:8px}.mw-parser-output .mbox-issue,.mw-parser-output .mbox-content{border:2px solid #f28500;background:var(--background-color-warning-subtle,#ffe);border-inline-start-width:8px}.mw-parser-output .mbox-query,.mw-parser-output .mbox-style{border:2px solid #f4c430;background:var(--background-color-warning-subtle,#ffe);border-inline-start-width:8px}.mw-parser-output .mbox-shit{border:2px solid #960;border-inline-start-width:8px}.mw-parser-output .mbox-license{border:2px solid #88a;border-inline-start-width:initial}.mw-parser-output .mbox-legal{border:2px solid var(--border-color-notice,#666);background:var(--background-color-base,#fff);border-inline-start-width:8px}.mw-parser-output .mbox-honor{border:2px solid #ca3;background:var(--background-color-warning-subtle,#fcf4db);border-inline-start-width:8px}.mw-parser-output .mbox-growth{border:2px solid #8d4;background:var(--background-color-success-subtle,#d5fdf4);border-inline-start-width:8px}.mw-parser-output .mbox-move{border:2px solid #93c;border-inline-start-width:8px}.mw-parser-output .mbox-protection,.mw-parser-output .mbox-message{border:2px solid var(--border-color-base,#aaa);border-inline-start-width:8px}.mw-parser-output .messagebox .mbox-text{border:none;padding:0.25em 0.9em;width:100%}.mw-parser-output .messagebox .mbox-image{border:none;padding-top:2px;padding-bottom:2px;padding-inline-start:0.9em;padding-inline-end:0;text-align:center}.mw-parser-output .messagebox .mbox-imageright{border:none;padding-top:2px;padding-bottom:2px;padding-inline-start:0;padding-inline-end:0.9em;text-align:center}.mw-parser-output .messagebox .mbox-empty-cell{border:none;padding:0;width:1px}.mw-parser-output .messagebox .mbox-invalid-type{text-align:center}@media(min-width:720px){.mw-parser-output .messagebox{margin:4px 10%}.mw-parser-output .messagebox.mbox-small{clear:right;float:right;margin:4px 0 4px 1em;width:238px}}body.skin--responsive .mw-parser-output table.messagebox img{max-width:none!important}Please respect the Creative Commons Attribution-ShareAlike license that this image is released under.
+You must use the same license if you share this image and include this credit line wherever you use this image:
+
+Y.ssk / Wikimedia Commons / CC BY-SA 4.0
+While not required, if you use this image outside of the Wikimedia projects, I would appreciate it if you could leave a quick message on my talk page.",CC BY-SA 4.0,"https://commons.wikimedia.org/wiki/File:Windows,_Radford_Castle_Folly.jpg"
+real/food_1.jpg,real,Wikimedia Commons: Quality images of food,Evan-Amos,CC0,https://commons.wikimedia.org/wiki/File:Sunmaid-Raisin-Pile.jpg
+real/food_2.jpg,real,Wikimedia Commons: Quality images of food,M0tty,CC BY-SA 3.0,https://commons.wikimedia.org/wiki/File:Chocolate_truffle_-_Delacre.jpg
+real/food_3.jpg,real,Wikimedia Commons: Quality images of food,Elke Wetzig (elya),CC BY-SA 3.0,https://commons.wikimedia.org/wiki/File:Teebeutel_Polylactid_2009.jpg
+real/food_4.jpg,real,Wikimedia Commons: Quality images of food,Rainer Z ...,CC BY-SA 3.0,https://commons.wikimedia.org/wiki/File:Macis-1.jpg
+real/flowers_1.jpg,real,Wikimedia Commons: Quality images of flowers,Franz van Duns,CC BY-SA 4.0,https://commons.wikimedia.org/wiki/File:Tigridia_pavonia_-_sunlight_illuminating_translucent_calyx.jpg
+real/flowers_2.jpg,real,Wikimedia Commons: Quality images of flowers,Shishirdasika,CC BY-SA 4.0,https://commons.wikimedia.org/wiki/File:Purple_Nymphaeaceae.jpg
+real/flowers_3.jpg,real,Wikimedia Commons: Quality images of flowers,Phyrexian,CC BY-SA 4.0,https://commons.wikimedia.org/wiki/File:%E1%83%97%E1%83%91%E1%83%98%E1%83%9A%E1%83%98%E1%83%A1%E1%83%98_-_%E1%83%91%E1%83%9D%E1%83%A2%E1%83%90%E1%83%9C%E1%83%98%E1%83%99%E1%83%A3%E1%83%A0%E1%83%98_%E1%83%91%E1%83%90%E1%83%A6%E1%83%98_0938.JPG
+real/flowers_4.jpg,real,Wikimedia Commons: Quality images of flowers,Sanu N,CC BY-SA 4.0,https://commons.wikimedia.org/wiki/File:Yard_Long_Bean_Flowers.jpg
+real/flowers_5.jpg,real,Wikimedia Commons: Quality images of flowers,Photo (c)2009 Derek Ramsey (Ram-Man),GFDL 1.2,https://commons.wikimedia.org/wiki/File:False_Sunflower_Heliopsis_helianthoides_%27Summer_Nights%27_Flower.jpg
+real/flowers_6.jpg,real,Wikimedia Commons: Quality images of flowers,PtrQs,CC BY-SA 4.0,https://commons.wikimedia.org/wiki/File:20200809_EchinopsisOxygona_DSC03184-2_PtrQs.jpg
+real/flowers_7.jpg,real,Wikimedia Commons: Quality images of flowers,Lucyin,CC BY-SA 4.0,https://commons.wikimedia.org/wiki/File:L%C3%A9n_fleur.jpg
+real/flowers_8.jpg,real,Wikimedia Commons: Quality images of flowers,Salicyna,CC BY-SA 4.0,https://commons.wikimedia.org/wiki/File:Clematis_Juuli_2020-07-30_1501.jpg
+real/markets_1.jpg,real,Wikimedia Commons: Quality images of markets,Lucarelli,CC BY-SA 3.0,https://commons.wikimedia.org/wiki/File:Pesce_al_mercato_1.JPG
+real/markets_2.jpg,real,Wikimedia Commons: Quality images of markets,Michael D Beckwith,CC0,https://commons.wikimedia.org/wiki/File:Leadenhall_Market_black_and_white.jpg
+real/markets_3.jpg,real,Wikimedia Commons: Quality images of markets,Flocci Nivis,CC BY 4.0,https://commons.wikimedia.org/wiki/File:20241002_March%C3%A9_couvert_de_Colmar.jpg
+real/markets_4.jpg,real,Wikimedia Commons: Quality images of markets,Lizzy Shaanan,CC BY-SA 4.0,https://commons.wikimedia.org/wiki/File:%D7%A2%D7%9B%D7%95_%D7%94%D7%A2%D7%AA%D7%99%D7%A7%D7%94_-_%D7%93%D7%95%D7%9B%D7%9F_%D7%91%D7%A9%D7%95%D7%A7_%D7%94%D7%9C%D7%91%D7%9F.jpg
+real/objects_1.jpg,real,Wikimedia Commons: Quality images of objects,Rama,CC BY-SA 2.0 fr,https://commons.wikimedia.org/wiki/File:Bes-IMG_6366.jpg
+real/objects_2.jpg,real,Wikimedia Commons: Quality images of objects,Manufactured by MoYu. Photographed by 多多123,CC BY 4.0,https://commons.wikimedia.org/wiki/File:Speedcube_MoYu_2022_2_2.jpg
+real/objects_3.jpg,real,Wikimedia Commons: Quality images of objects,Dominicus Johannes Bergsma.,CC BY-SA 4.0,https://commons.wikimedia.org/wiki/File:Tug_ship_BOKA_STRIKER._IMO_9737230._12-06-2025_(d.j.b.)._06.jpg
+real/objects_4.jpg,real,Wikimedia Commons: Quality images of objects,Jorge Jaramillo,CC BY-SA 4.0,https://commons.wikimedia.org/wiki/File:Bonanni%27s_Everywhere.jpg
+real/objects_5.jpg,real,Wikimedia Commons: Quality images of objects,Berthold Werner,CC BY-SA 4.0,https://commons.wikimedia.org/wiki/File:Compucorp_322G_Scientist_BW_2024-02-22_18-21-02_Stack.jpg
+real/objects_6.jpg,real,Wikimedia Commons: Quality images of objects,Moheen Reeyad,CC BY-SA 4.0,https://commons.wikimedia.org/wiki/File:Replica_pages_from_the_original_manuscript_of_An_Introduction_to_Malayan_Birds_(1956)_on_display_with_a_prop_typewriter_(103846).jpg
+real/objects_7.jpg,real,Wikimedia Commons: Quality images of objects,Rjcastillo,CC BY-SA 4.0,"https://commons.wikimedia.org/wiki/File:Parque_de_la_Familia,_%27Lantern_Festival%27_-_A741942.jpg"
+real/objects_8.jpg,real,Wikimedia Commons: Quality images of objects,Carlos Figueroa Rojas,CC BY-SA 4.0,"https://commons.wikimedia.org/wiki/File:Edificio_G%C3%A9nesis,_Las_Condes,_Santiago_20220417.jpg"
+real/objects_9.jpg,real,Wikimedia Commons: Quality images of objects,Fabian Roudra Baroi,CC BY-SA 4.0,https://commons.wikimedia.org/wiki/File:Toronto_Skyline_March_2023_36.jpg
+real/objects_10.jpg,real,Wikimedia Commons: Quality images of objects,Chainwit.,CC BY-SA 4.0,https://commons.wikimedia.org/wiki/File:Door_panel_showing_Astamangala_in_a_Lalitpur_street.jpg
+real/objects_11.jpg,real,Wikimedia Commons: Quality images of objects,Isiwal,CC BY-SA 4.0,https://commons.wikimedia.org/wiki/File:Stopfpilz_2._H._18._Jahrhundert-4061.jpg
+real/objects_12.jpg,real,Wikimedia Commons: Quality images of objects,Cephas,CC BY-SA 4.0,https://commons.wikimedia.org/wiki/File:ISU_Four_Continents_Speed_Skating_Championships_2022_Centre_de_glaces_Quebec_02.jpg
+real/objects_13.jpg,real,Wikimedia Commons: Quality images of objects,Alexander Novikov,CC BY-SA 4.0,https://commons.wikimedia.org/wiki/File:Nikel-070.jpg
+real/objects_14.jpg,real,Wikimedia Commons: Quality images of objects,H. Zell,CC BY-SA 3.0,https://commons.wikimedia.org/wiki/File:Havenwelten_-_Bremerhaven_04.jpg
+real/objects_15.jpg,real,Wikimedia Commons: Quality images of objects,Michielverbeek,CC BY-SA 4.0,"https://commons.wikimedia.org/wiki/File:Den_Haag,_het_Strijkijzer_en_de_Harem_IMG_2483_2022-07-10_21.32.jpg"
+real/objects_16.jpg,real,Wikimedia Commons: Quality images of objects,Amrit Sufi,CC BY 3.0,"https://commons.wikimedia.org/wiki/File:Mahakala_-_National_Museum,_New_Delhi.jpg"
+real/objects_17.jpg,real,Wikimedia Commons: Quality images of objects,Jörg Braukmann,CC BY-SA 4.0,https://commons.wikimedia.org/wiki/File:Frankfurt_Skyline_2022_bei_Nacht.jpg
+real/objects_18.jpg,real,Wikimedia Commons: Quality images of objects,Marc Ryckaert,CC BY-SA 4.0,https://commons.wikimedia.org/wiki/File:Brugge_Sint-Salvator_R01.jpg

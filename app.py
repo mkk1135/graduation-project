@@ -1,0 +1,50 @@
+"""Upload an image and see whether the detector judges it a real photograph or AI-generated.
+
+  python app.py        # then open http://127.0.0.1:7860
+
+The image is analysed on this computer. Nothing is uploaded elsewhere.
+"""
+import os
+
+import gradio as gr
+from transformers import pipeline
+
+MODEL = "mkk1135/ai-image-detector"
+LARGEST = 2048  # of a bigger image only the central 2048 x 2048 pixels are analysed, at original resolution
+detector = pipeline("image-classification", model=MODEL)
+WHERE = "on Hugging Face's servers" if os.environ.get("SPACE_ID") else "on this computer and is not sent anywhere"
+
+
+def analyse(image):
+    if image is None:
+        return None, "Choose an image first."
+    width, height = image.size
+    w, h = min(width, LARGEST), min(height, LARGEST)
+    left, top = (width - w) // 2, (height - h) // 2
+    scores = {r["label"]: r["score"] for r in detector(image.convert("RGB").crop((left, top, left + w, top + h)))}
+    answer = "a real photograph" if scores["real"] >= scores["ai"] else "AI-generated"
+    confidence = max(scores.values())
+    note = f"**The detector judges this image to be {answer}** ({confidence:.0%} confidence)."
+    if confidence < 0.75:
+        note += "\n\nThis is a weak decision. Treat the image as undetermined."
+    if (w, h) != (width, height):
+        note += f"\n\nThe image is {width} x {height} pixels; only its central {w} x {h} pixels were analysed."
+    return {"Real photograph": scores["real"], "AI-generated": scores["ai"]}, note
+
+
+demo = gr.Interface(
+    fn=analyse,
+    inputs=gr.Image(type="pil", label="Image (JPEG, PNG or WebP)"),
+    outputs=[gr.Label(num_top_classes=2, label="Result"), gr.Markdown()],
+    title="AI-Generated Image Detection System",
+    description=(
+        f"Upload an image to check whether it is a real photograph or AI-generated. The image is analysed {WHERE}.\n\n"
+        "The answer is an indication, not proof. On a test of 384 images the detector was wrong about one time in "
+        "five, and it tends to call small, blurred or heavily edited photographs AI-generated."
+    ),
+    flagging_mode="never",
+    analytics_enabled=False,
+)
+
+if __name__ == "__main__":
+    demo.launch()

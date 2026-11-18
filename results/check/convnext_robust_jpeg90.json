@@ -1,0 +1,17 @@
+{
+  "model": "models/convnext_robust",
+  "name": "convnext_robust_jpeg90",
+  "images": 157,
+  "tp": 60,
+  "fn": 9,
+  "fp": 11,
+  "tn": 77,
+  "accuracy": 87.26,
+  "precision": 84.51,
+  "recall": 86.96,
+  "f1": 85.71,
+  "accuracy_ci95": [
+    81.1,
+    91.6
+  ]
+}

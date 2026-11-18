@@ -3,6 +3,7 @@
   python train.py --hub-id YOUR_HF_USERNAME/ai-image-detector
   python train.py                  # same training, model kept in checkpoints/ only
   python train.py --dry-run        # one epoch on 64 images, nothing uploaded
+  python train.py --resume         # continue an interrupted run from its last checkpoint
 
 With --hub-id a checkpoint is pushed to the Hugging Face Hub after every epoch,
 so a dropped Colab session does not lose the run.
@@ -16,7 +17,7 @@ import numpy as np
 import torch
 from datasets import Image as ImageFeature
 from datasets import concatenate_datasets, load_dataset
-from PIL import Image
+from PIL import Image, ImageFilter
 from torchvision.transforms import v2 as T
 from transformers import (AutoImageProcessor, AutoModelForImageClassification,
                           Trainer, TrainingArguments)
@@ -50,6 +51,16 @@ def random_downscale(image):
     return image
 
 
+def random_blur_noise(image):
+    """Sometimes blur the crop or add noise, so that softness or cleanness is not read as a sign of generation."""
+    if random.random() < 0.3:
+        image = image.filter(ImageFilter.GaussianBlur(random.uniform(0.3, 1.2)))
+    if random.random() < 0.3:
+        noise = np.random.default_rng(random.getrandbits(32)).normal(0, random.uniform(1, 5), (image.height, image.width, 3))
+        image = Image.fromarray(np.clip(np.asarray(image) + noise, 0, 255).astype(np.uint8))
+    return image
+
+
 class Transform:
     """Image bytes -> model inputs. A class, so Windows data-loader workers can pickle it."""
 
@@ -75,6 +86,7 @@ def main():
     parser.add_argument("--batch-size", type=int, default=32)
     parser.add_argument("--lr", type=float, default=5e-5)
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--resume", action="store_true", help="continue from the last checkpoint in checkpoints/")
     args = parser.parse_args()
     push = bool(args.hub_id) and not args.dry_run  # without --hub-id the model stays in checkpoints/
 
@@ -96,12 +108,12 @@ def main():
     to_tensor = [T.ToImage(), T.ToDtype(torch.float32, scale=True),
                  T.Normalize(processor.image_mean, processor.image_std)]
     # Training uses crops at original resolution. Generated images in this dataset are
-    # uncompressed PNG at their native size, most real ones resized JPEG, so random resizing
-    # and JPEG re-compression (none, once or twice) keep the model from using an image's
-    # processing history as the answer.
+    # uncompressed PNG at their native size, most real ones resized JPEG, so random resizing,
+    # blur, noise and JPEG re-compression (none, once or twice) keep the model from using an
+    # image's processing history as the answer.
     compress = T.RandomApply([T.JPEG((30, 95))], p=0.5)
     train_tf = T.Compose([random_downscale, T.RandomCrop(CROP, pad_if_needed=True, padding_mode="reflect"),
-                          T.RandomHorizontalFlip(), compress, compress, *to_tensor])
+                          T.RandomHorizontalFlip(), random_blur_noise, compress, compress, *to_tensor])
     eval_tf = T.Compose([T.CenterCrop(CROP), *to_tensor])
     data["train"].set_transform(Transform(train_tf))
     data["test"].set_transform(Transform(eval_tf))
@@ -119,7 +131,7 @@ def main():
             per_device_eval_batch_size=args.batch_size,
             learning_rate=args.lr,
             fp16=torch.cuda.is_available(),
-            dataloader_num_workers=min(8, os.cpu_count()),
+            dataloader_num_workers=min(4, os.cpu_count()),  # each worker loads the GPU libraries: more runs out of memory
             eval_strategy="epoch",
             save_strategy="epoch",
             save_total_limit=1,
@@ -135,7 +147,7 @@ def main():
         processing_class=processor,  # saved and pushed with the model
         compute_metrics=accuracy,
     )
-    trainer.train()
+    trainer.train(resume_from_checkpoint=args.resume)
     print(trainer.evaluate())
     if push:
         trainer.push_to_hub(dataset=DATASET)

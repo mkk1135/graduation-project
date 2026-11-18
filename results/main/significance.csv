@@ -1,0 +1,10 @@
+model,accuracy,ci95_low,ci95_high,only_cnn_final_right,only_this_model_right,p_value
+ateeqq,74.48,69.9,78.6,65,44,0.05491
+claude_sonnet_5_5,97.4,95.3,98.6,5,72,2.804e-16
+cnn_final,79.95,75.7,83.6,0,0,
+cnn_first,73.96,69.3,78.1,50,27,0.01167
+cnn_setting3,80.73,76.5,84.4,13,16,0.7111
+commfor,89.58,86.1,92.3,30,67,0.0002189
+siglip2_baseline,48.18,43.2,53.2,157,35,1.195e-19
+umm_maybe,58.33,53.3,63.2,134,51,8.66e-10
+vit_baseline,61.46,56.5,66.2,104,33,9.311e-10
