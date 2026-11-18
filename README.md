@@ -31,6 +31,7 @@ What the results show:
 - The final CNN's test score is probably optimistic. On the larger check set it scored 88.5% (139 of 157), which is the more cautious estimate of its accuracy on this kind of image.
 - Every AI image in the set is unedited generator output, square, and mostly PNG, while the photographs are JPEG. To check that no model is just reading the file format, every image was re-compressed as JPEG at quality 90 and scored again (`results/robustness/`): final CNN 93.75%, ViT 75.00%, first CNN 68.75%, SigLIP2 45.83%.
 - The two off-the-shelf detectors are used exactly as published.
+- The final CNN is sensitive to blur and noise. On the check set a slight Gaussian blur (radius 0.6 px) cuts the real photographs it recognises from 58 to 34 of 69, and added noise cuts them to 32 (`results/check/diagnosis.txt`). Photographs that have been blurred, denoised or filtered are likely to be flagged.
 - Claude was measured in a single blind pass (see "Blind test of a chat model").
 
 ## How the final CNN was chosen
@@ -43,7 +44,7 @@ Three training settings were compared on a separate check set of 157 images (69 
 | 2. Crops at original resolution | 76.43% | 33 / 69 | 87 / 88 | 77.07% |
 | 3. Setting 2, plus 7,010 photographs and 149 more generators (final) | 88.54% | 58 / 69 | 81 / 88 | 87.90% |
 
-Setting 2 was not adopted. It caught almost every AI image but called more than half of the real photographs generated: it was right on 13 of 15 landscapes and on 1 of 15 food photographs. Blurring a real photograph slightly made it answer "AI" almost every time. That pointed to the training data, which setting 3 corrects.
+Setting 2 was not adopted. It caught almost every AI image but called more than half of the real photographs generated: it was right on 13 of 15 landscapes and on 1 of 15 food photographs. A slight blur cut the real photographs it recognised from 33 to 15 of 69, so it was treating clean, smooth images as generated. That pointed to the training data, which setting 3 corrects. Setting 3 reduces this sensitivity but does not remove it.
 
 For comparison, the off-the-shelf detectors score 76.43% (ViT) and 57.32% (SigLIP2) on the check set. All check-set results are in `results/check/`.
 
@@ -93,9 +94,10 @@ python train.py --dry-run
 python evaluate.py MODEL_ID --real data/test/real --ai data/test/ai --name short_name
 python evaluate.py MODEL_ID --real data/test/real --ai data/test/ai --name short_name --jpeg 90 --out results/robustness
 python evaluate.py --chart
+python diagnose.py MODEL_ID
 ```
 
-Each run writes the metrics, per-image predictions and a confusion matrix.
+Each evaluation run writes the metrics, per-image predictions and a confusion matrix. `diagnose.py` reports how blur, sharpening, downscaling and noise change a detector's answers on the check set.
 
 ## Blind test of a chat model
 

@@ -1,0 +1,21 @@
+Setting 1: whole image shrunk to 224 px (first attempt)
+  as downloaded                real correct 41/69   AI correct 84/88
+  Gaussian blur, radius 0.6    real correct 36/69   AI correct 84/88
+  Gaussian blur, radius 1.0    real correct 32/69   AI correct 87/88
+  unsharp mask (sharpen)       real correct 43/69   AI correct 84/88
+  downscaled to half size      real correct 41/69   AI correct 84/88
+  Gaussian noise, sd 3         real correct 35/69   AI correct 84/88
+Setting 2: crops at original resolution
+  as downloaded                real correct 33/69   AI correct 87/88
+  Gaussian blur, radius 0.6    real correct 15/69   AI correct 87/88
+  Gaussian blur, radius 1.0    real correct  2/69   AI correct 88/88
+  unsharp mask (sharpen)       real correct 43/69   AI correct 87/88
+  downscaled to half size      real correct 34/69   AI correct 87/88
+  Gaussian noise, sd 3         real correct 27/69   AI correct 88/88
+Setting 3: final model (mkk1135/ai-image-detector)
+  as downloaded                real correct 58/69   AI correct 81/88
+  Gaussian blur, radius 0.6    real correct 34/69   AI correct 82/88
+  Gaussian blur, radius 1.0    real correct 23/69   AI correct 81/88
+  unsharp mask (sharpen)       real correct 64/69   AI correct 81/88
+  downscaled to half size      real correct 50/69   AI correct 83/88
+  Gaussian noise, sd 3         real correct 32/69   AI correct 84/88
