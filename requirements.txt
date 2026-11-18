@@ -1,0 +1,7 @@
+torch
+torchvision>=0.19
+transformers>=4.46
+datasets
+accelerate
+pillow
+matplotlib
