@@ -1,10 +1,11 @@
 """Fine-tune a pretrained CNN to separate real photographs from AI-generated images.
 
   python train.py --hub-id YOUR_HF_USERNAME/ai-image-detector
+  python train.py                  # same training, model kept in checkpoints/ only
   python train.py --dry-run        # one epoch on 64 images, nothing uploaded
 
-A checkpoint is pushed to the Hugging Face Hub after every epoch, so a dropped
-Colab session does not lose the run.
+With --hub-id a checkpoint is pushed to the Hugging Face Hub after every epoch,
+so a dropped Colab session does not lose the run.
 """
 import argparse
 import io
@@ -59,8 +60,7 @@ def main():
     parser.add_argument("--lr", type=float, default=5e-5)
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
-    if not (args.hub_id or args.dry_run):
-        parser.error("give --hub-id, or --dry-run")
+    push = bool(args.hub_id) and not args.dry_run  # without --hub-id the model stays in checkpoints/
 
     shards = DRY_RUN_SHARDS if args.dry_run else SHARDS
     data = load_dataset(DATASET, data_files=[f"data/HFCF_small_{n}.parquet" for n in shards], split="train")
@@ -99,7 +99,7 @@ def main():
             save_total_limit=1,
             logging_steps=25,
             remove_unused_columns=False,  # the transform needs the raw image column
-            push_to_hub=not args.dry_run,
+            push_to_hub=push,
             hub_model_id=args.hub_id,
             hub_strategy="every_save",
             report_to="none",
@@ -111,7 +111,7 @@ def main():
     )
     trainer.train()
     print(trainer.evaluate())
-    if not args.dry_run:
+    if push:
         trainer.push_to_hub(dataset=DATASET)
 
 

@@ -8,3 +8,4 @@ data/
 # kept off the public repo: the report carries a student ID
 report/
 PROJECT_PROMPT.md
+*.log
