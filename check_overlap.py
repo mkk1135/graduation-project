@@ -45,7 +45,7 @@ def training_hashes():
 
 if __name__ == "__main__":
     training = training_hashes()
-    photos = sorted(p for folder in ("test", "check", "main", "final", "chat") for p in Path("data", folder, "real").glob("*.jpg"))
+    photos = sorted(p for folder in ("test", "check", "main", "final", "chat", "wild") for p in Path("data", folder, "real").glob("*.jpg"))
     found = 0
     for path in photos:
         image = Image.open(path)
@@ -54,5 +54,5 @@ if __name__ == "__main__":
                 if (candidate ^ known).bit_count() <= LIMIT:
                     found += 1
                     print(f"possible copy: {path} and {where}")
-    print(f"compared {len(photos)} real photographs of the evaluation sets with {len(training)} real training images: "
+    print(f"compared {len(photos)} real photographs of the evaluation sets with {len(training)} different real training images: "
           f"{found} possible copies")

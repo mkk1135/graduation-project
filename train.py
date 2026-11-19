@@ -5,6 +5,7 @@
   python train.py --dry-run        # one epoch on 64 images, nothing uploaded
   python train.py --resume         # continue an interrupted run from its last checkpoint
   python train.py --seed 1 --out checkpoints/seed1    # a repeated run, to measure the variation between runs
+  python train.py --setting 4 --out checkpoints/s4    # the augmentation of the model published in the first round
 
 With --hub-id a checkpoint is pushed to the Hugging Face Hub after every epoch,
 so a dropped Colab session does not lose the run.
@@ -44,17 +45,27 @@ DRY_RUN_SHARDS = [78, 117]  # the two smallest: one generated (35 MB), one real 
 CROP = 256  # side of the training crop, in pixels of the original image
 
 
-def random_downscale(image):
-    """Seven times in ten, shrink the image with a random filter, by any factor down to the crop size.
+class RandomDownscale:
+    """Shrink the image with a random filter before the crop is taken, never below the crop size.
 
-    Photographs on the web are mostly far smaller than the camera's image. Without strongly shrunk, clean
-    photographs in training, the model called small, lightly compressed photographs generated.
+    Setting 5 (the published model): seven times in ten, by any factor down to the crop size, every size being
+    equally likely on a log scale. Photographs on the web are mostly far smaller than the camera's image, and
+    without strongly shrunk, clean photographs in training the model called small, lightly compressed
+    photographs generated.
+    Setting 4 (the model of the first round): half the time, by up to 2x.
+    A class, so that the choice reaches the data-loader workers.
     """
-    if random.random() < 0.7 and min(image.size) > CROP:
-        scale = math.exp(random.uniform(math.log(CROP / min(image.size)), 0))  # every size between crop and original is equally likely on a log scale
-        size = (round(image.width * scale), round(image.height * scale))
-        image = image.resize(size, random.choice([Image.BILINEAR, Image.BICUBIC, Image.LANCZOS]))
-    return image
+
+    def __init__(self, strong):
+        self.strong = strong
+
+    def __call__(self, image):
+        if random.random() < (0.7 if self.strong else 0.5) and min(image.size) > CROP:
+            smallest = CROP / min(image.size)
+            scale = math.exp(random.uniform(math.log(smallest), 0)) if self.strong else random.uniform(max(0.5, smallest), 1.0)
+            size = (round(image.width * scale), round(image.height * scale))
+            image = image.resize(size, random.choice([Image.BILINEAR, Image.BICUBIC, Image.LANCZOS]))
+        return image
 
 
 def random_blur_noise(image):
@@ -95,6 +106,7 @@ def main():
     parser.add_argument("--resume", action="store_true", help="continue from the last checkpoint in the output folder")
     parser.add_argument("--seed", type=int, default=42, help="seed of the training run (the data split is always the same)")
     parser.add_argument("--out", default="checkpoints", help="folder for the checkpoints")
+    parser.add_argument("--setting", type=int, choices=[4, 5], default=5, help="augmentation: 5 = published model, 4 = milder shrinking (first round)")
     args = parser.parse_args()
     set_seed(args.seed)
     push = bool(args.hub_id) and not args.dry_run  # without --hub-id the model stays in checkpoints/
@@ -121,7 +133,7 @@ def main():
     # blur, noise and JPEG re-compression (none, once or twice) keep the model from using an
     # image's processing history as the answer.
     compress = T.RandomApply([T.JPEG((30, 95))], p=0.5)
-    train_tf = T.Compose([random_downscale, T.RandomCrop(CROP, pad_if_needed=True, padding_mode="reflect"),
+    train_tf = T.Compose([RandomDownscale(strong=args.setting == 5), T.RandomCrop(CROP, pad_if_needed=True, padding_mode="reflect"),
                           T.RandomHorizontalFlip(), random_blur_noise, compress, compress, *to_tensor])
     eval_tf = T.Compose([T.CenterCrop(CROP), *to_tensor])
     data["train"].set_transform(Transform(train_tf))

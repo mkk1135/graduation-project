@@ -1,6 +1,7 @@
 """Inspect the files of every detector and time it on this computer's processor.
 
-  python analyse_models.py        # writes results/models.json (read by results_db.py)
+  python analyse_models.py                # all detectors -> results/models.json (read by results_db.py)
+  python analyse_models.py cnn_s5 fusion  # only these; the others keep their entries
 
 For each detector: the files in its repository, the format and size of the weights, the number of
 weights, the architecture and input size from its configuration, the licence and dates from the
@@ -10,6 +11,7 @@ import json
 import math
 import re
 import statistics
+import sys
 import time
 from pathlib import Path
 
@@ -20,7 +22,8 @@ from transformers import pipeline
 from transformers.image_utils import load_image
 
 MODELS = {  # name used in the result files: Hub id, or folder of a model that was not published
-    "cnn_final": "mkk1135/ai-image-detector",
+    "cnn_s5": "models/cnn_s5",          # setting 5 with its threshold built in: the published model
+    "cnn_final": "models/convnext_robust",  # setting 4, the model published in the first round
     "cnn_setting3": "models/convnext_crop_photos",
     "cnn_setting2": "models/convnext_crop",
     "cnn_first": "models/convnext_resize",
@@ -100,10 +103,14 @@ def seconds_per_image(name, source):
 if __name__ == "__main__":
     assert len(TIMED) == 16, "the timing needs the main test set in data/main"
     megapixels = [im.width * im.height / 1e6 for im in (load_image(str(p)) for p in TIMED)]
-    out = {"_timing": {"images": len(TIMED), "mean_megapixels": round(statistics.mean(megapixels), 2),
-                       "max_megapixels": round(max(megapixels), 2), "threads": torch.get_num_threads()}}
+    target = Path("results/models.json")
+    out = json.loads(target.read_text()) if target.exists() and sys.argv[1:] else {}
+    out["_timing"] = {"images": len(TIMED), "mean_megapixels": round(statistics.mean(megapixels), 2),
+                      "max_megapixels": round(max(megapixels), 2), "threads": torch.get_num_threads()}
     for name, source in MODELS.items():
+        if sys.argv[1:] and name not in sys.argv[1:]:
+            continue
         out[name] = {**inspect(source), **seconds_per_image(name, source)}
         print(name, json.dumps({k: v for k, v in out[name].items() if k != "files"})[:400])
-    Path("results/models.json").write_text(json.dumps(out, indent=1))
+    target.write_text(json.dumps(out, indent=1))
     print("wrote results/models.json")

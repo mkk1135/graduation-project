@@ -59,6 +59,20 @@ assert metrics(4, 22, 1, 21) == {
 assert wilson(50, 100) == [40.4, 59.6] and mcnemar(0, 0) == 1.0 and round(mcnemar(10, 0), 5) == 0.00195
 
 
+def fit(image):
+    """For a detector that analyses images at original resolution: an image of more than 8 megapixels does not fit
+    into the memory of an 8 GB GPU, so only its central 2048 x 2048 pixels are analysed, as in app.py.
+    No image of the check set, the development test set or the final test set is that large."""
+    if image.width * image.height <= 8_000_000:
+        return image
+    w, h = min(image.width, 2048), min(image.height, 2048)
+    left, top = (image.width - w) // 2, (image.height - h) // 2
+    return image.crop((left, top, left + w, top + h))
+
+
+assert fit(Image.new("RGB", (4000, 1000))).size == (4000, 1000) and fit(Image.new("RGB", (6000, 1500))).size == (2048, 1500)
+
+
 def to_class(label):
     # Covers REAL/FAKE, real/ai, human/artificial and hum/ai label sets.
     return "real" if any(word in label.lower() for word in ("real", "hum")) else "ai"
@@ -79,8 +93,10 @@ def load(model_id):
     if {to_class(label) for label in labels} != {"real", "ai"}:
         raise SystemExit(f"Cannot map the labels {labels} of {model_id} to real / ai")
 
+    resizes = pipe.image_processor.do_resize  # False for the CNN of this project, which analyses at original resolution
+
     def classify(image):
-        top = pipe(image)[0]
+        top = pipe(image if resizes else fit(image))[0]
         return to_class(top["label"]), top["score"]
 
     return classify

@@ -1,0 +1,95 @@
+{
+ "setting": {
+  "setting 4": {
+   "development": 79.95,
+   "check": 89.17,
+   "processing_mean": 84.29
+  },
+  "setting 5": {
+   "development": 80.99,
+   "check": 87.26,
+   "processing_mean": 85.99
+  },
+  "rules": {
+   "higher on the development test set": true,
+   "processing mean not lower": true,
+   "check set not more than two points lower": true
+  },
+  "adopted": true,
+  "for comparison, with the threshold of rule 2": {
+   "setting 4": {
+    "threshold_on_ai_score": 0.82715,
+    "development_accuracy": 85.95,
+    "development_accuracy_jpeg90": 84.47
+   },
+   "setting 5": {
+    "threshold_on_ai_score": 0.6894,
+    "development_accuracy": 84.29,
+    "development_accuracy_jpeg90": 81.15
+   }
+  }
+ },
+ "threshold": {
+  "cnn_s5_raw": {
+   "model": "cnn_s5_raw",
+   "threshold_on_ai_score": 0.6894,
+   "threshold_on_real_score": 0.3106,
+   "shift_of_real_logit": 0.797316,
+   "development_accuracy_at_0.5": 82.81,
+   "development_accuracy": 84.29,
+   "development_accuracy_jpeg90": 81.15
+  },
+  "commfor": {
+   "model": "commfor",
+   "threshold_on_ai_score": 0.12275,
+   "threshold_on_real_score": 0.87725,
+   "shift_of_real_logit": -1.966642,
+   "development_accuracy_at_0.5": 88.54,
+   "development_accuracy": 92.05,
+   "development_accuracy_jpeg90": 85.03
+  },
+  "cnn_final": {
+   "model": "cnn_final",
+   "threshold_on_ai_score": 0.82715,
+   "threshold_on_real_score": 0.17285,
+   "shift_of_real_logit": 1.565562,
+   "development_accuracy_at_0.5": 82.62,
+   "development_accuracy": 85.95,
+   "development_accuracy_jpeg90": 84.47
+  }
+ },
+ "fusion": {
+  "weight_of_cnn": 0.25,
+  "threshold_on_ai_score": 0.250962,
+  "development_accuracy": 93.53,
+  "development_accuracy_jpeg90": 88.72,
+  "tried": {
+   "0.25": {
+    "threshold_on_ai_score": 0.250962,
+    "development_accuracy": 93.53,
+    "development_accuracy_jpeg90": 88.72
+   },
+   "0.5": {
+    "threshold_on_ai_score": 0.5,
+    "development_accuracy": 92.05,
+    "development_accuracy_jpeg90": 84.29
+   },
+   "0.75": {
+    "threshold_on_ai_score": 0.250862,
+    "development_accuracy": 88.35,
+    "development_accuracy_jpeg90": 85.4
+   }
+  },
+  "parts_alone": {
+   "cnn_s5": {
+    "development_accuracy": 84.29,
+    "development_accuracy_jpeg90": 81.15
+   },
+   "commfor": {
+    "development_accuracy": 88.54,
+    "development_accuracy_jpeg90": 79.3
+   }
+  },
+  "adopted": true
+ }
+}

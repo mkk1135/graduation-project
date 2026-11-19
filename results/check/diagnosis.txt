@@ -26,3 +26,10 @@ Setting 4: setting 3 with blur and noise augmentation (final model, mkk1135/ai-i
   unsharp mask (sharpen)       real correct 62/69   AI correct 80/88
   downscaled to half size      real correct 41/69   AI correct 86/88
   Gaussian noise, sd 3         real correct 63/69   AI correct 78/88
+Setting 5: setting 4 with strong shrinking
+  as downloaded                real correct 62/69   AI correct 75/88
+  Gaussian blur, radius 0.6    real correct 53/69   AI correct 77/88
+  Gaussian blur, radius 1.0    real correct 56/69   AI correct 75/88
+  unsharp mask (sharpen)       real correct 63/69   AI correct 75/88
+  downscaled to half size      real correct 61/69   AI correct 77/88
+  Gaussian noise, sd 3         real correct 63/69   AI correct 73/88

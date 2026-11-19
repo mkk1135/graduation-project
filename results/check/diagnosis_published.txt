@@ -1,0 +1,35 @@
+OwensLab/commfor-model-384
+  as downloaded                real correct 69/69   AI correct 66/88
+  Gaussian blur, radius 0.6    real correct 69/69   AI correct 65/88
+  Gaussian blur, radius 1.0    real correct 69/69   AI correct 65/88
+  unsharp mask (sharpen)       real correct 69/69   AI correct 62/88
+  downscaled to half size      real correct 69/69   AI correct 64/88
+  Gaussian noise, sd 3         real correct 64/69   AI correct 52/88
+Ateeqq/ai-vs-human-image-detector
+  as downloaded                real correct 56/69   AI correct 69/88
+  Gaussian blur, radius 0.6    real correct 56/69   AI correct 69/88
+  Gaussian blur, radius 1.0    real correct 56/69   AI correct 70/88
+  unsharp mask (sharpen)       real correct 57/69   AI correct 69/88
+  downscaled to half size      real correct 56/69   AI correct 69/88
+  Gaussian noise, sd 3         real correct 56/69   AI correct 69/88
+umm-maybe/AI-image-detector
+  as downloaded                real correct 59/69   AI correct 17/88
+  Gaussian blur, radius 0.6    real correct 59/69   AI correct 17/88
+  Gaussian blur, radius 1.0    real correct 59/69   AI correct 20/88
+  unsharp mask (sharpen)       real correct 58/69   AI correct 15/88
+  downscaled to half size      real correct 58/69   AI correct 19/88
+  Gaussian noise, sd 3         real correct 56/69   AI correct 25/88
+Manish18/deepfake-detection-model
+  as downloaded                real correct 35/69   AI correct 85/88
+  Gaussian blur, radius 0.6    real correct 35/69   AI correct 85/88
+  Gaussian blur, radius 1.0    real correct 35/69   AI correct 84/88
+  unsharp mask (sharpen)       real correct 35/69   AI correct 84/88
+  downscaled to half size      real correct 35/69   AI correct 85/88
+  Gaussian noise, sd 3         real correct 35/69   AI correct 83/88
+prithivMLmods/Deep-Fake-Detector-Model
+  as downloaded                real correct 44/69   AI correct 46/88
+  Gaussian blur, radius 0.6    real correct 44/69   AI correct 46/88
+  Gaussian blur, radius 1.0    real correct 43/69   AI correct 47/88
+  unsharp mask (sharpen)       real correct 44/69   AI correct 46/88
+  downscaled to half size      real correct 44/69   AI correct 46/88
+  Gaussian noise, sd 3         real correct 44/69   AI correct 46/88

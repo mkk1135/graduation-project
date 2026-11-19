@@ -3,6 +3,7 @@
   python decide.py setting      # rule 1: does setting 5 replace setting 4?   (needs cnn_s5_raw on the development data)
   python decide.py threshold    # rule 2: decision threshold of a CNN          (needs cnn_s5_raw; --model for another run)
   python decide.py fusion       # rule 3: combination with Community Forensics (needs cnn_s5 with its threshold built in)
+  python decide.py check        # are the recorded decisions reproduced from the database? (run by the GitHub workflow)
 
 Only the check set and the development test set are read. Run `python results_db.py` first.
 """
@@ -55,7 +56,11 @@ def setting():
     rules = {"higher on the development test set": new["development"] > old["development"],
              "processing mean not lower": new["processing_mean"] >= old["processing_mean"],
              "check set not more than two points lower": new["check"] >= old["check"] - 2}
-    return {"setting 4": old, "setting 5": new, "rules": rules, "adopted": all(rules.values())}
+    # For the record, not part of the rule: the two settings once each has the threshold of rule 2 (see the ablation in the report).
+    tuned = {name: threshold(model) for name, model in (("setting 4", "cnn_final"), ("setting 5", "cnn_s5_raw"))}
+    return {"setting 4": old, "setting 5": new, "rules": rules, "adopted": all(rules.values()),
+            "for comparison, with the threshold of rule 2": {
+                name: {key: t[key] for key in ("threshold_on_ai_score", "development_accuracy", "development_accuracy_jpeg90")} for name, t in tuned.items()}}
 
 
 def threshold(model):
@@ -83,11 +88,21 @@ def fusion(cnn="cnn_s5", other="commfor"):
     return {"weight_of_cnn": w, **tried[w], "tried": tried, "parts_alone": alone, "adopted": adopted}
 
 
+def check():
+    recorded = json.loads(OUT.read_text())
+    again = {"setting": setting, "threshold": lambda: {model: threshold(model) for model in recorded["threshold"]}, "fusion": fusion}
+    for name, decision in recorded.items():
+        assert json.loads(json.dumps(again[name]())) == decision, f"the decision '{name}' is not reproduced from the database"
+    print("reproduced from the database:", ", ".join(recorded))
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("decision", choices=["setting", "threshold", "fusion"])
+    parser.add_argument("decision", choices=["setting", "threshold", "fusion", "check"])
     parser.add_argument("--model", default="cnn_s5_raw", help="for threshold: the run whose threshold is chosen")
     args = parser.parse_args()
+    if args.decision == "check":
+        raise SystemExit(check())
     decisions = json.loads(OUT.read_text()) if OUT.exists() else {}
     if args.decision == "threshold":
         decisions.setdefault("threshold", {})[args.model] = threshold(args.model)

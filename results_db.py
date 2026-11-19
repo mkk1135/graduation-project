@@ -41,7 +41,9 @@ MODELS = {  # name: (label, kind, training data as stated by its publisher)
     "cnn_s5_seed1_raw": ("CNN of this project, setting 5, second run, before the threshold", "this project", "as setting 5, another seed, default threshold"),
     "cnn_s5_seed2_raw": ("CNN of this project, setting 5, third run, before the threshold", "this project", "as setting 5, another seed, default threshold"),
     "cnn_final": ("CNN of this project, setting 4", "this project", "36,562 images: 10 shards of Community Forensics-Small and 7,010 DataSeeds photographs; crops at original resolution with blur and noise"),
-    "cnn_setting3": ("CNN of this project, setting 3", "this project", "as the final model, without blur and noise"),
+    "cnn_final_tuned": ("CNN of this project, setting 4, threshold tuned on development data", "this project",
+                        "as setting 4; only its decision threshold was chosen on the development images, for comparison with setting 5"),
+    "cnn_setting3": ("CNN of this project, setting 3", "this project", "as setting 4, without blur and noise"),
     "cnn_setting2": ("CNN of this project, setting 2", "this project", "23,755 images: 8 shards of Community Forensics-Small; crops at original resolution"),
     "cnn_first": ("CNN of this project, first attempt (setting 1)", "this project", "23,755 images: 8 shards of Community Forensics-Small; whole images shrunk to 224 px"),
     "ateeqq": ("Ateeqq SigLIP detector", "published detector", "card: 60,000 AI-generated and 60,000 human images; card reports 99.2% on its own test split"),
@@ -50,7 +52,8 @@ MODELS = {  # name: (label, kind, training data as stated by its publisher)
     "siglip2_baseline": ("prithivMLmods SigLIP2 detector", "published detector", "card: its own deepfake data; card reports 94.4% on its own test data"),
 }
 DIAGNOSED = {"Setting 1": "cnn_first", "Setting 2": "cnn_setting2", "Setting 3": "cnn_setting3", "Setting 4": "cnn_final",
-             "Setting 5": "cnn_s5_raw", "OwensLab/commfor-model-384": "commfor", "Ateeqq/ai-vs-human-image-detector": "ateeqq",
+             "Setting 5": "cnn_s5_raw", "Setting 5 with tuned threshold": "cnn_s5", "Setting 4 with tuned threshold": "cnn_final_tuned",
+             "OwensLab/commfor-model-384": "commfor", "Ateeqq/ai-vs-human-image-detector": "ateeqq",
              "umm-maybe/AI-image-detector": "umm_maybe", "Manish18/deepfake-detection-model": "vit_baseline",
              "prithivMLmods/Deep-Fake-Detector-Model": "siglip2_baseline"}  # headings in results/check/diagnosis*.txt
 SCHEMA = """
@@ -205,6 +208,11 @@ def comparison(db):
         shown = [m for m in ranked if any((m, s, c) in have for s, c, _ in columns)]
         if columns:
             out += [f"**{heading}**\n", table(["Approach", *(c[2] for c in columns)], [[label[m], *(cell.get((m, s, c), "") for s, c, _ in columns)] for m in shown])]
+            readme = Path("README.md")
+            text = readme.read_text(encoding="utf-8") if readme.exists() else ""
+            if heading.startswith("Held-out") and "<!-- results -->" in text:  # the README shows the held-out results
+                start, end = text.index("<!-- results -->"), text.index("<!-- /results -->")
+                readme.write_text(text[:start] + "<!-- results -->\n" + out[-1] + text[end:], encoding="utf-8", newline="\n")
     for number, set_name in enumerate([s for s in ("final", "chat", "wild", "main") if any((m, s, "as downloaded") in have for m in MODELS)], 3):
         out.append(f"## {number}. {title[set_name]}: images classified correctly, by source and generator\n")
         shown = [m for m, in q("SELECT model FROM scores WHERE set_name=? AND condition='as downloaded' ORDER BY accuracy DESC", set_name)]

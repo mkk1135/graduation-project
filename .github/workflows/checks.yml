@@ -10,3 +10,5 @@ jobs:
           python-version: "3.13"
       - name: Rebuild the results database and check it against every result file
         run: python results_db.py
+      - name: Check that the recorded decisions of the protocol are reproduced from the database
+        run: python decide.py check

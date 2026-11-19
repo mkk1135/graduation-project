@@ -1,1 +1,1 @@
-compared 287 real photographs of the evaluation sets with 18977 real training images: 0 possible copies
+compared 611 real photographs of the evaluation sets with 18977 different real training images: 0 possible copies

@@ -10,6 +10,7 @@ from pathlib import Path
 from transformers import pipeline
 
 import commfor
+from evaluate import fit
 
 CNN, OTHER = "mkk1135/ai-image-detector", "OwensLab/commfor-model-384"
 
@@ -21,7 +22,7 @@ def classifier(device="cpu", cnn=CNN):
     own, other = pipeline("image-classification", model=cnn, device=device), commfor.classifier(OTHER, device)
 
     def classify(image):
-        p_own = next(r["score"] for r in own(image) if r["label"] == "ai")
+        p_own = next(r["score"] for r in own(fit(image)) if r["label"] == "ai")  # the CNN works at original resolution
         kind, score = other(image)
         p = weight * p_own + (1 - weight) * (score if kind == "ai" else 1 - score)
         # Rescaled so that the chosen threshold lies at 0.5: a score of 0.5 is an undecided image, as for a single detector.

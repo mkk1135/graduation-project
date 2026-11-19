@@ -1,0 +1,17 @@
+{
+  "model": "checkpoints/s5_seed42/checkpoint-3087",
+  "name": "cnn_s5_raw",
+  "images": 384,
+  "tp": 161,
+  "fn": 31,
+  "fp": 45,
+  "tn": 147,
+  "accuracy": 80.21,
+  "precision": 78.16,
+  "recall": 83.85,
+  "f1": 80.9,
+  "accuracy_ci95": [
+    75.9,
+    83.9
+  ]
+}
