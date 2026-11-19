@@ -209,6 +209,27 @@ python export_onnx.py
 
 Each evaluation run writes the metrics with a confidence interval, per-image predictions and a confusion matrix. `--compare` writes `significance.csv`, the McNemar test of every model in the folder against the named one. `diagnose.py` reports how blur, sharpening, downscaling and noise change a detector's answers on the check set. `check_overlap.py` checks that no real evaluation photograph is also a training image. `commfor.py` loads the published Community Forensics detector, which is not a standard Transformers model. `--crop 1024` scores a detector on the central 1024 x 1024 px only, as the online demo analyses images. `export_onnx.py` writes the detector as `space/model.onnx` for the online demo (`space/index.html`) and checks that it gives the same output as the PyTorch model; it needs `pip install onnx onnxscript onnxruntime`. `space/check_demo.py` uploads images to the demo page in a real browser and compares its answers with the Python detector (`results/demo_check.txt`).
 
+## Database of all results and full comparison
+
+```bash
+python analyse_models.py
+python results_db.py
+```
+
+`results_db.py` puts every prediction of every approach on every evaluation image into one small SQLite database, `results/results.db`, checks it against the result files, and writes [COMPARISON.md](COMPARISON.md) from it: what each model is (architecture, size, file format, licence, model card), accuracy on every set, results by source and by generator, ranking quality (AUC), confidence, speed, sensitivity to blur and noise, and a table of what has and has not been measured. `analyse_models.py` inspects the files of each detector and times it on the processor; its output, `results/models.json`, feeds the database.
+
+| Table or view | Content |
+|---|---|
+| `images` | one row per evaluation image: set, class, source group, generator or photo category, author, licence, URL |
+| `models` | one row per approach: architecture, number of weights, file size and format, input size, licence, speed |
+| `predictions` | one row per model, set, condition and image: the answer and its score |
+| `processing` | check-set images still classified correctly after blur, sharpening, downscaling or noise |
+| `scores`, `by_group`, `by_generator` | views: accuracy per model, set and condition; correct answers per source and per generator |
+
+```bash
+sqlite3 results/results.db "select model, accuracy from scores where set_name = 'main' and condition = 'as downloaded' order by 2 desc"
+```
+
 ## Blind test of a chat model
 
 ```bash

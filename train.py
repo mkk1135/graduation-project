@@ -4,12 +4,14 @@
   python train.py                  # same training, model kept in checkpoints/ only
   python train.py --dry-run        # one epoch on 64 images, nothing uploaded
   python train.py --resume         # continue an interrupted run from its last checkpoint
+  python train.py --seed 1 --out checkpoints/seed1    # a repeated run, to measure the variation between runs
 
 With --hub-id a checkpoint is pushed to the Hugging Face Hub after every epoch,
 so a dropped Colab session does not lose the run.
 """
 import argparse
 import io
+import math
 import os
 import random
 
@@ -20,7 +22,7 @@ from datasets import concatenate_datasets, load_dataset
 from PIL import Image, ImageFilter
 from torchvision.transforms import v2 as T
 from transformers import (AutoImageProcessor, AutoModelForImageClassification,
-                          Trainer, TrainingArguments)
+                          Trainer, TrainingArguments, set_seed)
 
 # Community Forensics (Park and Owens, CVPR 2025), small version: 278k real photographs
 # and 278k images from 4,782 generators, in 186 shards of 2,992 images each.
@@ -43,9 +45,13 @@ CROP = 256  # side of the training crop, in pixels of the original image
 
 
 def random_downscale(image):
-    """Half the time, shrink the image by up to 2x with a random filter, never below the crop size."""
-    if random.random() < 0.5 and min(image.size) > CROP:
-        scale = random.uniform(max(0.5, CROP / min(image.size)), 1.0)
+    """Seven times in ten, shrink the image with a random filter, by any factor down to the crop size.
+
+    Photographs on the web are mostly far smaller than the camera's image. Without strongly shrunk, clean
+    photographs in training, the model called small, lightly compressed photographs generated.
+    """
+    if random.random() < 0.7 and min(image.size) > CROP:
+        scale = math.exp(random.uniform(math.log(CROP / min(image.size)), 0))  # every size between crop and original is equally likely on a log scale
         size = (round(image.width * scale), round(image.height * scale))
         image = image.resize(size, random.choice([Image.BILINEAR, Image.BICUBIC, Image.LANCZOS]))
     return image
@@ -86,8 +92,11 @@ def main():
     parser.add_argument("--batch-size", type=int, default=32)
     parser.add_argument("--lr", type=float, default=5e-5)
     parser.add_argument("--dry-run", action="store_true")
-    parser.add_argument("--resume", action="store_true", help="continue from the last checkpoint in checkpoints/")
+    parser.add_argument("--resume", action="store_true", help="continue from the last checkpoint in the output folder")
+    parser.add_argument("--seed", type=int, default=42, help="seed of the training run (the data split is always the same)")
+    parser.add_argument("--out", default="checkpoints", help="folder for the checkpoints")
     args = parser.parse_args()
+    set_seed(args.seed)
     push = bool(args.hub_id) and not args.dry_run  # without --hub-id the model stays in checkpoints/
 
     shards = DRY_RUN_SHARDS if args.dry_run else SHARDS
@@ -125,7 +134,8 @@ def main():
     trainer = Trainer(
         model=model,
         args=TrainingArguments(
-            output_dir="checkpoints",
+            output_dir=args.out,
+            seed=args.seed,
             num_train_epochs=1 if args.dry_run else args.epochs,
             per_device_train_batch_size=8 if args.dry_run else args.batch_size,
             per_device_eval_batch_size=args.batch_size,

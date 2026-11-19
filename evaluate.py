@@ -5,18 +5,20 @@
   python evaluate.py --compare cnn_final --out results/main   # McNemar test of every model against one
 
 MODEL_ID is an image-classification model on the Hugging Face Hub (or a local folder), or
-OwensLab/commfor-model-384. "real" is the positive class.
+OwensLab/commfor-model-384. "real" is the positive class. Set DETECTOR_DEVICE=cuda to use a GPU.
 """
 import argparse
 import csv
 import io
 import json
 import math
+import os
 from pathlib import Path
 
 from PIL import Image
 
 RESULTS = Path("results")
+DEVICE = os.environ.get("DETECTOR_DEVICE", "cpu")  # set DETECTOR_DEVICE=cuda to run the detectors on a GPU
 IMAGE_TYPES = {".jpg", ".jpeg", ".png", ".webp", ".bmp"}
 
 
@@ -65,10 +67,10 @@ def load(model_id):
     """Returns a function: PIL image -> ("real" or "ai", score)."""
     if model_id.startswith("OwensLab/commfor-model"):
         from commfor import classifier
-        return classifier(model_id)
+        return classifier(model_id, DEVICE)
     from transformers import pipeline
 
-    pipe = pipeline("image-classification", model=model_id)
+    pipe = pipeline("image-classification", model=model_id, device=DEVICE)
     labels = set(pipe.model.config.id2label.values())
     if {to_class(label) for label in labels} != {"real", "ai"}:
         raise SystemExit(f"Cannot map the labels {labels} of {model_id} to real / ai")

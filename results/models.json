@@ -1,0 +1,376 @@
+{
+ "_timing": {
+  "images": 16,
+  "mean_megapixels": 1.75,
+  "max_megapixels": 4.61,
+  "threads": 14
+ },
+ "cnn_final": {
+  "source": "mkk1135/ai-image-detector",
+  "hub_id": "mkk1135/ai-image-detector",
+  "created": "2026-11-18",
+  "modified": "2026-11-18",
+  "downloads_last_month": 46,
+  "likes": 0,
+  "licence": "cc-by-nc-sa-4.0",
+  "base_model": "facebook/convnext-tiny-224",
+  "card_words": 929,
+  "card_unfilled_fields": 0,
+  "files": [
+   ".gitattributes",
+   "README.md",
+   "config.json",
+   "model.safetensors",
+   "preprocessor_config.json"
+  ],
+  "weight_files": {
+   "model.safetensors": 111.3
+  },
+  "safe_weights": true,
+  "weights_million": 27.8,
+  "architecture": "ConvNextForImageClassification",
+  "model_type": "convnext",
+  "image_size": 224,
+  "patch_size": 4,
+  "labels": [
+   "ai",
+   "real"
+  ],
+  "resizes_input": false,
+  "preprocessor_size": {
+   "shortest_edge": 224
+  },
+  "cpu_mean_s": 3.071,
+  "cpu_max_s": 9.533
+ },
+ "cnn_setting3": {
+  "source": "models/convnext_crop_photos",
+  "files": [
+   "config.json",
+   "model.safetensors",
+   "optimizer.pt",
+   "preprocessor_config.json",
+   "rng_state.pth",
+   "scaler.pt",
+   "scheduler.pt",
+   "trainer_state.json",
+   "training_args.bin"
+  ],
+  "weight_files": {
+   "model.safetensors": 111.3,
+   "optimizer.pt": 222.7,
+   "rng_state.pth": 0.0,
+   "scaler.pt": 0.0,
+   "scheduler.pt": 0.0,
+   "training_args.bin": 0.0
+  },
+  "safe_weights": true,
+  "weights_million": 27.8,
+  "architecture": "ConvNextForImageClassification",
+  "model_type": "convnext",
+  "image_size": 224,
+  "patch_size": 4,
+  "labels": [
+   "ai",
+   "real"
+  ],
+  "resizes_input": false,
+  "preprocessor_size": {
+   "shortest_edge": 224
+  },
+  "cpu_mean_s": 3.568,
+  "cpu_max_s": 9.603
+ },
+ "cnn_setting2": {
+  "source": "models/convnext_crop",
+  "files": [
+   "config.json",
+   "model.safetensors",
+   "optimizer.pt",
+   "preprocessor_config.json",
+   "rng_state.pth",
+   "scaler.pt",
+   "scheduler.pt",
+   "trainer_state.json",
+   "training_args.bin"
+  ],
+  "weight_files": {
+   "model.safetensors": 111.3,
+   "optimizer.pt": 222.7,
+   "rng_state.pth": 0.0,
+   "scaler.pt": 0.0,
+   "scheduler.pt": 0.0,
+   "training_args.bin": 0.0
+  },
+  "safe_weights": true,
+  "weights_million": 27.8,
+  "architecture": "ConvNextForImageClassification",
+  "model_type": "convnext",
+  "image_size": 224,
+  "patch_size": 4,
+  "labels": [
+   "ai",
+   "real"
+  ],
+  "resizes_input": false,
+  "preprocessor_size": {
+   "shortest_edge": 224
+  },
+  "cpu_mean_s": 3.606,
+  "cpu_max_s": 9.504
+ },
+ "cnn_first": {
+  "source": "models/convnext_resize",
+  "files": [
+   "config.json",
+   "model.safetensors",
+   "optimizer.pt",
+   "preprocessor_config.json",
+   "rng_state.pth",
+   "scaler.pt",
+   "scheduler.pt",
+   "trainer_state.json",
+   "training_args.bin"
+  ],
+  "weight_files": {
+   "model.safetensors": 111.3,
+   "optimizer.pt": 222.7,
+   "rng_state.pth": 0.0,
+   "scaler.pt": 0.0,
+   "scheduler.pt": 0.0,
+   "training_args.bin": 0.0
+  },
+  "safe_weights": true,
+  "weights_million": 27.8,
+  "architecture": "ConvNextForImageClassification",
+  "model_type": "convnext",
+  "image_size": 224,
+  "patch_size": 4,
+  "labels": [
+   "ai",
+   "real"
+  ],
+  "resizes_input": true,
+  "preprocessor_size": {
+   "shortest_edge": 224
+  },
+  "cpu_mean_s": 0.229,
+  "cpu_max_s": 0.355
+ },
+ "commfor": {
+  "source": "OwensLab/commfor-model-384",
+  "hub_id": "OwensLab/commfor-model-384",
+  "created": "2025-08-28",
+  "modified": "2025-08-28",
+  "downloads_last_month": 3193,
+  "likes": 5,
+  "licence": "mit",
+  "base_model": null,
+  "card_words": 31,
+  "card_unfilled_fields": 0,
+  "files": [
+   ".gitattributes",
+   "README.md",
+   "config.json",
+   "model.safetensors"
+  ],
+  "weight_files": {
+   "model.safetensors": 87.3
+  },
+  "safe_weights": true,
+  "weights_million": 21.8,
+  "architecture": "ViT-small (timm)",
+  "model_type": "timm vit",
+  "image_size": 384,
+  "patch_size": 16,
+  "labels": [
+   "one output: generated"
+  ],
+  "resizes_input": true,
+  "cpu_mean_s": 0.329,
+  "cpu_max_s": 0.466
+ },
+ "ateeqq": {
+  "source": "Ateeqq/ai-vs-human-image-detector",
+  "hub_id": "Ateeqq/ai-vs-human-image-detector",
+  "created": "2025-03-30",
+  "modified": "2025-12-24",
+  "downloads_last_month": 11931,
+  "likes": 68,
+  "licence": "apache-2.0",
+  "base_model": null,
+  "card_words": 429,
+  "card_unfilled_fields": 0,
+  "files": [
+   ".gitattributes",
+   "README.md",
+   "config.json",
+   "model.safetensors",
+   "preprocessor_config.json",
+   "results.jpg",
+   "trainer_state.json"
+  ],
+  "weight_files": {
+   "model.safetensors": 371.6
+  },
+  "safe_weights": true,
+  "weights_million": 92.9,
+  "architecture": "SiglipForImageClassification",
+  "model_type": "siglip",
+  "image_size": 224,
+  "patch_size": 16,
+  "labels": [
+   "ai",
+   "hum"
+  ],
+  "resizes_input": true,
+  "preprocessor_size": {
+   "height": 224,
+   "width": 224
+  },
+  "cpu_mean_s": 0.326,
+  "cpu_max_s": 0.457
+ },
+ "umm_maybe": {
+  "source": "umm-maybe/AI-image-detector",
+  "hub_id": "umm-maybe/AI-image-detector",
+  "created": "2022-10-04",
+  "modified": "2024-01-03",
+  "downloads_last_month": 63600,
+  "likes": 100,
+  "licence": "cc-by-4.0",
+  "base_model": null,
+  "card_words": 286,
+  "card_unfilled_fields": 0,
+  "files": [
+   ".gitattributes",
+   "README.md",
+   "config.json",
+   "preprocessor_config.json",
+   "pytorch_model.bin"
+  ],
+  "weight_files": {
+   "pytorch_model.bin": 347.6
+  },
+  "safe_weights": false,
+  "weights_million": 86.8,
+  "architecture": "SwinForImageClassification",
+  "model_type": "swin",
+  "image_size": 224,
+  "patch_size": 4,
+  "labels": [
+   "artificial",
+   "human"
+  ],
+  "resizes_input": true,
+  "preprocessor_size": 224,
+  "cpu_mean_s": 0.401,
+  "cpu_max_s": 0.505
+ },
+ "vit_baseline": {
+  "source": "Manish18/deepfake-detection-model",
+  "hub_id": "Manish18/deepfake-detection-model",
+  "created": "2026-08-08",
+  "modified": "2026-08-08",
+  "downloads_last_month": 9,
+  "likes": 1,
+  "licence": null,
+  "base_model": null,
+  "card_words": 735,
+  "card_unfilled_fields": 39,
+  "files": [
+   ".gitattributes",
+   "README.md",
+   "config.json",
+   "model.safetensors",
+   "preprocessor_config.json"
+  ],
+  "weight_files": {
+   "model.safetensors": 343.2
+  },
+  "safe_weights": true,
+  "weights_million": 85.8,
+  "architecture": "ViTForImageClassification",
+  "model_type": "vit",
+  "image_size": 224,
+  "patch_size": 16,
+  "labels": [
+   "REAL",
+   "FAKE"
+  ],
+  "resizes_input": true,
+  "preprocessor_size": {
+   "height": 224,
+   "width": 224
+  },
+  "cpu_mean_s": 0.292,
+  "cpu_max_s": 0.344
+ },
+ "siglip2_baseline": {
+  "source": "prithivMLmods/Deep-Fake-Detector-Model",
+  "hub_id": "prithivMLmods/deepfake-detector-model-v1",
+  "created": "2024-03-17",
+  "modified": "2025-05-24",
+  "downloads_last_month": 1662,
+  "likes": 31,
+  "licence": "apache-2.0",
+  "base_model": "google/siglip2-base-patch16-512",
+  "card_words": 295,
+  "card_unfilled_fields": 0,
+  "files": [
+   ".gitattributes",
+   "README.md",
+   "checkpoint-1250/config.json",
+   "checkpoint-1250/model.safetensors",
+   "checkpoint-1250/optimizer.pt",
+   "checkpoint-1250/preprocessor_config.json",
+   "checkpoint-1250/rng_state.pth",
+   "checkpoint-1250/scheduler.pt",
+   "checkpoint-1250/trainer_state.json",
+   "checkpoint-1250/training_args.bin",
+   "checkpoint-625/config.json",
+   "checkpoint-625/model.safetensors",
+   "checkpoint-625/optimizer.pt",
+   "checkpoint-625/preprocessor_config.json",
+   "checkpoint-625/rng_state.pth",
+   "checkpoint-625/scheduler.pt",
+   "checkpoint-625/trainer_state.json",
+   "checkpoint-625/training_args.bin",
+   "config.json",
+   "model.safetensors",
+   "preprocessor_config.json",
+   "training_args.bin"
+  ],
+  "weight_files": {
+   "checkpoint-1250/model.safetensors": 371.6,
+   "checkpoint-1250/optimizer.pt": 686.6,
+   "checkpoint-1250/rng_state.pth": 0.0,
+   "checkpoint-1250/scheduler.pt": 0.0,
+   "checkpoint-1250/training_args.bin": 0.0,
+   "checkpoint-625/model.safetensors": 371.6,
+   "checkpoint-625/optimizer.pt": 686.6,
+   "checkpoint-625/rng_state.pth": 0.0,
+   "checkpoint-625/scheduler.pt": 0.0,
+   "checkpoint-625/training_args.bin": 0.0,
+   "model.safetensors": 371.6,
+   "training_args.bin": 0.0
+  },
+  "safe_weights": true,
+  "weights_million": 92.9,
+  "architecture": "SiglipForImageClassification",
+  "model_type": "siglip",
+  "image_size": 224,
+  "patch_size": 16,
+  "labels": [
+   "Fake",
+   "Real"
+  ],
+  "resizes_input": true,
+  "preprocessor_size": {
+   "height": 224,
+   "width": 224
+  },
+  "cpu_mean_s": 0.295,
+  "cpu_max_s": 0.484
+ }
+}

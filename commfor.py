@@ -20,16 +20,16 @@ class ViTClassifier(torch.nn.Module, PyTorchModelHubMixin):
         return self.vit(x)
 
 
-def classifier(model_id):
+def classifier(model_id, device="cpu"):
     """Returns a function: PIL image -> ("real" or "ai", score)."""
-    model = ViTClassifier.from_pretrained(model_id).eval()
+    model = ViTClassifier.from_pretrained(model_id).eval().to(device)
     size = model.vit.patch_embed.img_size[0]
     prepare = T.Compose([T.Resize(440 if size == 384 else 256), T.CenterCrop(size), T.ToTensor(),
                          T.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])])
 
     def classify(image):
         with torch.no_grad():
-            generated = torch.sigmoid(model(prepare(image.convert("RGB")).unsqueeze(0)))[0, 0].item()
+            generated = torch.sigmoid(model(prepare(image.convert("RGB")).unsqueeze(0).to(device)))[0, 0].item()
         return ("ai", generated) if generated > 0.5 else ("real", 1 - generated)
 
     return classify

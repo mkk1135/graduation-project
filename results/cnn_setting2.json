@@ -1,0 +1,17 @@
+{
+  "model": "models/convnext_crop",
+  "name": "cnn_setting2",
+  "images": 48,
+  "tp": 10,
+  "fn": 16,
+  "fp": 1,
+  "tn": 21,
+  "accuracy": 64.58,
+  "precision": 90.91,
+  "recall": 38.46,
+  "f1": 54.05,
+  "accuracy_ci95": [
+    50.4,
+    76.6
+  ]
+}
