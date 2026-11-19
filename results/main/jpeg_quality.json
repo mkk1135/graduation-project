@@ -1,0 +1,42 @@
+{
+ "cnn_final": {
+  "light": [
+   9,
+   30
+  ],
+  "strong": [
+   22,
+   34
+  ]
+ },
+ "cnn_setting3": {
+  "light": [
+   9,
+   30
+  ],
+  "strong": [
+   21,
+   34
+  ]
+ },
+ "cnn_first": {
+  "light": [
+   11,
+   30
+  ],
+  "strong": [
+   18,
+   34
+  ]
+ },
+ "commfor": {
+  "light": [
+   30,
+   30
+  ],
+  "strong": [
+   34,
+   34
+  ]
+ }
+}

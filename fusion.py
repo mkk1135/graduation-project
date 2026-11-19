@@ -24,6 +24,8 @@ def classifier(device="cpu", cnn=CNN):
         p_own = next(r["score"] for r in own(image) if r["label"] == "ai")
         kind, score = other(image)
         p = weight * p_own + (1 - weight) * (score if kind == "ai" else 1 - score)
-        return ("ai", p) if p >= threshold else ("real", 1 - p)
+        # Rescaled so that the chosen threshold lies at 0.5: a score of 0.5 is an undecided image, as for a single detector.
+        p = 0.5 * p / threshold if p < threshold else 0.5 + 0.5 * (p - threshold) / (1 - threshold)
+        return ("ai", p) if p >= 0.5 else ("real", 1 - p)
 
     return classify

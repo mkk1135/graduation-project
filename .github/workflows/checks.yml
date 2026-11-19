@@ -1,0 +1,12 @@
+name: checks
+on: [push, pull_request]
+jobs:
+  results:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Rebuild the results database and check it against every result file
+        run: python results_db.py
