@@ -60,3 +60,7 @@ Taken by `decide.py` from the results database and recorded in `results/decision
 4. **Thresholds for the secondary comparisons.** Community Forensics detector: 0.1227 (88.54% of the development images correct at its published threshold, 92.05% at the chosen one). Setting 4: 0.8272 (82.62% and 85.95%).
 
 The thresholds of the two repeated runs (seeds 1 and 2) are chosen by the same rule when those runs have been trained; they do not affect the published model, the combination or the primary comparisons.
+
+## Final scoring (19 November 2026)
+
+After the decisions above were committed (commit 7b8e05d), every approach was scored once on the final test set, the ChatGPT and Gemini set and the Reddit set, as downloaded and after JPEG re-compression at quality 90; Claude Sonnet 5.5 was scored in a blind test, as downloaded only. Nothing was changed afterwards. The two repeated runs (seeds 1 and 2) are trained with the committed code after this scoring, and their thresholds are chosen by the rule of point 2. The results, including the unfavourable ones, are in [COMPARISON.md](COMPARISON.md).

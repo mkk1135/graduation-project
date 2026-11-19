@@ -33,3 +33,17 @@ Setting 5: setting 4 with strong shrinking
   unsharp mask (sharpen)       real correct 63/69   AI correct 75/88
   downscaled to half size      real correct 61/69   AI correct 77/88
   Gaussian noise, sd 3         real correct 63/69   AI correct 73/88
+Setting 5 with tuned threshold: the published model
+  as downloaded                real correct 66/69   AI correct 73/88
+  Gaussian blur, radius 0.6    real correct 58/69   AI correct 73/88
+  Gaussian blur, radius 1.0    real correct 63/69   AI correct 69/88
+  unsharp mask (sharpen)       real correct 67/69   AI correct 72/88
+  downscaled to half size      real correct 65/69   AI correct 76/88
+  Gaussian noise, sd 3         real correct 67/69   AI correct 67/88
+Setting 4 with tuned threshold: for comparison
+  as downloaded                real correct 66/69   AI correct 79/88
+  Gaussian blur, radius 0.6    real correct 53/69   AI correct 78/88
+  Gaussian blur, radius 1.0    real correct 64/69   AI correct 75/88
+  unsharp mask (sharpen)       real correct 67/69   AI correct 77/88
+  downscaled to half size      real correct 49/69   AI correct 85/88
+  Gaussian noise, sd 3         real correct 67/69   AI correct 73/88

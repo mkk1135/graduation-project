@@ -1,0 +1,17 @@
+{
+  "model": "OwensLab/commfor-model-384",
+  "name": "commfor",
+  "images": 120,
+  "tp": 60,
+  "fn": 0,
+  "fp": 43,
+  "tn": 17,
+  "accuracy": 64.17,
+  "precision": 58.25,
+  "recall": 100.0,
+  "f1": 73.62,
+  "accuracy_ci95": [
+    55.3,
+    72.2
+  ]
+}

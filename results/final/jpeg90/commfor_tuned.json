@@ -1,0 +1,17 @@
+{
+  "model": "commfor, threshold 0.1227 on the 'AI' score (chosen on development data)",
+  "name": "commfor_tuned",
+  "images": 384,
+  "tp": 187,
+  "fn": 5,
+  "fp": 39,
+  "tn": 153,
+  "accuracy": 88.54,
+  "precision": 82.74,
+  "recall": 97.4,
+  "f1": 89.47,
+  "accuracy_ci95": [
+    85.0,
+    91.4
+  ]
+}

@@ -372,5 +372,32 @@
   },
   "cpu_mean_s": 0.295,
   "cpu_max_s": 0.484
+ },
+ "cnn_s5": {
+  "source": "models/cnn_s5",
+  "files": [
+   "config.json",
+   "model.safetensors",
+   "preprocessor_config.json"
+  ],
+  "weight_files": {
+   "model.safetensors": 111.3
+  },
+  "safe_weights": true,
+  "weights_million": 27.8,
+  "architecture": "ConvNextForImageClassification",
+  "model_type": "convnext",
+  "image_size": 224,
+  "patch_size": 4,
+  "labels": [
+   "ai",
+   "real"
+  ],
+  "resizes_input": false,
+  "preprocessor_size": {
+   "shortest_edge": 224
+  },
+  "cpu_mean_s": 3.757,
+  "cpu_max_s": 9.849
  }
 }

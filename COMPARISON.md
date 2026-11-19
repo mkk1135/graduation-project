@@ -8,6 +8,7 @@ From the files of each model (`python analyse_models.py`) and its page on the Hu
 
 | Approach | Architecture | Weights (million) | File (MB) | Safe file format | Input | Licence | Published | Downloads last month | Model card |
 |---|---|---|---|---|---|---|---|---|---|
+| CNN of this project, setting 5 (published) | ConvNextForImageClassification | 27.8 | 111.3 | yes (safetensors) | original resolution, not resized |  |  |  |  |
 | CNN of this project, setting 4 | ConvNextForImageClassification | 27.8 | 111.3 | yes (safetensors) | original resolution, not resized | cc-by-nc-sa-4.0 | 2026-11-18 | 46 | 929 words |
 | CNN of this project, setting 3 | ConvNextForImageClassification | 27.8 | 111.3 | yes (safetensors) | original resolution, not resized |  |  |  |  |
 | CNN of this project, setting 2 | ConvNextForImageClassification | 27.8 | 111.3 | yes (safetensors) | original resolution, not resized |  |  |  |  |
@@ -44,6 +45,24 @@ What each publisher says about the training data:
 
 Percent of images classified correctly (real photographs correct / AI images correct). JPEG 90 = every image re-compressed first.
 
+**Held-out sets (scored once, after all decisions)**
+
+| Approach | Final test set (384) | Final test set (384), JPEG 90 | ChatGPT and Gemini set (168) | ChatGPT and Gemini set (168), JPEG 90 | Reddit set (120) | Reddit set (120), JPEG 90 |
+|---|---|---|---|---|---|---|
+| Claude Sonnet 5.5 | 96.6% (190/181) |  | 85.1% (62/81) |  | 96.7% (59/57) |  |
+| Combination: CNN of this project and Community Forensics detector | 95.3% (188/178) | 90.1% (189/157) | 69.0% (71/45) | 62.5% (71/34) | 70.8% (59/26) | 70.8% (60/25) |
+| Community Forensics detector, threshold tuned on development data | 94.0% (183/178) | 88.5% (187/153) | 61.3% (70/33) | 58.3% (71/27) | 70.8% (58/27) | 70.0% (57/27) |
+| Community Forensics detector | 92.2% (190/164) | 82.3% (190/126) | 57.7% (71/26) | 50.6% (71/14) | 64.2% (60/17) | 65.8% (60/19) |
+| CNN of this project, setting 4, threshold tuned on development data | 83.1% (164/155) | 78.4% (173/128) | 69.6% (47/70) | 69.0% (55/61) | 71.7% (56/30) | 70.0% (56/28) |
+| CNN of this project, setting 5 before the threshold | 82.8% (165/153) | 80.2% (169/139) | 64.9% (52/57) | 63.1% (57/49) | 68.3% (56/26) | 68.3% (56/26) |
+| CNN of this project, setting 4 | 82.3% (147/169) | 81.0% (156/155) | 73.2% (43/80) | 72.6% (50/72) | 79.2% (55/40) | 75.8% (55/36) |
+| CNN of this project, setting 5 (published) | 81.5% (171/142) | 78.1% (174/126) | 68.5% (61/54) | 63.1% (63/43) | 68.3% (56/26) | 69.2% (57/26) |
+| CNN of this project, first attempt (setting 1) | 77.6% (124/174) | 75.5% (131/159) | 59.5% (41/59) | 58.9% (47/52) | 70.0% (38/46) | 70.8% (39/46) |
+| Ateeqq SigLIP detector | 75.8% (160/131) | 75.8% (159/132) | 82.1% (61/77) | 81.0% (58/78) | 83.3% (50/50) | 83.3% (50/50) |
+| Manish18 ViT detector | 66.4% (87/168) | 63.3% (87/156) | 70.8% (42/77) | 72.0% (45/76) | 57.5% (22/47) | 57.5% (22/47) |
+| umm-maybe Swin detector | 59.4% (165/63) | 56.2% (164/52) | 52.4% (59/29) | 54.2% (63/28) | 59.2% (53/18) | 60.0% (54/18) |
+| prithivMLmods SigLIP2 detector | 50.0% (102/90) | 49.7% (101/90) | 57.7% (45/52) | 57.1% (43/53) | 46.7% (26/30) | 46.7% (26/30) |
+
 **Development data**
 
 | Approach | Pilot test set (48) | Check set (157) | Check set (157), JPEG 90 | Development test set (384) | Development test set (384), JPEG 90 |
@@ -51,18 +70,104 @@ Percent of images classified correctly (real photographs correct / AI images cor
 | Claude Sonnet 5.5 | 97.9% (26/21) |  |  | 97.4% (190/184) |  |
 | Combination: CNN of this project and Community Forensics detector |  | 92.4% (69/76) | 86.6% (69/67) | 93.8% (184/176) | 89.8% (186/159) |
 | Community Forensics detector | 95.8% (26/20) | 86.0% (69/66) | 75.2% (69/49) | 89.6% (190/154) | 81.0% (190/121) |
-| CNN of this project, setting 5 (published) |  | 88.5% (66/73) | 83.4% (66/65) | 82.5% (167/150) | 80.2% (170/138) |
 | CNN of this project, setting 5 before the threshold |  | 87.3% (62/75) | 83.4% (63/68) | 81.0% (155/156) | 80.2% (161/147) |
-| CNN of this project, setting 3 | 97.9% (25/22) | 88.5% (58/81) | 87.9% (60/78) | 80.7% (142/168) | 80.2% (151/157) |
 | CNN of this project, setting 4 | 87.5% (21/21) | 89.2% (59/81) | 87.3% (60/77) | 80.0% (139/168) | 81.8% (150/164) |
-| Ateeqq SigLIP detector | 87.5% (24/18) | 79.6% (56/69) | 79.6% (56/69) | 74.5% (150/136) | 74.7% (147/140) |
+| CNN of this project, setting 5 (published) |  | 88.5% (66/73) | 83.4% (66/65) | 82.5% (167/150) | 80.2% (170/138) |
 | CNN of this project, first attempt (setting 1) | 70.8% (14/20) | 79.6% (41/84) | 79.6% (42/83) | 74.0% (112/172) | 73.4% (121/161) |
-| CNN of this project, setting 2 | 64.6% (10/21) | 76.4% (33/87) | 77.1% (35/86) | 66.4% (74/181) | 66.9% (78/179) |
+| Ateeqq SigLIP detector | 87.5% (24/18) | 79.6% (56/69) | 79.6% (56/69) | 74.5% (150/136) | 74.7% (147/140) |
 | Manish18 ViT detector | 72.9% (16/19) | 76.4% (35/85) | 74.5% (35/82) | 61.5% (72/164) | 60.9% (73/161) |
 | umm-maybe Swin detector | 66.7% (25/7) | 48.4% (59/17) | 48.4% (60/16) | 58.3% (173/51) | 58.1% (175/48) |
 | prithivMLmods SigLIP2 detector | 47.9% (15/8) | 57.3% (44/46) | 56.7% (43/46) | 48.2% (97/88) | 47.9% (96/88) |
+| CNN of this project, setting 3 | 97.9% (25/22) | 88.5% (58/81) | 87.9% (60/78) | 80.7% (142/168) | 80.2% (151/157) |
+| CNN of this project, setting 2 | 64.6% (10/21) | 76.4% (33/87) | 77.1% (35/86) | 66.4% (74/181) | 66.9% (78/179) |
 
-## 3. Development test set: images classified correctly, by source and generator
+## 3. Final test set: images classified correctly, by source and generator
+
+| Approach | Open Images (64) | Unsplash (64) | Wikimedia Commons (64) | Commercial generators (132) | Open-source generators (60) |
+|---|---|---|---|---|---|
+| Claude Sonnet 5.5 | 64 | 62 | 64 | 131 | 50 |
+| Combination: CNN of this project and Community Forensics detector | 62 | 62 | 64 | 118 | 60 |
+| Community Forensics detector, threshold tuned on development data | 63 | 58 | 62 | 118 | 60 |
+| Community Forensics detector | 64 | 62 | 64 | 104 | 60 |
+| CNN of this project, setting 4, threshold tuned on development data | 42 | 61 | 61 | 116 | 39 |
+| CNN of this project, setting 5 before the threshold | 50 | 61 | 54 | 111 | 42 |
+| CNN of this project, setting 4 | 33 | 59 | 55 | 124 | 45 |
+| CNN of this project, setting 5 (published) | 53 | 62 | 56 | 105 | 37 |
+| CNN of this project, first attempt (setting 1) | 31 | 50 | 43 | 129 | 45 |
+| Ateeqq SigLIP detector | 47 | 54 | 59 | 103 | 28 |
+| Manish18 ViT detector | 26 | 26 | 35 | 124 | 44 |
+| umm-maybe Swin detector | 42 | 59 | 64 | 43 | 20 |
+| prithivMLmods SigLIP2 detector | 34 | 34 | 34 | 58 | 32 |
+
+| Images | Claude Sonnet 5.5 | Combination: CNN of this project and Community Forensics detector | Community Forensics detector, threshold tuned on development data | Community Forensics detector | CNN of this project, setting 4, threshold tuned on development data | CNN of this project, setting 5 before the threshold | CNN of this project, setting 4 | CNN of this project, setting 5 (published) | CNN of this project, first attempt (setting 1) | Ateeqq SigLIP detector | Manish18 ViT detector | umm-maybe Swin detector | prithivMLmods SigLIP2 detector |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Real: Open Images (64) | 64 | 62 | 63 | 64 | 42 | 50 | 33 | 53 | 31 | 47 | 26 | 42 | 34 |
+| Real: Unsplash (64) | 62 | 62 | 58 | 62 | 61 | 61 | 59 | 62 | 50 | 54 | 26 | 59 | 34 |
+| Real: objects (17) | 17 | 17 | 15 | 17 | 15 | 14 | 13 | 15 | 8 | 14 | 8 | 17 | 10 |
+| Real: sculptures (8) | 8 | 8 | 8 | 8 | 7 | 7 | 7 | 7 | 4 | 7 | 3 | 8 | 6 |
+| Real: ships (8) | 8 | 8 | 8 | 8 | 8 | 7 | 7 | 7 | 4 | 8 | 6 | 8 | 7 |
+| Real: trees (8) | 8 | 8 | 8 | 8 | 8 | 7 | 7 | 7 | 8 | 8 | 2 | 8 | 0 |
+| Real: vehicles (8) | 8 | 8 | 8 | 8 | 8 | 7 | 7 | 7 | 6 | 8 | 5 | 8 | 3 |
+| Real: mountains (6) | 6 | 6 | 6 | 6 | 6 | 5 | 5 | 5 | 6 | 5 | 5 | 6 | 5 |
+| Real: castles (5) | 5 | 5 | 5 | 5 | 5 | 5 | 5 | 5 | 5 | 5 | 3 | 5 | 0 |
+| Real: churches (4) | 4 | 4 | 4 | 4 | 4 | 2 | 4 | 3 | 2 | 4 | 3 | 4 | 3 |
+| AI: Dalle2 (12) | 12 | 11 | 11 | 11 | 8 | 6 | 10 | 5 | 11 | 6 | 10 | 5 | 6 |
+| AI: Dalle3 (12) | 12 | 12 | 12 | 12 | 12 | 12 | 12 | 12 | 12 | 10 | 12 | 8 | 8 |
+| AI: FLUX-dev (12) | 12 | 12 | 12 | 12 | 12 | 12 | 12 | 12 | 12 | 11 | 12 | 7 | 3 |
+| AI: FLUX-schnell (12) | 12 | 12 | 12 | 12 | 12 | 12 | 12 | 11 | 12 | 12 | 12 | 5 | 5 |
+| AI: Firefly_Image2 (12) | 12 | 9 | 11 | 7 | 7 | 6 | 8 | 5 | 12 | 7 | 11 | 2 | 6 |
+| AI: Firefly_Image3 (12) | 11 | 7 | 6 | 5 | 9 | 9 | 10 | 9 | 12 | 10 | 10 | 5 | 5 |
+| AI: IdeogramV1 (12) | 12 | 11 | 11 | 10 | 12 | 12 | 12 | 11 | 11 | 10 | 12 | 3 | 7 |
+| AI: IdeogramV2 (12) | 12 | 12 | 11 | 8 | 11 | 12 | 12 | 12 | 11 | 8 | 10 | 2 | 6 |
+| AI: Imagen3 (12) | 12 | 11 | 11 | 9 | 10 | 10 | 12 | 9 | 12 | 10 | 12 | 1 | 4 |
+| AI: MidjourneyV5_2 (12) | 12 | 12 | 12 | 12 | 12 | 12 | 12 | 11 | 12 | 11 | 12 | 2 | 5 |
+| AI: MidjourneyV6_1 (12) | 12 | 9 | 9 | 6 | 11 | 8 | 12 | 8 | 12 | 8 | 11 | 3 | 3 |
+| AI: DFGAN (6) | 5 | 6 | 6 | 6 | 3 | 3 | 5 | 2 | 3 | 0 | 4 | 5 | 5 |
+| AI: DeciDiffusionV2 (6) | 6 | 6 | 6 | 6 | 5 | 5 | 5 | 4 | 5 | 3 | 4 | 1 | 2 |
+| AI: GALIP (6) | 2 | 6 | 6 | 6 | 1 | 1 | 1 | 1 | 4 | 0 | 0 | 2 | 5 |
+| AI: Hourglass (6) | 1 | 6 | 6 | 6 | 5 | 5 | 5 | 5 | 3 | 2 | 3 | 2 | 3 |
+| AI: LCM_lora_sdv15 (6) | 6 | 6 | 6 | 6 | 5 | 6 | 5 | 4 | 5 | 4 | 6 | 1 | 1 |
+| AI: LCM_lora_sdxl (6) | 6 | 6 | 6 | 6 | 1 | 1 | 3 | 1 | 5 | 4 | 5 | 0 | 2 |
+| AI: LCM_lora_ssd1b (6) | 6 | 6 | 6 | 6 | 2 | 4 | 3 | 3 | 6 | 4 | 5 | 3 | 3 |
+| AI: kandinsky_2_2 (6) | 6 | 6 | 6 | 6 | 6 | 6 | 6 | 6 | 4 | 4 | 6 | 1 | 4 |
+| AI: kvikontent_midjourney_v6 (6) | 6 | 6 | 6 | 6 | 5 | 5 | 6 | 5 | 4 | 4 | 5 | 4 | 5 |
+| AI: stable_cascade (6) | 6 | 6 | 6 | 6 | 6 | 6 | 6 | 6 | 6 | 3 | 6 | 1 | 2 |
+
+## 4. ChatGPT and Gemini set: images classified correctly, by source and generator
+
+| Approach | DOCCI (36) | ImageNet (36) | Commercial generators (96) |
+|---|---|---|---|
+| Claude Sonnet 5.5 | 31 | 31 | 81 |
+| Ateeqq SigLIP detector | 28 | 33 | 77 |
+| CNN of this project, setting 4 | 34 | 9 | 80 |
+| Manish18 ViT detector | 23 | 19 | 77 |
+| CNN of this project, setting 4, threshold tuned on development data | 36 | 11 | 70 |
+| Combination: CNN of this project and Community Forensics detector | 35 | 36 | 45 |
+| CNN of this project, setting 5 (published) | 35 | 26 | 54 |
+| CNN of this project, setting 5 before the threshold | 35 | 17 | 57 |
+| Community Forensics detector, threshold tuned on development data | 34 | 36 | 33 |
+| CNN of this project, first attempt (setting 1) | 27 | 14 | 59 |
+| Community Forensics detector | 35 | 36 | 26 |
+| prithivMLmods SigLIP2 detector | 15 | 30 | 52 |
+| umm-maybe Swin detector | 32 | 27 | 29 |
+
+| Images | Claude Sonnet 5.5 | Ateeqq SigLIP detector | CNN of this project, setting 4 | Manish18 ViT detector | CNN of this project, setting 4, threshold tuned on development data | Combination: CNN of this project and Community Forensics detector | CNN of this project, setting 5 (published) | CNN of this project, setting 5 before the threshold | Community Forensics detector, threshold tuned on development data | CNN of this project, first attempt (setting 1) | Community Forensics detector | prithivMLmods SigLIP2 detector | umm-maybe Swin detector |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Real: DOCCI (36) | 31 | 28 | 34 | 23 | 36 | 35 | 35 | 35 | 34 | 27 | 35 | 15 | 32 |
+| Real: ImageNet (36) | 31 | 33 | 9 | 19 | 11 | 36 | 26 | 17 | 36 | 14 | 36 | 30 | 27 |
+| AI: gpt-image-1.5 (24) | 19 | 17 | 21 | 20 | 16 | 13 | 10 | 11 | 11 | 15 | 8 | 11 | 11 |
+| AI: gpt-image-2 (24) | 21 | 17 | 18 | 19 | 16 | 5 | 12 | 13 | 2 | 14 | 2 | 8 | 6 |
+| AI: nano-banana (24) | 21 | 21 | 24 | 23 | 23 | 21 | 23 | 24 | 17 | 16 | 13 | 18 | 3 |
+| AI: nano-banana-pro (24) | 20 | 22 | 17 | 15 | 15 | 6 | 9 | 9 | 3 | 14 | 3 | 15 | 9 |
+
+## 5. Reddit set: images classified correctly, by source and generator
+
+| Images | Claude Sonnet 5.5 | Ateeqq SigLIP detector | CNN of this project, setting 4 | CNN of this project, setting 4, threshold tuned on development data | Community Forensics detector, threshold tuned on development data | Combination: CNN of this project and Community Forensics detector | CNN of this project, first attempt (setting 1) | CNN of this project, setting 5 (published) | CNN of this project, setting 5 before the threshold | Community Forensics detector | umm-maybe Swin detector | Manish18 ViT detector | prithivMLmods SigLIP2 detector |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Real: Reddit, photography subreddits (60) | 59 | 50 | 55 | 56 | 58 | 59 | 38 | 56 | 56 | 60 | 53 | 22 | 26 |
+| AI: Reddit, AI subreddits (60) | 57 | 50 | 40 | 30 | 27 | 26 | 46 | 26 | 26 | 17 | 18 | 47 | 30 |
+
+## 6. Development test set: images classified correctly, by source and generator
 
 | Approach | Open Images (64) | Unsplash (64) | Wikimedia Commons (64) | Commercial generators (132) | Open-source generators (60) |
 |---|---|---|---|---|---|
@@ -119,6 +224,8 @@ Images of the check set (69 real, 88 AI) still classified correctly after one pr
 
 | Approach | as downloaded | Gaussian blur, radius 0.6 | Gaussian blur, radius 1.0 | unsharp mask (sharpen) | downscaled to half size | Gaussian noise, sd 3 | Mean accuracy |
 |---|---|---|---|---|---|---|---|
+| CNN of this project, setting 4, threshold tuned on development data | 66 / 79 | 53 / 78 | 64 / 75 | 67 / 77 | 49 / 85 | 67 / 73 | 88.4% |
+| CNN of this project, setting 5 (published) | 66 / 73 | 58 / 73 | 63 / 69 | 67 / 72 | 65 / 76 | 67 / 67 | 86.6% |
 | CNN of this project, setting 5 before the threshold | 62 / 75 | 53 / 77 | 56 / 75 | 63 / 75 | 61 / 77 | 63 / 73 | 86.0% |
 | CNN of this project, setting 4 | 59 / 81 | 40 / 81 | 45 / 78 | 62 / 80 | 41 / 86 | 63 / 78 | 84.3% |
 | Community Forensics detector | 69 / 66 | 69 / 65 | 69 / 65 | 69 / 62 | 69 / 64 | 64 / 52 | 83.1% |
@@ -130,22 +237,35 @@ Images of the check set (69 real, 88 AI) still classified correctly after one pr
 | prithivMLmods SigLIP2 detector | 44 / 46 | 44 / 46 | 43 / 47 | 44 / 46 | 44 / 46 | 44 / 46 | 57.3% |
 | umm-maybe Swin detector | 59 / 17 | 59 / 17 | 59 / 20 | 58 / 15 | 58 / 19 | 56 / 25 | 49.0% |
 
-## Ranking quality, confidence and speed (development test set)
+## Ranking quality, confidence and speed (final test set)
 
 AUC = probability that a real photograph gets a higher 'real' score than a generated image (1.0 = perfect, 0.5 = guessing); it does not depend on the decision threshold. Seconds = time per image on this laptop's processor, without a GPU.
 
 | Approach | AUC | Correct when the score is 0.9 or more | Correct when the score is below 0.75 | Seconds per image (mean) | Seconds (slowest image) |
 |---|---|---|---|---|---|
 | Claude Sonnet 5.5 | no scores |  |  |  |  |
-| Combination: CNN of this project and Community Forensics detector | 0.971 | 97% of 258 | 79% of 61 |  |  |
-| Community Forensics detector | 0.972 | 94% of 342 | 57% of 21 | 0.329 | 0.466 |
-| CNN of this project, setting 5 (published) | 0.881 | 88% of 289 | 65% of 43 |  |  |
-| CNN of this project, setting 5 before the threshold | 0.881 | 87% of 273 | 57% of 49 |  |  |
-| CNN of this project, setting 3 | 0.906 | 88% of 250 | 62% of 56 | 3.568 | 9.603 |
-| CNN of this project, setting 4 | 0.895 | 85% of 248 | 61% of 62 | 3.071 | 9.533 |
-| Ateeqq SigLIP detector | 0.797 | 75% of 374 | 50% of 8 | 0.326 | 0.457 |
-| CNN of this project, first attempt (setting 1) | 0.887 | 80% of 302 | 46% of 41 | 0.229 | 0.355 |
-| CNN of this project, setting 2 | 0.880 | 71% of 294 | 57% of 56 | 3.606 | 9.504 |
-| Manish18 ViT detector | 0.753 | 65% of 297 | 46% of 41 | 0.292 | 0.344 |
-| umm-maybe Swin detector | 0.637 | 63% of 150 | 54% of 125 | 0.401 | 0.505 |
-| prithivMLmods SigLIP2 detector | 0.490 | 70% of 43 | 46% of 250 | 0.295 | 0.484 |
+| Combination: CNN of this project and Community Forensics detector | 0.986 | 99% of 258 | 79% of 53 |  |  |
+| Community Forensics detector, threshold tuned on development data | 0.988 | 96% of 341 | 71% of 31 |  |  |
+| Community Forensics detector | 0.988 | 96% of 341 | 47% of 17 | 0.329 | 0.466 |
+| CNN of this project, setting 4, threshold tuned on development data | 0.907 | 89% of 247 | 67% of 76 |  |  |
+| CNN of this project, setting 5 before the threshold | 0.888 | 90% of 244 | 71% of 59 |  |  |
+| CNN of this project, setting 4 | 0.907 | 89% of 247 | 69% of 65 | 3.071 | 9.533 |
+| CNN of this project, setting 5 (published) | 0.888 | 88% of 268 | 55% of 60 | 3.757 | 9.849 |
+| CNN of this project, first attempt (setting 1) | 0.891 | 83% of 290 | 62% of 45 | 0.229 | 0.355 |
+| Ateeqq SigLIP detector | 0.810 | 76% of 376 | 67% of 3 | 0.326 | 0.457 |
+| Manish18 ViT detector | 0.791 | 69% of 289 | 58% of 48 | 0.292 | 0.344 |
+| umm-maybe Swin detector | 0.644 | 66% of 132 | 57% of 132 | 0.401 | 0.505 |
+| prithivMLmods SigLIP2 detector | 0.493 | 61% of 28 | 49% of 253 | 0.295 | 0.484 |
+
+## What the comparison shows
+
+Notes on the tables above. Every number in them is filled in from the results database. Statistical tests are exact McNemar tests on the same images; no correction for multiple comparisons was applied, and only the two primary comparisons were fixed in advance in [PROTOCOL.md](PROTOCOL.md).
+
+1. **Ranking on the final test set (384 images).** Claude Sonnet 5.5 96.6%, the combination 95.3%, the Community Forensics detector 92.2%, the published CNN 81.5%, the four other published detectors 50.0% to 75.8%. Primary comparisons: the combination is more accurate than the Community Forensics detector as distributed (p = 0.004); the published CNN (setting 5, tuned threshold) cannot be told apart from the CNN of the first round, setting 4 (82.3%, p = 0.791).
+2. **Secondary comparison: the published detector with a tuned threshold.** With its threshold chosen on the development images by the same rule as the project's own detectors, the Community Forensics detector reaches 94.0%. The combination is not significantly better than that (p = 0.302). Much of the advantage of the combination over the detector as distributed therefore comes from the threshold, not from the CNN.
+3. **JPEG re-compression at quality 90.** The Community Forensics detector falls from 92.2% to 82.3% (tuned threshold: 88.5%), the combination from 95.3% to 90.1%, the published CNN from 81.5% to 78.1%. After re-compression the combination is clearly better than the detector as distributed (p < 0.001), but not than the tuned one (p = 0.238).
+4. **ChatGPT and Gemini set (168 images).** Claude Sonnet 5.5 is the most accurate (85.1%), followed by the Ateeqq detector (82.1%). The combination scores 69.0%: it accepts 71 photographs and misses 1, but recognises only 45 generated images and misses 51. The Community Forensics detector scores 57.7% and recognises 26 generated images.
+5. **Reddit set (120 images).** Claude Sonnet 5.5 is again the most accurate (96.7%), followed by the Ateeqq detector (83.3%) and the CNN of the first round (79.2%). The combination scores 70.8%: it accepts 59 photographs and misses 1, but recognises only 26 generated images and misses 34. No detector was the best on all three held-out sets.
+6. **Training setting and threshold, separated.** Accuracy of the four variants on the final test set, the ChatGPT and Gemini set and the Reddit set: setting 4 with the default threshold 82.3%, 73.2% and 79.2%; setting 4 with a tuned threshold 83.1%, 69.6% and 71.7%; setting 5 with the default threshold 82.8%, 64.9% and 68.3%; setting 5 with a tuned threshold (the published CNN) 81.5%, 68.5% and 68.3%. On the final test set the four are close (setting 5 against setting 4, both at the default threshold: p = 0.888). On the two other sets setting 4 with the default threshold is the most accurate of the four, and setting 5 at the default threshold is less accurate than it (p = 0.020 and p = 0.002). On these two sets the change of training setting lowered accuracy; the tuned threshold lowered that of setting 4 as well, and changed that of setting 5 little.
+7. **An answer "generated" was more reliable than an answer "real".** When the combination called an image generated, it was right for 98% of those images on the final test set, 98% on the ChatGPT and Gemini set and 96% on the Reddit set. When it called an image real, it was right for 93%, 58% and 63%. On new kinds of image, "real" means only that no known trace was found.
+8. **Limits.** The sets are small: the 95% confidence interval of the combination is 92.7 to 97.0% on the final test set, 61.7 to 75.5% on the ChatGPT and Gemini set and 62.2 to 78.2% on the Reddit set. In the Reddit set the class of an image is the kind of subreddit it was posted in, so some labels may be wrong. Claude Sonnet 5.5 was asked once per image and saw JPEG copies; whether any test image was in its training data, or in that of the published detectors, is not known. The two repeated training runs (seeds 1 and 2) are not yet included, so the variation between runs is not known.

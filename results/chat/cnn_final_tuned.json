@@ -1,0 +1,17 @@
+{
+  "model": "cnn_final, threshold 0.8272 on the 'AI' score (chosen on development data)",
+  "name": "cnn_final_tuned",
+  "images": 168,
+  "tp": 47,
+  "fn": 25,
+  "fp": 26,
+  "tn": 70,
+  "accuracy": 69.64,
+  "precision": 64.38,
+  "recall": 65.28,
+  "f1": 64.83,
+  "accuracy_ci95": [
+    62.3,
+    76.1
+  ]
+}

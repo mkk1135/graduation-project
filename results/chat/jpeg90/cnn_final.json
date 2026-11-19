@@ -1,0 +1,17 @@
+{
+  "model": "models/convnext_robust",
+  "name": "cnn_final",
+  "images": 168,
+  "tp": 50,
+  "fn": 22,
+  "fp": 24,
+  "tn": 72,
+  "accuracy": 72.62,
+  "precision": 67.57,
+  "recall": 69.44,
+  "f1": 68.49,
+  "accuracy_ci95": [
+    65.4,
+    78.8
+  ]
+}

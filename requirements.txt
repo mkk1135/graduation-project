@@ -3,7 +3,19 @@ torchvision>=0.19
 transformers>=4.46
 datasets
 accelerate
+huggingface_hub
+safetensors
+pyarrow
+numpy
 pillow
 matplotlib
 timm
 gradio
+
+# Optional, only for the extra tools:
+# export of the detector for the browser demo (export_onnx.py)
+# onnx
+# onnxscript
+# onnxruntime
+# check of the browser demo in a real browser (space/check_demo.py; then run: playwright install chromium)
+# playwright

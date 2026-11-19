@@ -1,0 +1,17 @@
+{
+  "model": "fusion:models/cnn_s5",
+  "name": "fusion",
+  "images": 120,
+  "tp": 60,
+  "fn": 0,
+  "fp": 35,
+  "tn": 25,
+  "accuracy": 70.83,
+  "precision": 63.16,
+  "recall": 100.0,
+  "f1": 77.42,
+  "accuracy_ci95": [
+    62.2,
+    78.2
+  ]
+}

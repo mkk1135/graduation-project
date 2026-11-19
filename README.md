@@ -1,14 +1,65 @@
 # AI-Generated Image Detection System
 
-Graduation project (Bachelor of Cybersecurity). It measures eight ways of telling real photographs from AI-generated images on the same 384 images: five published detectors, a CNN fine-tuned in this project (first attempt and final model), and a general-purpose multimodal model. It also provides a small web page for trying the fine-tuned detector.
+Graduation project (Bachelor of Cybersecurity). It fine-tunes a detector that tells real photographs from AI-generated images, and measures it against five published detectors and a general-purpose multimodal model on the same documented images, with a held-out final test set and decision rules that were written down before that set was scored.
 
-Trained model: [mkk1135/ai-image-detector](https://huggingface.co/mkk1135/ai-image-detector)
+- Trained model: [mkk1135/ai-image-detector](https://huggingface.co/mkk1135/ai-image-detector)
+- Online demo (runs in your browser, the image stays on your device): [huggingface.co/spaces/mkk1135/ai-image-detector](https://huggingface.co/spaces/mkk1135/ai-image-detector)
+- Every number, by set, source and generator: [COMPARISON.md](COMPARISON.md)
+- How decisions were taken: [PROTOCOL.md](PROTOCOL.md)
 
-Online demo: [huggingface.co/spaces/mkk1135/ai-image-detector](https://huggingface.co/spaces/mkk1135/ai-image-detector)
+## Results on held-out images
+
+Percent of images classified correctly (real photographs correct / AI images correct). Each approach was scored once, after all decisions had been committed. JPEG 90 means that every image was re-compressed first. Claude Sonnet 5.5 was tested on the images as downloaded only.
+
+<!-- results -->
+| Approach | Final test set (384) | Final test set (384), JPEG 90 | ChatGPT and Gemini set (168) | ChatGPT and Gemini set (168), JPEG 90 | Reddit set (120) | Reddit set (120), JPEG 90 |
+|---|---|---|---|---|---|---|
+| Claude Sonnet 5.5 | 96.6% (190/181) |  | 85.1% (62/81) |  | 96.7% (59/57) |  |
+| Combination: CNN of this project and Community Forensics detector | 95.3% (188/178) | 90.1% (189/157) | 69.0% (71/45) | 62.5% (71/34) | 70.8% (59/26) | 70.8% (60/25) |
+| Community Forensics detector, threshold tuned on development data | 94.0% (183/178) | 88.5% (187/153) | 61.3% (70/33) | 58.3% (71/27) | 70.8% (58/27) | 70.0% (57/27) |
+| Community Forensics detector | 92.2% (190/164) | 82.3% (190/126) | 57.7% (71/26) | 50.6% (71/14) | 64.2% (60/17) | 65.8% (60/19) |
+| CNN of this project, setting 4, threshold tuned on development data | 83.1% (164/155) | 78.4% (173/128) | 69.6% (47/70) | 69.0% (55/61) | 71.7% (56/30) | 70.0% (56/28) |
+| CNN of this project, setting 5 before the threshold | 82.8% (165/153) | 80.2% (169/139) | 64.9% (52/57) | 63.1% (57/49) | 68.3% (56/26) | 68.3% (56/26) |
+| CNN of this project, setting 4 | 82.3% (147/169) | 81.0% (156/155) | 73.2% (43/80) | 72.6% (50/72) | 79.2% (55/40) | 75.8% (55/36) |
+| CNN of this project, setting 5 (published) | 81.5% (171/142) | 78.1% (174/126) | 68.5% (61/54) | 63.1% (63/43) | 68.3% (56/26) | 69.2% (57/26) |
+| CNN of this project, first attempt (setting 1) | 77.6% (124/174) | 75.5% (131/159) | 59.5% (41/59) | 58.9% (47/52) | 70.0% (38/46) | 70.8% (39/46) |
+| Ateeqq SigLIP detector | 75.8% (160/131) | 75.8% (159/132) | 82.1% (61/77) | 81.0% (58/78) | 83.3% (50/50) | 83.3% (50/50) |
+| Manish18 ViT detector | 66.4% (87/168) | 63.3% (87/156) | 70.8% (42/77) | 72.0% (45/76) | 57.5% (22/47) | 57.5% (22/47) |
+| umm-maybe Swin detector | 59.4% (165/63) | 56.2% (164/52) | 52.4% (59/29) | 54.2% (63/28) | 59.2% (53/18) | 60.0% (54/18) |
+| prithivMLmods SigLIP2 detector | 50.0% (102/90) | 49.7% (101/90) | 57.7% (45/52) | 57.1% (43/53) | 46.7% (26/30) | 46.7% (26/30) |
+<!-- /results -->
+
+### What the held-out results show
+
+1. **Images of known kinds (final test set, 384 images).** Claude Sonnet 5.5 96.6%, the combined detector 95.3%, the published Community Forensics detector 92.2%, the CNN of this project 81.5%, the four other published detectors 50.0% to 75.8%. The combination is significantly better than the Community Forensics detector as distributed (exact McNemar test, p = 0.004). Much of that gain comes from the decision threshold: with a threshold tuned on the same development images, that detector alone reaches 94.0%, and what the CNN adds beyond it is not significant (p = 0.302). The difference between the combination and Claude Sonnet 5.5 is not significant either (p = 0.458).
+2. **JPEG re-compression.** The Community Forensics detector falls from 92.2% to 82.3%, because it then misses generated images (126 recognised instead of 164); the combination falls from 95.3% to 90.1%.
+3. **New generators and images from Reddit.** On images from GPT Image 2, GPT Image 1.5, Nano Banana and Nano Banana Pro the combination scores 69.0% and on images taken from Reddit 70.8%: it accepts nearly every photograph but recognises fewer than half of the generated images. Claude Sonnet 5.5 is the most accurate on both sets (85.1% and 96.7%). The best of the detectors there is the Ateeqq detector (82.1% and 83.3%), which scored only 75.8% on the final test set: no detector was good on every kind of image.
+4. **An answer "generated" is more reliable than an answer "real".** When the combination called an image generated, it was right for 98% of those images on the final test set, 98% on the ChatGPT and Gemini set and 96% on the Reddit set. When it called an image real, it was right for 93%, 58% and 63%. On new kinds of image, "real" means only that no known trace was found.
+5. **The second round did not improve the CNN itself.** The stronger shrinking (setting 5) and the tuned threshold were adopted by rules fixed in advance. On the final test set the published CNN (81.5%) cannot be told apart from the CNN of the first round, setting 4 (82.3%, p = 0.791). On the other two sets the earlier CNN scores higher: 73.2% against 68.5% on the ChatGPT and Gemini set (p = 0.291, not significant) and 79.2% against 68.3% on the Reddit set (p = 0.002).
+6. **A small test set misleads.** An earlier CNN scored 97.9% on the pilot test set of 48 images and 80.7% on the test set of 384 images that followed.
+
+The answer of any of these detectors is an indication, not proof.
+
+## How the evaluation was done
+
+1. **First round.** A pilot test set of 48 images was too small and too much like the data used for tuning: an early model scored far higher on it than on a test set of 384 images (point 6 above). All approaches were then scored once on that larger set (`results/main/`).
+2. **Why a second round.** Those results showed where the fine-tuned CNN was weak, so any further change would have been tuned on the test set. The set was demoted to a *development test set*.
+3. **Second round.** Three new sets were drawn and held out: a final test set of 384 images, a set of images from the generators behind ChatGPT and Gemini, and a set of images as shared on Reddit. The decision rules (which training setting to adopt, how to choose the threshold, whether to combine detectors, which comparisons count) were committed in [PROTOCOL.md](PROTOCOL.md) before any of these images was scored. `decide.py` applies the rules to the results database. The decisions were committed in commit `7b8e05d`; every approach was then scored once on the three held-out sets, and nothing was changed afterwards.
+
+| Set | Folder | Images | Role |
+|---|---|---|---|
+| Pilot test set | `results/` | 48 | first round: early scores |
+| Check set | `results/check/` | 157 | choosing training settings; processing test |
+| Development test set | `results/main/` | 384 | first round: test. Second round: development |
+| **Final test set** | `results/final/` | 384 | held out, scored once |
+| **ChatGPT and Gemini set** | `results/chat/` | 168 | held out, scored once |
+| **Reddit set** | `results/wild/` | 120 | held out, scored once; labels may be noisy |
+
+Each folder holds the list of its images (`*_set.csv`: file, class, source, author or generator, licence, URL), the metrics of every approach, its answer for every image and a confusion matrix. The images themselves are not in this repository; `make_test_set.py` downloads them.
 
 ## Try the detector
 
-**In the browser, with nothing to install:** open the [online demo](https://huggingface.co/spaces/mkk1135/ai-image-detector) and choose an image. The detector runs inside your browser, so the image never leaves your device. The first visit downloads the detector (about 110 MB). Of an image larger than 1024 px the demo analyses only the central 1024 x 1024 px; run that way the detector scores 78.9% on the main test set (`results/main/crop1024/`), against 80.0% for whole images. On eight test images its output matched the Python detector to within 0.0001.
+**In the browser, with nothing to install:** open the [online demo](https://huggingface.co/spaces/mkk1135/ai-image-detector) and choose an image. The demo runs the CNN of this project alone, not the combined detector, inside your browser, so the image never leaves your device. The first visit downloads the detector (about 110 MB). Of an image larger than 1024 px the demo analyses only the central 1024 x 1024 px; run that way, the CNN scores 82.0% on the final test set (`results/final/crop1024/`), against 81.5% for whole images.
 
 **On your own computer:**
 
@@ -17,160 +68,26 @@ pip install -r requirements.txt
 python app.py
 ```
 
-Then open http://127.0.0.1:7860 and upload an image. The image is analysed on your own computer and is not sent anywhere. The page shows the answer, the confidence, and a warning when the decision is weak (confidence below 75%). Of an image larger than 2048 px only the central 2048 x 2048 px are analysed.
+Then open http://127.0.0.1:7860 and upload an image. The page runs the combined detector: the CNN of this project together with the published Community Forensics detector, which is downloaded on first use (87 MB). The image is analysed on your own computer and is not sent anywhere. The page shows the answer, the confidence, and a warning when the decision is weak (confidence below 75%). Of an image wider or taller than 2048 px, both detectors see only the central 2048 x 2048 px.
 
-The answer is an indication, not proof: on the main test set the detector was wrong about one time in five.
+**From a program:**
 
-## Results
+```python
+from transformers import pipeline
 
-Main test set: 384 images, 192 real photographs (Wikimedia Commons, Unsplash and Open Images, 64 each) and 192 AI-generated images from 21 generators that are not in the training data. "Real" is the positive class. The 95% confidence intervals are Wilson score intervals.
+detector = pipeline("image-classification", model="mkk1135/ai-image-detector")
+print(detector("photo.jpg"))            # the CNN alone
 
-| Approach | Accuracy | 95% CI | Precision | Recall | F1 | Real correct | AI correct |
-|---|---|---|---|---|---|---|---|
-| Claude Sonnet 5.5, asked "Real or AI-Generated?" (blind) | 97.40% | 95.3 to 98.6 | 95.96% | 98.96% | 97.44% | 190 / 192 | 184 / 192 |
-| Community Forensics detector (`OwensLab/commfor-model-384`) | 89.58% | 86.1 to 92.3 | 83.33% | 98.96% | 90.48% | 190 / 192 | 154 / 192 |
-| **CNN fine-tuned in this project, final** (`mkk1135/ai-image-detector`) | 79.95% | 75.7 to 83.6 | 85.28% | 72.40% | 78.31% | 139 / 192 | 168 / 192 |
-| SigLIP detector (`Ateeqq/ai-vs-human-image-detector`) | 74.48% | 69.9 to 78.6 | 72.82% | 78.12% | 75.38% | 150 / 192 | 136 / 192 |
-| CNN of this project, first attempt | 73.96% | 69.3 to 78.1 | 84.85% | 58.33% | 69.14% | 112 / 192 | 172 / 192 |
-| ViT detector (`Manish18/deepfake-detection-model`) | 61.46% | 56.5 to 66.2 | 72.00% | 37.50% | 49.32% | 72 / 192 | 164 / 192 |
-| Swin detector (`umm-maybe/AI-image-detector`) | 58.33% | 53.3 to 63.2 | 55.10% | 90.10% | 68.38% | 173 / 192 | 51 / 192 |
-| SigLIP2 detector (`prithivMLmods/deepfake-detector-model-v1`) | 48.18% | 43.2 to 53.2 | 48.26% | 50.52% | 49.36% | 97 / 192 | 88 / 192 |
+from PIL import Image
+from fusion import classifier           # fusion.py of this repository; reads results/decisions.json
 
-![Accuracy, precision, recall and F1 on the main test set](results/main/comparison.png)
-
-What the results show:
-
-- The multimodal model is the most accurate by a wide margin and is consistent across all sources of images.
-- Published detectors differ enormously, from no better than guessing (48.2%) to 89.6%, and a model page does not tell which kind a detector is. One calls most generated images real, another calls most photographs generated.
-- The fine-tuned CNN reaches 80.0%. It is clearly better than three of the five published detectors, not clearly better than the fourth, and clearly worse than the Community Forensics detector (see the tests below).
-- When every image is re-compressed as JPEG, the Community Forensics detector falls to 81.0% and the fine-tuned CNN (81.8%) is level with it.
-- The fine-tuned CNN's dominant error is calling a real photograph generated. It is worst on small, strongly downscaled web photographs: it recognises only 31 of the 64 Open Images photographs.
-
-### Tests against the final CNN
-
-Exact McNemar test on the same 384 images. Only images on which two approaches disagree count.
-
-| Approach | Only the final CNN right | Only this approach right | p-value | Result |
-|---|---|---|---|---|
-| Claude Sonnet 5.5 | 5 | 72 | < 0.001 | more accurate than the final CNN |
-| Community Forensics detector | 30 | 67 | < 0.001 | more accurate than the final CNN |
-| Ateeqq SigLIP detector | 65 | 44 | 0.055 | no significant difference |
-| CNN, first attempt | 50 | 27 | 0.012 | less accurate than the final CNN |
-| Manish18 ViT detector | 104 | 33 | < 0.001 | less accurate than the final CNN |
-| umm-maybe Swin detector | 134 | 51 | < 0.001 | less accurate than the final CNN |
-| prithivMLmods SigLIP2 detector | 157 | 35 | < 0.001 | less accurate than the final CNN |
-| CNN, setting 3 (predecessor of the final model) | 13 | 16 | 0.711 | no significant difference |
-
-No correction for multiple comparisons was applied. The result for the first attempt (p = 0.012) would not survive one.
-
-### By source
-
-Images classified correctly.
-
-| Approach | Wikimedia Commons (64) | Unsplash (64) | Open Images (64) | Commercial generators (132) | Open-source generators (60) |
-|---|---|---|---|---|---|
-| Claude Sonnet 5.5 | 64 | 63 | 63 | 131 | 53 |
-| Community Forensics detector | 64 | 62 | 64 | 95 | 59 |
-| **CNN, final** | 54 | 54 | 31 | 122 | 46 |
-| Ateeqq SigLIP detector | 50 | 51 | 49 | 109 | 27 |
-| CNN, first attempt | 40 | 43 | 29 | 125 | 47 |
-| Manish18 ViT detector | 25 | 24 | 23 | 120 | 44 |
-| umm-maybe Swin detector | 59 | 64 | 50 | 31 | 20 |
-| prithivMLmods SigLIP2 detector | 35 | 28 | 34 | 60 | 28 |
-
-The two best detectors have opposite weaknesses. The Community Forensics detector recognises almost every photograph but misses 37 of the 132 images from commercial generators. The fine-tuned CNN recognises 122 of those 132 but fails on the Open Images photographs. The two detectors gave the same answer for 287 of the 384 images, and that shared answer was right for 277 of them (96.5%). This was noticed after the fact and is not a tested method.
-
-### After JPEG re-compression
-
-Most generated images in the set are unedited PNG files and the photographs are JPEG files, so a detector could be reading the file format. Every image was therefore re-compressed as JPEG at quality 90 and scored again (`results/main/jpeg90/`).
-
-| Detector | As downloaded | After JPEG 90 | Real correct after | AI correct after | p-value against the final CNN, after |
-|---|---|---|---|---|---|
-| **CNN, final** | 79.95% | 81.77% | 150 / 192 | 164 / 192 |  |
-| Community Forensics detector | 89.58% | 80.99% | 190 / 192 | 121 / 192 | 0.851 |
-| Ateeqq SigLIP detector | 74.48% | 74.74% | 147 / 192 | 140 / 192 | 0.009 |
-| CNN, first attempt | 73.96% | 73.44% | 121 / 192 | 161 / 192 | 0.001 |
-| Manish18 ViT detector | 61.46% | 60.94% | 73 / 192 | 161 / 192 | < 0.001 |
-| umm-maybe Swin detector | 58.33% | 58.07% | 175 / 192 | 48 / 192 | < 0.001 |
-| prithivMLmods SigLIP2 detector | 48.18% | 47.92% | 96 / 192 | 88 / 192 | < 0.001 |
-
-The fine-tuned CNN hardly changes. The Community Forensics detector loses 33 generated images, so part of its lead on unedited files comes from the difference in format. The re-compressed runs were planned; the test between the two detectors was added after the size of the change had been seen.
-
-### How far to trust these numbers
-
-- With 384 images the confidence interval of an accuracy near 80% is about four points either side. The figures per source and per generator rest on 64 or fewer images.
-- The real photographs come from three published collections, and the generated images are unedited output from one benchmark. Screenshots, scans, drawings, edited photographs, and generated images that were resized, edited or shared through social media were not tested.
-- The fine-tuned CNN is likely to flag photographs that are small, blurred or strongly resized (see below and the by-source table).
-- The detector's confidence is not a calibrated probability. Of its 62 decisions below 75% confidence, 61% were right; of its 248 decisions at 90% or more, 85% were right.
-- No decision about the detector was taken on the main test set: the training setting was chosen on the check set and the model was published before anything was scored on it.
-- Each model was trained once and Claude was asked once. The variation between runs was not measured.
-- Claude saw JPEG copies with a longest side of at most 1568 px; the detectors saw the files as downloaded. Whether any test image was in the training data of Claude or of the published detectors is not known.
-- The published detectors are used exactly as published. The Community Forensics detector was trained on its authors' full dataset, which also contains images from commercial generators, and the generated test images come from the same authors' evaluation set.
-- `check_overlap.py` found none of the 287 real evaluation photographs among the 18,978 real training images of the fine-tuned CNN (`results/overlap_check.txt`; two training images share a hash, so the file counts 18,977). A copy that was cropped differently would be missed.
-
-## The pilot test set, and why it was replaced
-
-During most of the project the only test set had 48 images (26 photographs from Wikimedia Commons, 22 images from 11 commercial generators).
-
-| Approach | Accuracy (48 images) | Real correct | AI correct | Accuracy on the main test set (384 images) |
-|---|---|---|---|---|
-| Claude Sonnet 5.5 | 97.92% | 26 / 26 | 21 / 22 | 97.40% |
-| CNN, setting 3 | 97.92% | 25 / 26 | 22 / 22 | 80.73% |
-| Community Forensics detector | 95.83% | 26 / 26 | 20 / 22 | 89.58% |
-| Ateeqq SigLIP detector | 87.50% | 24 / 26 | 18 / 22 | 74.48% |
-| **CNN, final** | 87.50% | 21 / 26 | 21 / 22 | 79.95% |
-| Manish18 ViT detector | 72.92% | 16 / 26 | 19 / 22 | 61.46% |
-| CNN, first attempt | 70.83% | 14 / 26 | 20 / 22 | 73.96% |
-| umm-maybe Swin detector | 66.67% | 25 / 26 | 7 / 22 | 58.33% |
-| prithivMLmods SigLIP2 detector | 47.92% | 15 / 26 | 8 / 22 | 48.18% |
-
-On these 48 images an earlier version of the CNN (setting 3) appeared to match Claude. On 384 images from three sources it is 17 points behind. The pilot set was small (one image is worth two points) and narrow: its photographs come from the same source as the check set used for tuning, and its generated images are all from commercial generators, the two kinds of image on which the CNN is strongest. Results on the pilot set are in `results/`.
-
-## How the final CNN was chosen
-
-Four training settings were compared on a separate check set of 157 images (69 real, 88 AI-generated) that shares no image and no photographer with the test sets. The rule for accepting a setting was fixed before it was scored.
-
-| Setting | Check accuracy | Real correct | AI correct | After JPEG 90 |
-|---|---|---|---|---|
-| 1. Whole image shrunk to 224 px (first attempt) | 79.62% | 41 / 69 | 84 / 88 | 79.62% |
-| 2. Crops at original resolution | 76.43% | 33 / 69 | 87 / 88 | 77.07% |
-| 3. Setting 2, plus 7,010 photographs and 149 more generators | 88.54% | 58 / 69 | 81 / 88 | 87.90% |
-| 4. Setting 3, plus blur and noise in training (final) | 89.17% | 59 / 69 | 81 / 88 | 87.26% |
-
-Setting 2 was not adopted: it caught almost every AI image but called more than half of the real photographs generated (13 of 15 landscapes right, 1 of 15 food photographs). `diagnose.py` showed why. The table gives the check-set images classified correctly after one processing step (`results/check/diagnosis.txt`):
-
-| Processing step | Setting 2: real | Setting 2: AI | Setting 3: real | Setting 3: AI | Setting 4: real | Setting 4: AI |
-|---|---|---|---|---|---|---|
-| as downloaded | 33 | 87 | 58 | 81 | 59 | 81 |
-| Gaussian blur, radius 0.6 | 15 | 87 | 34 | 82 | 40 | 81 |
-| Gaussian blur, radius 1.0 | 2 | 88 | 23 | 81 | 45 | 78 |
-| unsharp mask (sharpen) | 43 | 87 | 64 | 81 | 62 | 80 |
-| downscaled to half size | 34 | 87 | 50 | 83 | 41 | 86 |
-| Gaussian noise, sd 3 | 27 | 88 | 32 | 84 | 63 | 78 |
-| Mean accuracy over the six rows | 72.0% |  | 79.9% |  | 84.3% |  |
-
-Setting 2 treated clean, smooth images as generated. The cause was the training data: its clean, high-quality real images showed only landscapes and faces. Setting 3 adds 7,010 photographs of varied subjects and replaced setting 1. Setting 4 adds random blur and noise to the training augmentation. Its rule was: adopt it if the mean over the six rows is higher than for setting 3 and the accuracy as downloaded is not more than two points lower. Both held, so setting 4 is the final model. It is much steadier under noise and strong blur, but it got worse on downscaled photographs and a slight blur still costs it 19 of 59 real photographs.
-
-## Evaluation sets
-
-`results/test_set.csv` (pilot), `results/check/check_set.csv` and `results/main/main_set.csv` list every image with its author or generator, licence and source URL. The images themselves are not in this repository.
-
-- **Wikimedia Commons:** categories "Quality images of ...". In each category the most recently added JPEG files with camera EXIF data and a width of at least 2000 px, one per uploader, at 1920 px width. Each set excludes the files and photographers of the sets before it. Drawn on 18 November 2026.
-- **Unsplash** (main set only): a seeded random sample of the [Unsplash Lite dataset](https://github.com/unsplash/datasets), photographs with camera EXIF data, at 1920 px width.
-- **Open Images** (main set only): a seeded random sample of the Open Images V7 validation set (Flickr photographs under CC BY 2.0), as distributed, at most 1024 px.
-- **AI-generated:** the [Community Forensics evaluation set](https://huggingface.co/datasets/OwensLab/CommunityForensics-Eval). 11 commercial generators (Midjourney v5.2 and v6.1, DALL-E 2 and 3, Firefly Image 2 and 3, Imagen 3, Ideogram v1 and v2, FLUX dev and schnell) in all three sets; the main set adds 10 open-source generators (Hourglass, DF-GAN, GALIP, Kandinsky 2.2, Stable Cascade, DeciDiffusion v2, three LCM-LoRA models and a Midjourney-style adapter for Stable Diffusion v1.5). None of the 21 is in the training data, but the LCM-LoRA models and the adapter are built on Stable Diffusion models, the family that dominates the training data.
-
-```bash
-python make_test_set.py test
-python make_test_set.py check
-python make_test_set.py main
+combined = classifier()
+print(combined(Image.open("photo.jpg").convert("RGB")))   # ("real" or "ai", confidence)
 ```
 
-The Commons draw depends on the day it is run, so the script refuses to overwrite an existing list.
+## The detector
 
-## Training
-
-`train.py` fine-tunes ConvNeXt-Tiny (`facebook/convnext-tiny-224`), a CNN pretrained on ImageNet, for three epochs on 36,562 images. A random 10% is held out for validation.
+`train.py` fine-tunes ConvNeXt-Tiny (`facebook/convnext-tiny-224`), a CNN pretrained on ImageNet, for three epochs on 36,562 images. A random 10% is held out for validation. Images flagged NSFW by Community Forensics are removed.
 
 | Class | Source | Images |
 |---|---|---|
@@ -179,44 +96,66 @@ The Commons draw depends on the day it is run, so the script refuses to overwrit
 | Real | Community Forensics-Small: COCO (4,831), VISION (1,153), Landscapes HQ (2,992), FFHQ (2,992) | 11,968 |
 | Real | [DataSeeds.AI Sample Dataset](https://huggingface.co/datasets/Dataseeds/DataSeeds.AI-Sample-Dataset-DSD): peer-ranked photographs of varied subjects | 7,010 |
 
-Images flagged NSFW by Community Forensics are removed.
+The model trains on 256 x 256 crops taken at the images' original resolution, and at inference it sees the whole image without resizing, because shrinking an image removes the fine traces that generators leave. Training images are randomly shrunk, flipped, blurred, given noise and JPEG-compressed up to twice, so that the model cannot use an image's processing history (generated images are uncompressed PNG, most real ones JPEG) or its sharpness as a shortcut. Five training settings were tried; `train.py` contains settings 4 and 5 (`--setting 4`, `--setting 5`, the default):
 
-The model trains on 256 x 256 crops taken at the images' original resolution, and at inference it sees the whole image without resizing, because shrinking an image removes the fine traces that generators leave. Training images are randomly downscaled, flipped, blurred, given noise and JPEG-compressed up to twice, so that the model cannot use an image's processing history (generated images are uncompressed PNG, most real ones JPEG) or its sharpness as a shortcut.
+| Setting | Change | Effect |
+|---|---|---|
+| 1 | whole image shrunk to 224 px | first attempt |
+| 2 | crops at original resolution | kept fine detail, but took most clean photographs of subjects other than landscapes and faces for generated images |
+| 3 | 7,010 photographs of varied subjects and more generated images added | removed that subject-matter shortcut |
+| 4 | random blur and noise | the model reads sharpness less as a sign of origin |
+| 5 | stronger random shrinking: seven times in ten by any factor down to the crop size, instead of half the time by up to 2x | fewer small web photographs called generated and less sensitivity to blur and resizing, but fewer generated images caught |
 
-```bash
-pip install -r requirements.txt
-python train.py --hub-id YOUR_HF_USERNAME/ai-image-detector
-```
-
-This needs a GPU and downloads about 19 GB; it took about 29 minutes of training on an RTX 4070 laptop GPU. `python train.py --resume` continues an interrupted run from the last checkpoint. `train.ipynb` runs the same script on a free Google Colab GPU, but it has not been tested there. To check the pipeline in two minutes on a CPU, with nothing uploaded:
-
-```bash
-python train.py --dry-run
-```
-
-## Evaluation
+After training, the decision threshold of setting 5 (0.69 on the "AI" score) was chosen on the development images and built into the published model. The combined detector (`fusion.py`) takes a weighted mean of the "AI" probabilities of this CNN and of the published Community Forensics detector, with weight 0.25 for the CNN and threshold 0.25; the weight and the threshold were chosen on the development images too.
 
 ```bash
-python evaluate.py MODEL_ID --real data/main/real --ai data/main/ai --name short_name --out results/main
-python evaluate.py MODEL_ID --real data/main/real --ai data/main/ai --name short_name --out results/main/jpeg90 --jpeg 90
-python evaluate.py --compare cnn_final --out results/main
-python evaluate.py --chart --out results/main
-python diagnose.py MODEL_ID
-python check_overlap.py
-python evaluate.py MODEL_ID --real data/main/real --ai data/main/ai --name short_name --out results/main/crop1024 --crop 1024
-python export_onnx.py
+python train.py --hub-id YOUR_HF_USERNAME/ai-image-detector    # needs a GPU; downloads about 19 GB
+python train.py --seed 1 --out checkpoints/seed1               # a repeated run
+python train.py --setting 4 --out checkpoints/s4               # the setting of the first round
+python train.py --dry-run                                      # one epoch on 64 images, nothing uploaded
 ```
 
-Each evaluation run writes the metrics with a confidence interval, per-image predictions and a confusion matrix. `--compare` writes `significance.csv`, the McNemar test of every model in the folder against the named one. `diagnose.py` reports how blur, sharpening, downscaling and noise change a detector's answers on the check set. `check_overlap.py` checks that no real evaluation photograph is also a training image. `commfor.py` loads the published Community Forensics detector, which is not a standard Transformers model. `--crop 1024` scores a detector on the central 1024 x 1024 px only, as the online demo analyses images. `export_onnx.py` writes the detector as `space/model.onnx` for the online demo (`space/index.html`) and checks that it gives the same output as the PyTorch model; it needs `pip install onnx onnxscript onnxruntime`. `space/check_demo.py` uploads images to the demo page in a real browser and compares its answers with the Python detector (`results/demo_check.txt`).
-
-## Database of all results and full comparison
+## Reproduce the evaluation
 
 ```bash
-python analyse_models.py
-python results_db.py
+python make_test_set.py final                 # also: test, check, main, chat, wild
+python evaluate.py MODEL_ID --real data/final/real --ai data/final/ai --name short_name --out results/final
+python evaluate.py MODEL_ID --real data/final/real --ai data/final/ai --name short_name --out results/final/jpeg90 --jpeg 90
+python evaluate.py fusion --real data/final/real --ai data/final/ai --name fusion --out results/final
+python blind_test.py prepare --set final      # anonymised copies for a chat model
+python blind_test.py score answers.txt claude_sonnet_5_5 --model "model name" --set final
+python results_db.py                          # database of every prediction, and COMPARISON.md
+python decide.py check                        # are the recorded decisions reproduced from the database?
 ```
 
-`results_db.py` puts every prediction of every approach on every evaluation image into one small SQLite database, `results/results.db`, checks it against the result files, and writes [COMPARISON.md](COMPARISON.md) from it: what each model is (architecture, size, file format, licence, model card), accuracy on every set, results by source and by generator, ranking quality (AUC), confidence, speed, sensitivity to blur and noise, and a table of what has and has not been measured. `analyse_models.py` inspects the files of each detector and times it on the processor; its output, `results/models.json`, feeds the database.
+The decisions themselves were taken on development data only, with these commands:
+
+```bash
+python decide.py setting                      # rule 1: does setting 5 replace setting 4?
+python decide.py threshold                    # rule 2; --model commfor or --model cnn_final for the secondary comparisons
+python decide.py fusion                       # rule 3: combination with the Community Forensics detector
+python apply_threshold.py checkpoints/s5_seed42/checkpoint-3087 cnn_s5_raw models/cnn_s5
+python rethreshold.py commfor results/final results/final/jpeg90 results/chat results/chat/jpeg90 results/wild results/wild/jpeg90
+```
+
+Set `DETECTOR_DEVICE=cuda` to run the detectors on a GPU.
+
+| Script | Purpose |
+|---|---|
+| `train.py` | fine-tunes the detector |
+| `make_test_set.py` | builds the six evaluation sets and records every image |
+| `evaluate.py` | scores a detector; `--jpeg 90` re-compresses first, `--crop 1024` analyses the centre only, `--compare NAME` runs McNemar tests against one model, `--chart` draws a bar chart |
+| `commfor.py`, `fusion.py` | the published Community Forensics detector and its combination with the CNN |
+| `blind_test.py` | blind test of a chat model |
+| `diagnose.py`, `jpeg_quality.py` | how blur, noise, resizing and JPEG strength change a detector's answers |
+| `check_overlap.py` | checks that no real evaluation photograph is a training image |
+| `analyse_models.py`, `results_db.py` | model files and speed; SQLite database of all results (`results/results.db`) |
+| `decide.py`, `apply_threshold.py`, `rethreshold.py` | the decisions of the protocol and their application |
+| `app.py`, `space/`, `export_onnx.py` | the two interfaces; `space/check_demo.py` compares the browser demo with the Python detector |
+
+### The results database
+
+`results/results.db` holds every prediction of every approach on every evaluation image: 32,044 predictions on 1,261 images.
 
 | Table or view | Content |
 |---|---|
@@ -227,16 +166,23 @@ python results_db.py
 | `scores`, `by_group`, `by_generator` | views: accuracy per model, set and condition; correct answers per source and per generator |
 
 ```bash
-sqlite3 results/results.db "select model, accuracy from scores where set_name = 'main' and condition = 'as downloaded' order by 2 desc"
+sqlite3 results/results.db "select model, accuracy from scores where set_name = 'final' and condition = 'as downloaded' order by 2 desc"
 ```
+
+A GitHub workflow (`.github/workflows/checks.yml`) runs on every push and pull request. It rebuilds this database with `python results_db.py`, which fails if any result file is not reproduced exactly, and runs `python decide.py check`, which fails if the decisions recorded in `results/decisions.json` are not reproduced from the database.
 
 ## Blind test of a chat model
 
-```bash
-python blind_test.py prepare --set main
-python blind_test.py score answers.txt claude --model "model name" --set main
-```
+`blind_test.py prepare` writes shuffled copies of the images with neutral file names and no metadata, all re-encoded as JPEG with a longest side of at most 1568 px. The model is shown each copy with the question "Is this image a real photograph taken by a camera, or is it AI-generated / synthetic? Answer with only one word: Real or AI-Generated." and nothing else. Claude Sonnet 5.5 (`claude-sonnet-5-5`) was run as separate agents that were given only a folder of at most 48 anonymised copies and told to open nothing else, in a single pass with no retries. Its raw answers are in each results folder (`claude_blind_answers.txt`).
 
-`prepare` writes shuffled copies of the images with neutral file names and no metadata, all re-encoded as JPEG. The model is shown each copy with the question "Is this image a real photograph taken by a camera, or is it AI-generated / synthetic? Answer with only one word: Real or AI-Generated." and nothing else.
+## Limits
 
-The Claude rows above were measured this way on 18 November 2026 with Claude Sonnet 5.5 (`claude-sonnet-5-5`), run as separate agents (one for the pilot set, eight for the main set with 48 images each) that were given only a folder of anonymised copies and told to open nothing else. Each was a single pass with no retries; the raw answers are in `results/claude_blind_answers.txt` and `results/main/claude_blind_answers.txt`.
+- The final test set was held out, but it comes from the same kinds of source as the development data. The ChatGPT and Gemini set and the Reddit set show how the approaches do on other kinds of image.
+- The sets are small. On the final test set the 95% confidence interval of the combination is 92.7 to 97.0%; the ChatGPT and Gemini set has 168 images and the Reddit set 120, so differences of a few points there are not meaningful.
+- The images from GPT Image 2 and 1.5 are images that users published, and the two collections of Gemini images are community datasets with short descriptions. In the Reddit set the class of an image is the kind of subreddit it was posted in, so some labels may be wrong.
+- **Very large images.** The CNN analyses images at their original resolution, and an image of more than 8 megapixels does not fit into the memory of the 8 GB GPU used. In the evaluation, of such an image the CNN analysed only the central part of at most 2048 x 2048 pixels (`fit` in `evaluate.py`); the published detectors shrink every image themselves and received the whole image, and in the combination only the CNN part was affected. The rule affected no image of the check set, the development test set or the final test set, one photograph of the ChatGPT and Gemini set and many of the Reddit images, most of them photographs (counts in [PROTOCOL.md](PROTOCOL.md)). The local interface is stricter: of any image wider or taller than 2048 px it analyses only the central 2048 x 2048 px, with both detectors. The browser demo analyses only the central 1024 x 1024 px.
+- The fine-tuned CNN needs about 3.8 seconds per image on a laptop processor (images of 1.8 megapixels on average).
+- Only one multimodal model was tested, once per image, and it saw JPEG copies with a longest side of at most 1568 px. Whether any test image was in the training data of Claude Sonnet 5.5 or of the published detectors is not known.
+- The published model is a single training run (seed 42). The two repeated runs (seeds 1 and 2) are trained after the final scoring; until their results are added, the variation between runs is not known.
+- Partly synthetic images, edited photographs, screenshots, video and deliberate evasion were not tested.
+- The model may be used for non-commercial purposes only (CC BY-NC-SA 4.0, following its training data).
