@@ -38,3 +38,7 @@ Primary comparisons, fixed in advance, with exact McNemar tests on the final tes
 - the adopted CNN (seed 42) against setting 4.
 
 Nothing is changed after the final scoring. Whatever the outcome, it is reported.
+
+## Addendum of 19 November 2026, before any scoring on held-out data
+
+A third held-out set was added: the **Reddit set** (`results/wild/`, 120 images), 60 images posted in subreddits for AI-generated images and 60 posted in photography subreddits, from the `reddit` test split of OpenFake, without video frames. It tests images as they circulate online, after the platform's own compression. Its labels are the kind of subreddit an image was posted in, so some may be wrong; it is a secondary measurement and is scored once, together with the other two held-out sets. No decision depends on it.

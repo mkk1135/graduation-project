@@ -5,7 +5,8 @@
   python evaluate.py --compare cnn_final --out results/main   # McNemar test of every model against one
 
 MODEL_ID is an image-classification model on the Hugging Face Hub (or a local folder), or
-OwensLab/commfor-model-384. "real" is the positive class. Set DETECTOR_DEVICE=cuda to use a GPU.
+OwensLab/commfor-model-384, or "fusion" (the combined detector, see fusion.py). "real" is the positive class.
+Set DETECTOR_DEVICE=cuda to use a GPU.
 """
 import argparse
 import csv
@@ -65,6 +66,9 @@ def to_class(label):
 
 def load(model_id):
     """Returns a function: PIL image -> ("real" or "ai", score)."""
+    if model_id.startswith("fusion"):  # "fusion", or "fusion:FOLDER" with a local copy of the CNN
+        from fusion import CNN, classifier
+        return classifier(DEVICE, model_id.partition(":")[2] or CNN)
     if model_id.startswith("OwensLab/commfor-model"):
         from commfor import classifier
         return classifier(model_id, DEVICE)

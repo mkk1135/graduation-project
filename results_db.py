@@ -22,7 +22,8 @@ from pathlib import Path
 
 DB = Path("results/results.db")
 SETS = {"pilot": ("results/test_set.csv", "results"), "check": ("results/check/check_set.csv", "results/check"),
-        "main": ("results/main/main_set.csv", "results/main"), "chat": ("results/chat/chat_set.csv", "results/chat")}
+        "main": ("results/main/main_set.csv", "results/main"), "final": ("results/final/final_set.csv", "results/final"),
+        "chat": ("results/chat/chat_set.csv", "results/chat"), "wild": ("results/wild/wild_set.csv", "results/wild")}
 ALIASES = {"convnext_resize": "cnn_first", "convnext_crop": "cnn_setting2", "convnext_crop_photos": "cnn_setting3",
            "convnext_robust": "cnn_final"}  # the check-set files are named after the training setting
 OPEN_SOURCE = {"Hourglass", "DFGAN", "kandinsky_2_2", "stable_cascade", "GALIP", "LCM_lora_sdxl", "kvikontent_midjourney_v6",
@@ -30,7 +31,12 @@ OPEN_SOURCE = {"Hourglass", "DFGAN", "kandinsky_2_2", "stable_cascade", "GALIP",
 MODELS = {  # name: (label, kind, training data as stated by its publisher)
     "claude_sonnet_5_5": ("Claude Sonnet 5.5", "multimodal model, asked in a blind test", "not a detector; general-purpose model of Anthropic"),
     "commfor": ("Community Forensics detector", "published detector", "the authors' full Community Forensics data: 2.7 million images from 4,803 generators"),
-    "cnn_final": ("CNN of this project, final (setting 4)", "this project", "36,562 images: 10 shards of Community Forensics-Small and 7,010 DataSeeds photographs; crops at original resolution with blur and noise"),
+    "fusion": ("Combination: CNN of this project and Community Forensics detector", "this project", "weighted mean of the two detectors' scores; weight and threshold chosen on development data"),
+    "cnn_s5": ("CNN of this project, setting 5 (published)", "this project", "as setting 4, with stronger shrinking in the augmentation; decision threshold chosen on development data"),
+    "cnn_s5_seed1": ("CNN of this project, setting 5, second run", "this project", "as setting 5, another seed"),
+    "cnn_s5_seed2": ("CNN of this project, setting 5, third run", "this project", "as setting 5, another seed"),
+    "cnn_s5_raw": ("CNN of this project, setting 5 before the threshold", "this project", "as setting 5, with the default threshold of 50%"),
+    "cnn_final": ("CNN of this project, setting 4", "this project", "36,562 images: 10 shards of Community Forensics-Small and 7,010 DataSeeds photographs; crops at original resolution with blur and noise"),
     "cnn_setting3": ("CNN of this project, setting 3", "this project", "as the final model, without blur and noise"),
     "cnn_setting2": ("CNN of this project, setting 2", "this project", "23,755 images: 8 shards of Community Forensics-Small; crops at original resolution"),
     "cnn_first": ("CNN of this project, first attempt (setting 1)", "this project", "23,755 images: 8 shards of Community Forensics-Small; whole images shrunk to 224 px"),
@@ -40,7 +46,7 @@ MODELS = {  # name: (label, kind, training data as stated by its publisher)
     "siglip2_baseline": ("prithivMLmods SigLIP2 detector", "published detector", "card: its own deepfake data; card reports 94.4% on its own test data"),
 }
 DIAGNOSED = {"Setting 1": "cnn_first", "Setting 2": "cnn_setting2", "Setting 3": "cnn_setting3", "Setting 4": "cnn_final",
-             "OwensLab/commfor-model-384": "commfor", "Ateeqq/ai-vs-human-image-detector": "ateeqq",
+             "Setting 5": "cnn_s5_raw", "OwensLab/commfor-model-384": "commfor", "Ateeqq/ai-vs-human-image-detector": "ateeqq",
              "umm-maybe/AI-image-detector": "umm_maybe", "Manish18/deepfake-detection-model": "vit_baseline",
              "prithivMLmods/Deep-Fake-Detector-Model": "siglip2_baseline"}  # headings in results/check/diagnosis*.txt
 SCHEMA = """
@@ -71,9 +77,10 @@ CREATE VIEW by_generator AS
 def image_row(set_name, row):
     name, author = row["author_or_generator"], ""
     if row["class"] == "ai":
-        generator, group = name, "Open-source generators" if name in OPEN_SOURCE else "Commercial generators"
+        generator = "Reddit, AI subreddits" if name == "reddit-ai" else name
+        group = generator if name == "reddit-ai" else "Open-source generators" if name in OPEN_SOURCE else "Commercial generators"
     elif row["source"].startswith("OpenFake"):
-        group = generator = {"docci": "DOCCI", "imagenet": "ImageNet"}[name]
+        group = generator = {"docci": "DOCCI", "imagenet": "ImageNet", "reddit-real": "Reddit, photography subreddits"}[name]
     else:
         group = next(s for s in ("Wikimedia Commons", "Unsplash", "Open Images") if s.split()[0] in row["source"])
         generator, author = row["source"].split("Quality images of ")[-1] if group == "Wikimedia Commons" else group, name
@@ -193,7 +200,8 @@ def comparison(db):
     by = {(m, g): f"{c}/{n}" for m, g, c, n in q("SELECT model, source_group, correct, images FROM by_group WHERE set_name='main' AND condition='as downloaded'")}
     out.append(table(["Approach", *groups], [[label[m], *(by.get((m, g), "") for g in groups)] for m in ranked if (m, groups[0]) in by]))
     out.append("## 4. Main test set by generator and photo category\n")
-    short = {"claude_sonnet_5_5": "Claude", "commfor": "CommFor", "cnn_final": "CNN final", "cnn_setting3": "CNN s3", "cnn_setting2": "CNN s2", "cnn_first": "CNN first",
+    short = {"claude_sonnet_5_5": "Claude", "commfor": "CommFor", "cnn_final": "CNN final", "cnn_setting3": "CNN s3", "cnn_setting2": "CNN s2", "cnn_first": "CNN first", "fusion": "Combination", "cnn_s5": "CNN s5",
+             "cnn_s5_seed1": "CNN s5 run 2", "cnn_s5_seed2": "CNN s5 run 3", "cnn_s5_raw": "CNN s5 raw",
              "ateeqq": "Ateeqq", "umm_maybe": "umm-maybe", "vit_baseline": "Manish18", "siglip2_baseline": "prithiv"}
     shown = [m for m in ranked if (m, groups[0]) in by]
     gen = {(m, g): f"{c}/{n}" for m, g, c, n in q("SELECT model, generator, correct, images FROM by_generator WHERE set_name='main' AND condition='as downloaded'")}

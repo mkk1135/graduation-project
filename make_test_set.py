@@ -1,10 +1,11 @@
-"""Build one of the five evaluation sets and record what was drawn.
+"""Build one of the six evaluation sets and record what was drawn.
 
   python make_test_set.py test     # 48 images:  pilot test set -> data/test,  results/test_set.csv
   python make_test_set.py check    # 157 images: check set      -> data/check, results/check/check_set.csv
   python make_test_set.py main     # 384 images: main test set  -> data/main,  results/main/main_set.csv
   python make_test_set.py final    # 384 images: held-out final test set -> data/final, results/final/final_set.csv
   python make_test_set.py chat     # 168 images: ChatGPT and Gemini set -> data/chat, results/chat/chat_set.csv
+  python make_test_set.py wild     # 120 images: Reddit set (images as shared online) -> data/wild, results/wild/wild_set.csv
 
 Real photographs
   Wikimedia Commons: from each listed category, going back from the most recently added file, the
@@ -23,6 +24,11 @@ ChatGPT and Gemini set
   Gemini: the first images of bitmind/nano-banana (Nano Banana, that is Gemini 2.5 Flash Image) and the first
     generated images of the test split of julienlucas/nanobanana-pro-dataset (Nano Banana Pro). Both are
     community datasets with short descriptions; OpenFake's own Nano Banana Pro rows are mostly video frames.
+
+Reddit set
+  The 'reddit' test split of OpenFake, version 2.1: in file order, the first images (no video frames) that were
+  posted in subreddits for AI-generated images, and the first that were posted in photography subreddits. The
+  class of an image is the kind of subreddit it was posted in, so some labels may be wrong.
 
 Each set excludes every image of the sets before it, and the photographers of earlier Commons draws.
 The check set is for choosing between training settings; the test sets are only for the final scores.
@@ -83,6 +89,8 @@ SETS = {
         openfake={"gpt-image-2": 24, "gpt-image-1.5": 24, "docci": 36, "imagenet": 36},
         hub=[("bitmind/nano-banana", "data/train-00000-of-00031.parquet", None, "nano-banana", 24),  # (dataset, file, label, name, images)
              ("julienlucas/nanobanana-pro-dataset", "data/test-00000-of-00001.parquet", 0, "nano-banana-pro", 24)]),  # label 0 = generated
+    "wild": dict(
+        root="data/wild", listing="results/wild/wild_set.csv", earlier=[], openfake={"reddit-ai": 60, "reddit-real": 60}, openfake_split="reddit"),
 }
 
 
@@ -225,25 +233,29 @@ def hub_images(folder, repo, file, label, generator, wanted):
     raise SystemExit(f"Only {count} of {wanted} images found in {repo}")
 
 
-def openfake_images(root, wanted):
-    """The first images of each listed generator or photo source in the test split of OpenFake, in file order."""
+def openfake_images(root, wanted, split="core"):
+    """The first images of each listed generator or photo source in a test split of OpenFake, in file order.
+
+    In the reddit split the generator is unknown; its images are named reddit-ai and reddit-real after their label.
+    """
     fs, taken = HfFileSystem(), collections.Counter()
-    for path in sorted(fs.glob("datasets/ComplexDataLab/OpenFake@v2.1/core/test-*.parquet")):
+    name_of = (lambda row: "reddit-ai" if row["label"] == "fake" else "reddit-real") if split == "reddit" else (lambda row: row["model"])
+    for path in sorted(fs.glob(f"datasets/ComplexDataLab/OpenFake@v2.1/{split}/test-*.parquet")):
         with fs.open(path) as f:
             parquet = pq.ParquetFile(f)
             for group in range(parquet.num_row_groups):
-                models = parquet.read_row_group(group, columns=["model"]).column("model").to_pylist()
+                models = [name_of(row) for row in parquet.read_row_group(group, columns=["model", "label", "type"]).to_pylist() if row["type"] != "video"]
                 if not any(taken[m] < wanted.get(m, 0) for m in models):
                     continue  # nothing needed from this group: its images (about 100 MB) are not downloaded
                 for row in parquet.read_row_group(group, columns=["image", "label", "model", "type", "row_id"]).to_pylist():
-                    model = row["model"]
+                    model = name_of(row)
                     if taken[model] >= wanted.get(model, 0) or row["type"] == "video":  # no frames taken from videos
                         continue
                     taken[model] += 1
                     kind = "ai" if row["label"] == "fake" else "real"
                     name = f"{model}_{taken[model]}{extension(row['image']['bytes'])}"
                     (root / kind / name).write_bytes(row["image"]["bytes"])
-                    yield [f"{kind}/{name}", kind, "OpenFake v2.1, test split", model, "CC BY-NC 4.0",
+                    yield [f"{kind}/{name}", kind, f"OpenFake v2.1, {split} test split", model, "CC BY-NC 4.0",
                            f"https://huggingface.co/datasets/ComplexDataLab/OpenFake/blob/v2.1/{path.split('/', 3)[3]} (row {row['row_id']})"]
                 print(f"  {path.rsplit('/', 1)[1]} group {group}: {dict(taken)}", flush=True)
                 if all(taken[m] >= n for m, n in wanted.items()):
@@ -266,7 +278,7 @@ if __name__ == "__main__":
         (root / sub).mkdir(parents=True, exist_ok=True)
     earlier = [row for name in spec["earlier"] for row in listed(name)]
     rows = [*(ai_images(root / "ai", spec["shards"], spec["generators"], earlier) if "generators" in spec else []),
-            *(openfake_images(root, spec["openfake"]) if "openfake" in spec else []),
+            *(openfake_images(root, spec["openfake"], spec.get("openfake_split", "core")) if "openfake" in spec else []),
             *(row for source in spec.get("hub", []) for row in hub_images(root / "ai", *source)),
             *(unsplash_photos(root / "real", spec["unsplash"], spec.get("seed", 2026), earlier) if "unsplash" in spec else []),
             *(open_images_photos(root / "real", spec["open_images"], spec.get("seed", 2026), earlier) if "open_images" in spec else []),

@@ -2,7 +2,7 @@
 
   python check_overlap.py
 
-Every real training image and every real photograph of the three evaluation sets is reduced to a
+Every real training image and every real photograph of the evaluation sets is reduced to a
 256-bit difference hash, which survives resizing and re-compression. A test photograph (whole image
 and central square) that differs from a training image in at most 24 bits is reported as a possible
 copy and should then be looked at. Unrelated images differ in about 128 bits. A copy that was
@@ -45,7 +45,7 @@ def training_hashes():
 
 if __name__ == "__main__":
     training = training_hashes()
-    photos = sorted(p for folder in ("test", "check", "main") for p in Path("data", folder, "real").glob("*.jpg"))
+    photos = sorted(p for folder in ("test", "check", "main", "final", "chat") for p in Path("data", folder, "real").glob("*.jpg"))
     found = 0
     for path in photos:
         image = Image.open(path)
