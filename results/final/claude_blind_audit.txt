@@ -1,0 +1,62 @@
+Blind test of Claude Sonnet 5.5 on the final test set: audit of the agent transcripts
+
+Each batch was run as a separate tool-using agent, given the path of a temporary folder (blind_final) that held
+only the anonymised copies img_NNN.jpg and no answer key, and told to open only the files of its batch with the
+Read tool. Listed below from the complete transcript of each agent: every tool call, the number of files read and
+whether they are exactly the images of the batch. Folder paths are shortened to the folder name.
+
+Batch 1: img_001 to img_048
+  tool calls: 49 (Read 48, SubagentHandback 1)
+  file-read calls: 48; distinct image files read: 48; folders read from: blind_final
+  exactly the 48 images of the batch: yes
+  SubagentHandback (returns the final answer; no file access): 1 call, 48 answers, identical to the lines of this batch in claude_blind_answers.txt: yes
+  other tool calls: none
+
+Batch 2: img_049 to img_096
+  tool calls: 49 (Read 48, SubagentHandback 1)
+  file-read calls: 48; distinct image files read: 48; folders read from: blind_final
+  exactly the 48 images of the batch: yes
+  SubagentHandback (returns the final answer; no file access): 1 call, 48 answers, identical to the lines of this batch in claude_blind_answers.txt: yes
+  other tool calls: none
+
+Batch 3: img_097 to img_144
+  tool calls: 49 (Read 48, SubagentHandback 1)
+  file-read calls: 48; distinct image files read: 48; folders read from: blind_final
+  exactly the 48 images of the batch: yes
+  SubagentHandback (returns the final answer; no file access): 1 call, 48 answers, identical to the lines of this batch in claude_blind_answers.txt: yes
+  other tool calls: none
+
+Batch 4: img_145 to img_192
+  tool calls: 49 (Read 48, SubagentHandback 1)
+  file-read calls: 48; distinct image files read: 48; folders read from: blind_final
+  exactly the 48 images of the batch: yes
+  SubagentHandback (returns the final answer; no file access): 1 call, 48 answers, identical to the lines of this batch in claude_blind_answers.txt: yes
+  other tool calls: none
+
+Batch 5: img_193 to img_240
+  tool calls: 49 (Read 48, SubagentHandback 1)
+  file-read calls: 48; distinct image files read: 48; folders read from: blind_final
+  exactly the 48 images of the batch: yes
+  SubagentHandback (returns the final answer; no file access): 1 call, 48 answers, identical to the lines of this batch in claude_blind_answers.txt: yes
+  other tool calls: none
+
+Batch 6: img_241 to img_288
+  tool calls: 49 (Read 48, SubagentHandback 1)
+  file-read calls: 48; distinct image files read: 48; folders read from: blind_final
+  exactly the 48 images of the batch: yes
+  SubagentHandback (returns the final answer; no file access): 1 call, 48 answers, identical to the lines of this batch in claude_blind_answers.txt: yes
+  other tool calls: none
+
+Batch 7: img_289 to img_336
+  tool calls: 49 (Read 48, SubagentHandback 1)
+  file-read calls: 48; distinct image files read: 48; folders read from: blind_final
+  exactly the 48 images of the batch: yes
+  SubagentHandback (returns the final answer; no file access): 1 call, 48 answers, identical to the lines of this batch in claude_blind_answers.txt: yes
+  other tool calls: none
+
+Batch 8: img_337 to img_384
+  tool calls: 49 (Read 48, SubagentHandback 1)
+  file-read calls: 48; distinct image files read: 48; folders read from: blind_final
+  exactly the 48 images of the batch: yes
+  SubagentHandback (returns the final answer; no file access): 1 call, 48 answers, identical to the lines of this batch in claude_blind_answers.txt: yes
+  other tool calls: none

@@ -1,0 +1,39 @@
+Instruction of the blind test of Claude Sonnet 5.5 on the three held-out sets
+
+Each batch was given to a separate agent (model tier requested: "sonnet") as its only instruction. Every agent
+reported itself as Sonnet 5.5 (claude-sonnet-5-5) in the last line of its answer, and the transcripts record the
+model id claude-sonnet-5-5 for every response.
+Checked by script against the first message of each of the 15 agent transcripts: 15 of 15 are identical to the
+template below once the variable parts are filled in. Variable parts:
+  {TOTAL} number of files in the folder (384, 168 or 120)   {FIRST}-{LAST} the batch   {SIZE} its number of images
+  {FOLDER} the folder name (blind_final, blind_chat or blind_wild); the local path before it is shown as <temporary folder>
+Batches (set, images, size):
+  final test set: img_001-048, 049-096, 097-144, 145-192, 193-240, 241-288, 289-336, 337-384 (48 each)
+  ChatGPT and Gemini set: img_001-042, 043-084, 085-126, 127-168 (42 each)
+  Reddit set: img_001-040, 041-080, 081-120 (40 each)
+The complete record of what each agent opened is in claude_blind_audit.txt in each results folder.
+-----
+You are taking part in a blind image-classification test.
+
+The folder below contains image files named img_001.jpg to img_{TOTAL}.jpg. Your batch is the {SIZE} files img_{FIRST}.jpg to img_{LAST}.jpg:
+
+<temporary folder>\{FOLDER}
+
+For each file in your batch, open the image with the Read tool, look at it, and answer this question exactly as asked:
+
+"Is this image a real photograph taken by a camera, or is it AI-generated / synthetic? Answer with only one word: Real or AI-Generated."
+
+Rules:
+- Judge each image only from what you see in the image itself, and judge each one independently. There is no fixed number of each kind.
+- Use only the Read tool, and only on the {SIZE} files of your batch. Do not list or search directories, do not open any other file or folder, do not run shell commands or scripts, do not inspect file sizes or metadata, and do not use the web.
+- Do not ask for hints or clarification. If you are unsure, give your single best answer.
+- You must look at all {SIZE} images; do not guess for an image you have not opened. If a file fails to open, write `img_NNN: ERROR` for it.
+
+Your final message must contain exactly {SIZE} lines, in order, each of the form
+img_001: Real
+or
+img_001: AI-Generated
+followed by one last line:
+model: <the exact model name and model ID you are running as, taken from your own system information>
+
+No explanations or other text.

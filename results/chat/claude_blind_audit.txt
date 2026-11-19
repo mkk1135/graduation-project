@@ -1,0 +1,34 @@
+Blind test of Claude Sonnet 5.5 on the ChatGPT and Gemini set: audit of the agent transcripts
+
+Each batch was run as a separate tool-using agent, given the path of a temporary folder (blind_chat) that held
+only the anonymised copies img_NNN.jpg and no answer key, and told to open only the files of its batch with the
+Read tool. Listed below from the complete transcript of each agent: every tool call, the number of files read and
+whether they are exactly the images of the batch. Folder paths are shortened to the folder name.
+
+Batch 1: img_001 to img_042
+  tool calls: 43 (Read 42, SubagentHandback 1)
+  file-read calls: 42; distinct image files read: 42; folders read from: blind_chat
+  exactly the 42 images of the batch: yes
+  SubagentHandback (returns the final answer; no file access): 1 call, 42 answers, identical to the lines of this batch in claude_blind_answers.txt: yes
+  other tool calls: none
+
+Batch 2: img_043 to img_084
+  tool calls: 43 (Read 42, SubagentHandback 1)
+  file-read calls: 42; distinct image files read: 42; folders read from: blind_chat
+  exactly the 42 images of the batch: yes
+  SubagentHandback (returns the final answer; no file access): 1 call, 42 answers, identical to the lines of this batch in claude_blind_answers.txt: yes
+  other tool calls: none
+
+Batch 3: img_085 to img_126
+  tool calls: 43 (Read 42, SubagentHandback 1)
+  file-read calls: 42; distinct image files read: 42; folders read from: blind_chat
+  exactly the 42 images of the batch: yes
+  SubagentHandback (returns the final answer; no file access): 1 call, 42 answers, identical to the lines of this batch in claude_blind_answers.txt: yes
+  other tool calls: none
+
+Batch 4: img_127 to img_168
+  tool calls: 43 (Read 42, SubagentHandback 1)
+  file-read calls: 42; distinct image files read: 42; folders read from: blind_chat
+  exactly the 42 images of the batch: yes
+  SubagentHandback (returns the final answer; no file access): 1 call, 42 answers, identical to the lines of this batch in claude_blind_answers.txt: yes
+  other tool calls: none

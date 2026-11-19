@@ -1,0 +1,27 @@
+Blind test of Claude Sonnet 5.5 on the Reddit set: audit of the agent transcripts
+
+Each batch was run as a separate tool-using agent, given the path of a temporary folder (blind_wild) that held
+only the anonymised copies img_NNN.jpg and no answer key, and told to open only the files of its batch with the
+Read tool. Listed below from the complete transcript of each agent: every tool call, the number of files read and
+whether they are exactly the images of the batch. Folder paths are shortened to the folder name.
+
+Batch 1: img_001 to img_040
+  tool calls: 41 (Read 40, SubagentHandback 1)
+  file-read calls: 40; distinct image files read: 40; folders read from: blind_wild
+  exactly the 40 images of the batch: yes
+  SubagentHandback (returns the final answer; no file access): 1 call, 40 answers, identical to the lines of this batch in claude_blind_answers.txt: yes
+  other tool calls: none
+
+Batch 2: img_041 to img_080
+  tool calls: 41 (Read 40, SubagentHandback 1)
+  file-read calls: 40; distinct image files read: 40; folders read from: blind_wild
+  exactly the 40 images of the batch: yes
+  SubagentHandback (returns the final answer; no file access): 1 call, 40 answers, identical to the lines of this batch in claude_blind_answers.txt: yes
+  other tool calls: none
+
+Batch 3: img_081 to img_120
+  tool calls: 41 (Read 40, SubagentHandback 1)
+  file-read calls: 40; distinct image files read: 40; folders read from: blind_wild
+  exactly the 40 images of the batch: yes
+  SubagentHandback (returns the final answer; no file access): 1 call, 40 answers, identical to the lines of this batch in claude_blind_answers.txt: yes
+  other tool calls: none

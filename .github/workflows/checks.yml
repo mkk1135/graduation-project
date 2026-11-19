@@ -12,3 +12,7 @@ jobs:
         run: python results_db.py
       - name: Check that the recorded decisions of the protocol are reproduced from the database
         run: python decide.py check
+      - name: Run the self-checks of the evaluation code (metrics, Wilson interval, McNemar test, large-image rule, label mapping)
+        run: |
+          pip install pillow
+          python -c "import evaluate, decide, results_db, sys; assert 'torch' not in sys.modules; print('self-checks passed')"

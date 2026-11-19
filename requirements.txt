@@ -1,6 +1,8 @@
+# Minimum versions; the exact environment of every result is in requirements.lock.txt.
 torch
 torchvision>=0.19
-transformers>=4.46
+# train.py uses eval_strategy= and processing_class= (transformers 4.46 or later); only transformers 5 was used
+transformers>=5.0
 datasets
 accelerate
 huggingface_hub
@@ -10,7 +12,8 @@ numpy
 pillow
 matplotlib
 timm
-gradio
+# app.py uses gr.Interface(flagging_mode=..., delete_cache=...) (Gradio 5 or later); only Gradio 6 was used
+gradio>=6.0
 
 # Optional, only for the extra tools:
 # export of the detector for the browser demo (export_onnx.py)

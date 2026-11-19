@@ -126,7 +126,7 @@ async function analyse(file) {
       $("bar-" + name).style.width = (100 * value).toFixed(1) + "%";
       $("num-" + name).textContent = Math.round(100 * value) + "%";
     }
-    $("sentence").innerHTML = "<strong>The detector judges this image to be " + answer + "</strong> (" + Math.round(100 * confidence) + "% confidence).";
+    $("sentence").innerHTML = "<strong>The detector judges this image to be " + answer + "</strong> (detector score " + Math.round(100 * confidence) + "%; this is not a probability).";
     $("weak").hidden = confidence >= 0.75;
     $("cropped").hidden = w === bitmap.width && h === bitmap.height;
     $("cropped").textContent = "The image is " + bitmap.width + " x " + bitmap.height + " pixels; only its central " + w + " x " + h + " pixels were analysed.";

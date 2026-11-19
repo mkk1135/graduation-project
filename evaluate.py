@@ -61,7 +61,9 @@ assert wilson(50, 100) == [40.4, 59.6] and mcnemar(0, 0) == 1.0 and round(mcnema
 
 def fit(image):
     """For a detector that analyses images at original resolution: an image of more than 8 megapixels does not fit
-    into the memory of an 8 GB GPU, so only its central 2048 x 2048 pixels are analysed, as in app.py.
+    into the memory of an 8 GB GPU, so only its central part of at most 2048 x 2048 pixels is analysed. Detectors that
+    resize every image themselves receive the whole image. (app.py is stricter: of every image with a side over
+    2048 px it analyses only the central 2048 x 2048 pixels, with both detectors.)
     No image of the check set, the development test set or the final test set is that large."""
     if image.width * image.height <= 8_000_000:
         return image
@@ -73,9 +75,22 @@ def fit(image):
 assert fit(Image.new("RGB", (4000, 1000))).size == (4000, 1000) and fit(Image.new("RGB", (6000, 1500))).size == (2048, 1500)
 
 
+# Labels of the evaluated models, compared after lower-casing: real/ai (this project), REAL/FAKE, Real/Fake,
+# human/artificial and hum/ai. Any other label stops the evaluation instead of being guessed.
+REAL_LABELS = {"real", "human", "hum"}
+AI_LABELS = {"ai", "fake", "artificial"}
+
+
 def to_class(label):
-    # Covers REAL/FAKE, real/ai, human/artificial and hum/ai label sets.
-    return "real" if any(word in label.lower() for word in ("real", "hum")) else "ai"
+    name = label.strip().lower()
+    if name in REAL_LABELS:
+        return "real"
+    if name in AI_LABELS:
+        return "ai"
+    raise SystemExit(f"Unknown label {label!r}: add it to REAL_LABELS or AI_LABELS in evaluate.py")
+
+
+assert [to_class(x) for x in ("REAL", "Fake", "hum", "artificial")] == ["real", "ai", "real", "ai"]
 
 
 def load(model_id):

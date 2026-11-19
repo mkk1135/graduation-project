@@ -16,6 +16,7 @@ Example
 """
 import csv
 import json
+import math
 import re
 import sqlite3
 from pathlib import Path
@@ -24,6 +25,9 @@ DB = Path("results/results.db")
 SETS = {"pilot": ("results/test_set.csv", "results"), "check": ("results/check/check_set.csv", "results/check"),
         "main": ("results/main/main_set.csv", "results/main"), "final": ("results/final/final_set.csv", "results/final"),
         "chat": ("results/chat/chat_set.csv", "results/chat"), "wild": ("results/wild/wild_set.csv", "results/wild")}
+# Historical name: "cnn_final" is the CNN of training setting 4, the final model of the FIRST round (published until the
+# second round, folder models/convnext_robust, Hub tag round-1). It has nothing to do with the final test set
+# (results/final); the published CNN of the second round is "cnn_s5". The name is kept because the result files use it.
 ALIASES = {"convnext_resize": "cnn_first", "convnext_crop": "cnn_setting2", "convnext_crop_photos": "cnn_setting3",
            "convnext_robust": "cnn_final"}  # the check-set files are named after the training setting
 OPEN_SOURCE = {"Hourglass", "DFGAN", "kandinsky_2_2", "stable_cascade", "GALIP", "LCM_lora_sdxl", "kvikontent_midjourney_v6",
@@ -31,7 +35,7 @@ OPEN_SOURCE = {"Hourglass", "DFGAN", "kandinsky_2_2", "stable_cascade", "GALIP",
 MODELS = {  # name: (label, kind, training data as stated by its publisher)
     "claude_sonnet_5_5": ("Claude Sonnet 5.5", "multimodal model, asked in a blind test", "not a detector; general-purpose model of Anthropic"),
     "commfor": ("Community Forensics detector", "published detector", "the authors' full Community Forensics data: 2.7 million images from 4,803 generators"),
-    "commfor_tuned": ("Community Forensics detector, threshold tuned on development data", "published detector, tuned",
+    "commfor_tuned": ("Community Forensics detector, threshold tuned on the development images", "published detector, tuned",
                       "as the published detector; only its decision threshold was chosen on the development images of this project"),
     "fusion": ("Combination: CNN of this project and Community Forensics detector", "this project", "weighted mean of the two detectors' scores; weight and threshold chosen on development data"),
     "cnn_s5": ("CNN of this project, setting 5 (published)", "this project", "as setting 4, with stronger shrinking in the augmentation; decision threshold chosen on development data"),
@@ -40,16 +44,16 @@ MODELS = {  # name: (label, kind, training data as stated by its publisher)
     "cnn_s5_raw": ("CNN of this project, setting 5 before the threshold", "this project", "as setting 5, with the default threshold of 50%"),
     "cnn_s5_seed1_raw": ("CNN of this project, setting 5, second run, before the threshold", "this project", "as setting 5, another seed, default threshold"),
     "cnn_s5_seed2_raw": ("CNN of this project, setting 5, third run, before the threshold", "this project", "as setting 5, another seed, default threshold"),
-    "cnn_final": ("CNN of this project, setting 4", "this project", "36,562 images: 10 shards of Community Forensics-Small and 7,010 DataSeeds photographs; crops at original resolution with blur and noise"),
-    "cnn_final_tuned": ("CNN of this project, setting 4, threshold tuned on development data", "this project",
+    "cnn_final": ("CNN of this project, setting 4 (first round)","this project", "36,562 images: 10 shards of Community Forensics-Small and 7,010 DataSeeds photographs; crops at original resolution with blur and noise"),
+    "cnn_final_tuned": ("CNN of this project, setting 4, threshold tuned on the development images", "this project",
                         "as setting 4; only its decision threshold was chosen on the development images, for comparison with setting 5"),
     "cnn_setting3": ("CNN of this project, setting 3", "this project", "as setting 4, without blur and noise"),
     "cnn_setting2": ("CNN of this project, setting 2", "this project", "23,755 images: 8 shards of Community Forensics-Small; crops at original resolution"),
     "cnn_first": ("CNN of this project, first attempt (setting 1)", "this project", "23,755 images: 8 shards of Community Forensics-Small; whole images shrunk to 224 px"),
-    "ateeqq": ("Ateeqq SigLIP detector", "published detector", "card: 60,000 AI-generated and 60,000 human images; card reports 99.2% on its own test split"),
+    "ateeqq": ("Ateeqq SigLIP 2 detector", "published detector", "card: 60,000 AI-generated and 60,000 human images; card reports 99.2% on its own test split"),
     "umm_maybe": ("umm-maybe Swin detector", "published detector", "card: made in October 2022 for artistic images, 'not a deepfake photo detector'"),
     "vit_baseline": ("Manish18 ViT detector", "published detector", "not stated: the model card is an unfilled template"),
-    "siglip2_baseline": ("prithivMLmods SigLIP2 detector", "published detector", "card: its own deepfake data; card reports 94.4% on its own test data"),
+    "siglip2_baseline": ("prithivMLmods SigLIP 2 detector", "published detector", "card: its own deepfake data; card reports 94.4% on its own test data"),
 }
 DIAGNOSED = {"Setting 1": "cnn_first", "Setting 2": "cnn_setting2", "Setting 3": "cnn_setting3", "Setting 4": "cnn_final",
              "Setting 5": "cnn_s5_raw", "Setting 5 with tuned threshold": "cnn_s5", "Setting 4 with tuned threshold": "cnn_final_tuned",
@@ -79,6 +83,33 @@ CREATE VIEW by_generator AS
   SELECT p.model, p.set_name, p.condition, i.class, i.generator, COUNT(*) AS images, SUM(p.predicted = i.class) AS correct
   FROM predictions p JOIN images i USING (set_name, file) GROUP BY p.model, p.set_name, p.condition, i.class, i.generator;
 """
+
+
+# metrics() and wilson() are copied unchanged from evaluate.py, which wrote the result files. They are not imported
+# because evaluate.py needs Pillow, and this script runs with the standard library only (the GitHub workflow installs nothing).
+def metrics(tp, fn, fp, tn):
+    """tp = real called real, fn = real called AI, fp = AI called real, tn = AI called AI."""
+    precision = tp / (tp + fp) if tp + fp else 0.0
+    recall = tp / (tp + fn) if tp + fn else 0.0
+    f1 = 2 * precision * recall / (precision + recall) if precision + recall else 0.0
+    return {
+        "tp": tp, "fn": fn, "fp": fp, "tn": tn,
+        "accuracy": round(100 * (tp + tn) / (tp + fn + fp + tn), 2),
+        "precision": round(100 * precision, 2),
+        "recall": round(100 * recall, 2),
+        "f1": round(100 * f1, 2),
+    }
+
+
+def wilson(correct, n, z=1.96):
+    """95% Wilson score interval for a proportion, in percent."""
+    p = correct / n
+    centre = (p + z * z / (2 * n)) / (1 + z * z / n)
+    half = z * math.sqrt(p * (1 - p) / n + z * z / (4 * n * n)) / (1 + z * z / n)
+    return [round(100 * (centre - half), 1), round(100 * (centre + half), 1)]
+
+
+assert metrics(4, 22, 1, 21)["f1"] == 25.81 and wilson(50, 100) == [40.4, 59.6]  # the same self-checks as in evaluate.py
 
 
 def image_row(set_name, row):
@@ -119,7 +150,7 @@ def build():
             model, label, kind, f.get("hub_id"), f.get("architecture"), f.get("weights_million"), weights, f.get("safe_weights"), shown,
             f.get("licence"), f.get("created"), f.get("downloads_last_month"), f.get("card_words"), f.get("card_unfilled_fields"),
             f.get("cpu_mean_s"), f.get("cpu_max_s"), training))
-    checked = 0
+    checked = with_ci = 0
     for set_name, (listing, folder) in SETS.items():
         if not Path(listing).exists():
             continue
@@ -131,12 +162,22 @@ def build():
             rows = list(csv.DictReader(open(path)))
             db.executemany("INSERT INTO predictions VALUES (?,?,?,?,?,?)",
                            [(model, set_name, condition, r["file"], r["predicted"], float(r["score"]) if r["score"] else None) for r in rows])
-            # Self-check: the database must give the same counts as the result file written by evaluate.py.
+            # Self-check: every figure of the result file written by evaluate.py is computed again from the stored
+            # predictions, with the class of each image taken from the list of the set.
             result = json.loads(Path(str(path).replace("_predictions.csv", ".json")).read_text())
-            got = db.execute("SELECT real_correct, ai_correct, images FROM scores WHERE model=? AND set_name=? AND condition=?",
-                             (model, set_name, condition)).fetchone()
-            assert got == (result["tp"], result["tn"], result["images"]), (path, got, result)
+            truth = dict(db.execute("SELECT file, class FROM images WHERE set_name=?", (set_name,)).fetchall())
+            assert all(truth[r["file"]] == r["truth"] for r in rows), f"{path}: a class differs from the list of the set"
+            count = dict(((c, p), n) for c, p, n in db.execute(
+                "SELECT i.class, p.predicted, COUNT(*) FROM predictions p JOIN images i USING (set_name, file) "
+                "WHERE p.model=? AND p.set_name=? AND p.condition=? GROUP BY 1, 2", (model, set_name, condition)))
+            tp, fn, fp, tn = (count.get(pair, 0) for pair in (("real", "real"), ("real", "ai"), ("ai", "real"), ("ai", "ai")))
+            recomputed = {"images": len(rows), **metrics(tp, fn, fp, tn), "accuracy_ci95": wilson(tp + tn, len(rows))}
+            if "accuracy_ci95" not in result:  # result files written before evaluate.py recorded the interval
+                del recomputed["accuracy_ci95"]
+            stored = {k: v for k, v in result.items() if k not in ("model", "name")}
+            assert stored == recomputed, (path, stored, recomputed)
             checked += 1
+            with_ci += "accuracy_ci95" in recomputed
     for path in sorted(Path("results/check").glob("diagnosis*.txt")):
         model = None
         for line in path.read_text(encoding="utf-8").splitlines():
@@ -151,7 +192,8 @@ def build():
         assert same in (None, (real_correct, ai_correct)), (model, same, real_correct, ai_correct)
     db.commit()
     counts = [db.execute(f"SELECT COUNT(*) FROM {t}").fetchone()[0] for t in ("images", "models", "predictions")]
-    print(f"wrote {DB}: {counts[0]} images, {counts[1]} models, {counts[2]} predictions; {checked} result files reproduced exactly")
+    print(f"wrote {DB}: {counts[0]} images, {counts[1]} models, {counts[2]} predictions; {checked} result files reproduced exactly "
+          f"(counts, accuracy, precision, recall, F1; and the 95% interval in the {with_ci} files that record it)")
     return db
 
 
@@ -170,6 +212,14 @@ def auc(real, ai):
 assert auc([0.9, 0.8], [0.1, 0.2]) == 1.0 and auc([0.1], [0.9]) == 0.0 and auc([0.5, 0.5], [0.5, 0.5]) == 0.5
 
 
+def percent(correct, n):
+    """Percentage shown in the tables, rounded once from the counts."""
+    return f"{100 * correct / n:.1f}"
+
+
+assert percent(322, 384) == "83.9" and percent(313, 384) == "81.5"
+
+
 def table(header, rows):
     return "\n".join(["| " + " | ".join(header) + " |", "|" + "---|" * len(header),
                       *("| " + " | ".join("" if x is None else str(x) for x in row) + " |" for row in rows)]) + "\n"
@@ -185,7 +235,9 @@ def comparison(db):
     size = dict(q("SELECT set_name, COUNT(*) FROM images GROUP BY set_name"))
     ranked = [m for m, in q("SELECT model FROM scores WHERE set_name=? AND condition='as downloaded' ORDER BY accuracy DESC", primary)]
     ranked += [m for m in MODELS if m not in ranked]
-    cell = {(m, s, c): f"{acc:.1f}% ({rc}/{ac})" for m, s, c, acc, rc, ac in q("SELECT model, set_name, condition, accuracy, real_correct, ai_correct FROM scores")}
+    # From the counts, not from the view's accuracy: that is already rounded to two decimals (322/384 = 83.85), and
+    # rounding it again would print 83.8% instead of 83.9%.
+    cell = {(m, s, c): f"{percent(rc + ac, n)}% ({rc}/{ac})" for m, s, c, n, rc, ac in q("SELECT model, set_name, condition, images, real_correct, ai_correct FROM scores")}
     out = ["# Comparison of the approaches\n",
            "Written by `python results_db.py` from the database `results/results.db`, which holds every prediction of every "
            "approach on every evaluation image. Nothing here is typed by hand, except the notes at the end. The roles of the "

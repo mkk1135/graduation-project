@@ -1,0 +1,707 @@
+{
+ "about": "Weights behind every result file. 'model_in_result_files' is the model given to evaluate.py for the held-out sets (results/final, results/chat, results/wild); 'used_in' lists every set in which a model name occurs; 'earlier_sets' resolves names used only on development data. For Hub models the revision is the one of branch main in the local Hugging Face cache, which the evaluation used offline. Hashes are SHA-256 of the weight file.",
+ "approaches": {
+  "ateeqq": {
+   "model_in_result_files": "Ateeqq/ai-vs-human-image-detector",
+   "used_in": {
+    "Ateeqq/ai-vs-human-image-detector": [
+     "pilot",
+     "check/jpeg90",
+     "check",
+     "main",
+     "main/jpeg90",
+     "final",
+     "final/jpeg90",
+     "chat",
+     "chat/jpeg90",
+     "wild",
+     "wild/jpeg90"
+    ]
+   },
+   "repo": "Ateeqq/ai-vs-human-image-detector",
+   "revision": "60e82406916921b823616bee33397baab38af3f0",
+   "refs": [
+    "main"
+   ],
+   "file": "model.safetensors",
+   "sha256": "ab0b8cad7462a047ff4e2888cb4f11b1abe568d73ce07a2649a3f1541f73675f",
+   "bytes": 371567992
+  },
+  "claude_sonnet_5_5": {
+   "model_in_result_files": "Claude Sonnet 5.5 (claude-sonnet-5-5), blind test",
+   "used_in": {
+    "Claude Sonnet 5.5 (claude-sonnet-5-5), blind test": [
+     "pilot",
+     "main",
+     "final",
+     "chat",
+     "wild"
+    ]
+   },
+   "note": "chat model reached through its interface (blind_test.py); no weights"
+  },
+  "cnn_final": {
+   "model_in_result_files": "models/convnext_robust",
+   "used_in": {
+    "mkk1135/ai-image-detector": [
+     "pilot",
+     "main",
+     "main/crop1024",
+     "main/jpeg90"
+    ],
+    "models/convnext_robust": [
+     "check/jpeg75",
+     "check/jpeg90",
+     "check",
+     "final",
+     "final/jpeg90",
+     "chat",
+     "chat/jpeg90",
+     "wild",
+     "wild/jpeg90"
+    ]
+   },
+   "folder": "models/convnext_robust",
+   "file": "model.safetensors",
+   "sha256": "28f95e25b502a1fa9f1b671fea22758d93ee3bc23557bca82478db61b117a6be",
+   "bytes": 111307920,
+   "published_as": [
+    {
+     "repo": "mkk1135/ai-image-detector",
+     "revision": "f62d9ff6067c3cff6a125ea0d1a0cf801fad06d8",
+     "refs": [
+      "round-1"
+     ],
+     "verified": "same SHA-256 as the cached Hub file"
+    },
+    {
+     "repo": "mkk1135/ai-image-detector",
+     "revision": "e1c9de5b2aca96a1a9561f8d4b025d9f41e98697",
+     "refs": [],
+     "verified": "same SHA-256 as the cached Hub file"
+    },
+    {
+     "repo": "mkk1135/ai-image-detector",
+     "revision": "363092f6a5087d036bdabddd335112b960ab336f",
+     "refs": [],
+     "verified": "same SHA-256 as the cached Hub file"
+    }
+   ],
+   "earlier_sets": {
+    "mkk1135/ai-image-detector": {
+     "repo": "mkk1135/ai-image-detector",
+     "note": "the revision of this repository at the time of scoring was not recorded; every cached revision, with the local folder that holds the identical file, is listed under hub_cache"
+    }
+   }
+  },
+  "cnn_final_tuned": {
+   "model_in_result_files": "cnn_final, threshold 0.8272 on the 'AI' score (chosen on development data)",
+   "used_in": {
+    "cnn_final, threshold 0.8272 on the 'AI' score (chosen on development data)": [
+     "final",
+     "final/jpeg90",
+     "chat",
+     "chat/jpeg90",
+     "wild",
+     "wild/jpeg90"
+    ]
+   },
+   "derived_from": "cnn_final",
+   "threshold_on_ai_score": 0.8272,
+   "note": "no model was run: the stored scores of cnn_final were compared with this threshold (rethreshold.py)"
+  },
+  "cnn_first": {
+   "model_in_result_files": "models/convnext_resize",
+   "used_in": {
+    "models/convnext_resize": [
+     "pilot",
+     "check/jpeg75",
+     "check/jpeg90",
+     "check",
+     "main",
+     "main/jpeg90",
+     "final",
+     "final/jpeg90",
+     "chat",
+     "chat/jpeg90",
+     "wild",
+     "wild/jpeg90"
+    ]
+   },
+   "folder": "models/convnext_resize",
+   "file": "model.safetensors",
+   "sha256": "111d82f55df3be7b16bd29c9f369e04879b19c668cc7a79dba5db492ae54493e",
+   "bytes": 111307920,
+   "published_as": "not published"
+  },
+  "cnn_s5": {
+   "model_in_result_files": "models/cnn_s5",
+   "used_in": {
+    "models/cnn_s5": [
+     "check/jpeg90",
+     "check",
+     "main",
+     "main/jpeg90",
+     "final",
+     "final/crop1024",
+     "final/jpeg90",
+     "chat",
+     "chat/jpeg90",
+     "wild",
+     "wild/jpeg90"
+    ]
+   },
+   "folder": "models/cnn_s5",
+   "file": "model.safetensors",
+   "sha256": "d5beb54ae2f74b3df9f0e1bef9d73817318808b1c94b54c22718403bbb5f2adb",
+   "bytes": 111307920,
+   "published_as": [
+    {
+     "repo": "mkk1135/ai-image-detector",
+     "revision": "37da0ae6bfeea23e5c2c0028116e464eefaebb60",
+     "refs": [
+      "main"
+     ],
+     "verified": "same SHA-256 as the cached Hub file"
+    }
+   ]
+  },
+  "cnn_s5_raw": {
+   "model_in_result_files": "checkpoints/s5_seed42/checkpoint-3087",
+   "used_in": {
+    "checkpoints/s5_seed42/checkpoint-3087": [
+     "check/jpeg90",
+     "check",
+     "main",
+     "main/jpeg90",
+     "final",
+     "final/jpeg90",
+     "chat",
+     "chat/jpeg90",
+     "wild",
+     "wild/jpeg90"
+    ]
+   },
+   "folder": "checkpoints/s5_seed42/checkpoint-3087",
+   "file": "model.safetensors",
+   "sha256": "f68b551f89d6c7137fffbd7cef3b585410813793a8ccda8ff85edc981f9fba52",
+   "bytes": 111307920,
+   "published_as": "not published"
+  },
+  "cnn_s5_seed1": {
+   "model_in_result_files": "models/cnn_s5_seed1",
+   "used_in": {
+    "models/cnn_s5_seed1": [
+     "check/jpeg90",
+     "check",
+     "main",
+     "main/jpeg90",
+     "final",
+     "final/jpeg90",
+     "chat",
+     "chat/jpeg90",
+     "wild",
+     "wild/jpeg90"
+    ]
+   },
+   "folder": "models/cnn_s5_seed1",
+   "file": "model.safetensors",
+   "sha256": "0d2c1385f28611c0401f3dbee5c5de96b673dafc532974f469eb7e229f6b5898",
+   "bytes": 111307920,
+   "published_as": "not published"
+  },
+  "cnn_s5_seed1_raw": {
+   "model_in_result_files": null,
+   "used_in": {
+    "checkpoints/s5_seed1/checkpoint-3087": [
+     "check/jpeg90",
+     "check",
+     "main",
+     "main/jpeg90"
+    ]
+   },
+   "note": "not scored on the held-out sets",
+   "earlier_sets": {
+    "checkpoints/s5_seed1/checkpoint-3087": {
+     "folder": "checkpoints/s5_seed1/checkpoint-3087",
+     "file": "model.safetensors",
+     "sha256": "60a20cca015f66196514bf49c9abc1491dfe2ab676f18369a43a1d8742899928",
+     "bytes": 111307920,
+     "published_as": "not published"
+    }
+   }
+  },
+  "cnn_s5_seed2": {
+   "model_in_result_files": "models/cnn_s5_seed2",
+   "used_in": {
+    "models/cnn_s5_seed2": [
+     "check/jpeg90",
+     "check",
+     "main",
+     "main/jpeg90",
+     "final",
+     "final/jpeg90",
+     "chat",
+     "chat/jpeg90",
+     "wild",
+     "wild/jpeg90"
+    ]
+   },
+   "folder": "models/cnn_s5_seed2",
+   "file": "model.safetensors",
+   "sha256": "2d0173b8aa6b7724aed16426d84eeb7b82070f4c2ac14d03c9507a28c45eae6e",
+   "bytes": 111307920,
+   "published_as": "not published"
+  },
+  "cnn_s5_seed2_raw": {
+   "model_in_result_files": null,
+   "used_in": {
+    "checkpoints/s5_seed2/checkpoint-3087": [
+     "check/jpeg90",
+     "check",
+     "main",
+     "main/jpeg90"
+    ]
+   },
+   "note": "not scored on the held-out sets",
+   "earlier_sets": {
+    "checkpoints/s5_seed2/checkpoint-3087": {
+     "folder": "checkpoints/s5_seed2/checkpoint-3087",
+     "file": "model.safetensors",
+     "sha256": "d1ae989599186166444070abf5122d0d4df1f186c3c4b0ddb48cf9cc7c13f26f",
+     "bytes": 111307920,
+     "published_as": "not published"
+    }
+   }
+  },
+  "cnn_setting2": {
+   "model_in_result_files": null,
+   "used_in": {
+    "models/convnext_crop": [
+     "pilot",
+     "main",
+     "main/jpeg90"
+    ],
+    "checkpoints/checkpoint-2007": [
+     "check/jpeg75",
+     "check/jpeg90",
+     "check"
+    ]
+   },
+   "note": "not scored on the held-out sets",
+   "earlier_sets": {
+    "models/convnext_crop": {
+     "folder": "models/convnext_crop",
+     "file": "model.safetensors",
+     "sha256": "cefc366d107e2ee6b4333e66ab46fc0b7d321015271a6d9de4a5a7c0aa288657",
+     "bytes": 111307920,
+     "published_as": "not published"
+    },
+    "checkpoints/checkpoint-2007": {
+     "folder": "checkpoints/checkpoint-2007",
+     "note": "folder not present on the computer that ran the evaluation; its weights cannot be hashed"
+    }
+   }
+  },
+  "cnn_setting3": {
+   "model_in_result_files": null,
+   "used_in": {
+    "models/convnext_crop_photos": [
+     "pilot",
+     "check/jpeg75",
+     "check/jpeg90",
+     "check",
+     "main",
+     "main/jpeg90"
+    ]
+   },
+   "note": "not scored on the held-out sets",
+   "earlier_sets": {
+    "models/convnext_crop_photos": {
+     "folder": "models/convnext_crop_photos",
+     "file": "model.safetensors",
+     "sha256": "58280bd44c4c2dea6b0ff6db4f86f306d0b5e260b6c557c6c9ad9aeb21b30525",
+     "bytes": 111307920,
+     "published_as": [
+      {
+       "repo": "mkk1135/ai-image-detector",
+       "revision": "ad4953eec356f28e27fe0d5c2f804bcc343c2756",
+       "refs": [],
+       "verified": "same SHA-256 as the cached Hub file"
+      },
+      {
+       "repo": "mkk1135/ai-image-detector",
+       "revision": "e4675bd220450bdf700b93214a8e98b85312fdb1",
+       "refs": [],
+       "verified": "same SHA-256 as the cached Hub file"
+      }
+     ]
+    }
+   }
+  },
+  "commfor": {
+   "model_in_result_files": "OwensLab/commfor-model-384",
+   "used_in": {
+    "OwensLab/commfor-model-384": [
+     "pilot",
+     "check/jpeg90",
+     "check",
+     "main",
+     "main/jpeg90",
+     "final",
+     "final/jpeg90",
+     "chat",
+     "chat/jpeg90",
+     "wild",
+     "wild/jpeg90"
+    ]
+   },
+   "repo": "OwensLab/commfor-model-384",
+   "revision": "6076002bf0d9dd37537f965ee2f06f826c333b61",
+   "refs": [
+    "main"
+   ],
+   "file": "model.safetensors",
+   "sha256": "b89f36275f3bf5e2b040eee36597a8f19db051bff9a473a9cf7b2466284fb387",
+   "bytes": 87262324
+  },
+  "commfor_tuned": {
+   "model_in_result_files": "commfor, threshold 0.1227 on the 'AI' score (chosen on development data)",
+   "used_in": {
+    "commfor, threshold 0.1227 on the 'AI' score (chosen on development data)": [
+     "final",
+     "final/jpeg90",
+     "chat",
+     "chat/jpeg90",
+     "wild",
+     "wild/jpeg90"
+    ]
+   },
+   "derived_from": "commfor",
+   "threshold_on_ai_score": 0.1227,
+   "note": "no model was run: the stored scores of commfor were compared with this threshold (rethreshold.py)"
+  },
+  "fusion": {
+   "model_in_result_files": "fusion:models/cnn_s5",
+   "used_in": {
+    "fusion:models/cnn_s5": [
+     "check/jpeg90",
+     "check",
+     "main",
+     "main/jpeg90",
+     "final",
+     "final/jpeg90",
+     "chat",
+     "chat/jpeg90",
+     "wild",
+     "wild/jpeg90"
+    ]
+   },
+   "parts": [
+    {
+     "folder": "models/cnn_s5",
+     "file": "model.safetensors",
+     "sha256": "d5beb54ae2f74b3df9f0e1bef9d73817318808b1c94b54c22718403bbb5f2adb",
+     "bytes": 111307920,
+     "published_as": [
+      {
+       "repo": "mkk1135/ai-image-detector",
+       "revision": "37da0ae6bfeea23e5c2c0028116e464eefaebb60",
+       "refs": [
+        "main"
+       ],
+       "verified": "same SHA-256 as the cached Hub file"
+      }
+     ]
+    },
+    {
+     "repo": "OwensLab/commfor-model-384",
+     "revision": "6076002bf0d9dd37537f965ee2f06f826c333b61",
+     "refs": [
+      "main"
+     ],
+     "file": "model.safetensors",
+     "sha256": "b89f36275f3bf5e2b040eee36597a8f19db051bff9a473a9cf7b2466284fb387",
+     "bytes": 87262324
+    }
+   ]
+  },
+  "siglip2_baseline": {
+   "model_in_result_files": "prithivMLmods/Deep-Fake-Detector-Model",
+   "used_in": {
+    "prithivMLmods/Deep-Fake-Detector-Model": [
+     "pilot",
+     "check/jpeg90",
+     "check",
+     "main",
+     "main/jpeg90",
+     "final",
+     "final/jpeg90",
+     "chat",
+     "chat/jpeg90",
+     "wild",
+     "wild/jpeg90"
+    ]
+   },
+   "repo": "prithivMLmods/Deep-Fake-Detector-Model",
+   "revision": "c5cb24c6a159dd2b57ca15c6a1065bd0ce8fa380",
+   "refs": [
+    "main"
+   ],
+   "file": "model.safetensors",
+   "sha256": "3b01cae13bf09b60a11d64b4eb5f11892b5a0d561c4fa3162cf730149ab8fa89",
+   "bytes": 371567992
+  },
+  "umm_maybe": {
+   "model_in_result_files": "umm-maybe/AI-image-detector",
+   "used_in": {
+    "umm-maybe/AI-image-detector": [
+     "pilot",
+     "check/jpeg90",
+     "check",
+     "main",
+     "main/jpeg90",
+     "final",
+     "final/jpeg90",
+     "chat",
+     "chat/jpeg90",
+     "wild",
+     "wild/jpeg90"
+    ]
+   },
+   "repo": "umm-maybe/AI-image-detector",
+   "revision": "c7e223baf11bc40528af364ba7bdea030ef42f9e",
+   "refs": [
+    "main"
+   ],
+   "file": "pytorch_model.bin",
+   "sha256": "f4c14ed23eb1d65b1c6ca7b163f8f91bebcf3a4d8c275296c850c9f1bbd01daf",
+   "bytes": 347596479,
+   "other_cached_revisions": {
+    "2d342e5ebb6296e1a1d5ef574e5fb252c933c042": {
+     "refs": [
+      "refs/pr/4"
+     ],
+     "file": "model.safetensors",
+     "sha256": "aea31f822cb76aee2ee60950bc602dd4bf5ba5c4a444a27946a7da0017da72be",
+     "bytes": 347498816,
+     "note": "safetensors conversion fetched by transformers in the background; the scored weights are pytorch_model.bin of main"
+    }
+   }
+  },
+  "vit_baseline": {
+   "model_in_result_files": "Manish18/deepfake-detection-model",
+   "used_in": {
+    "Manish18/deepfake-detection-model": [
+     "pilot",
+     "check/jpeg90",
+     "check",
+     "main",
+     "main/jpeg90",
+     "final",
+     "final/jpeg90",
+     "chat",
+     "chat/jpeg90",
+     "wild",
+     "wild/jpeg90"
+    ]
+   },
+   "repo": "Manish18/deepfake-detection-model",
+   "revision": "6e80ce7cfe453fd17b32f5240720c8d226550fb4",
+   "refs": [
+    "main"
+   ],
+   "file": "model.safetensors",
+   "sha256": "9bc005590c9e76dec03bce0483fb49a5540dd636408c3d50e919c00ac8b057d7",
+   "bytes": 343223968
+  }
+ },
+ "other_local_models": {
+  "models/cnn_s4_tuned": {
+   "folder": "models/cnn_s4_tuned",
+   "file": "model.safetensors",
+   "sha256": "9e06f6bd4790225ee13c21c52e85c869d226d7439e54da447fa39030a37f4f64",
+   "bytes": 111307920,
+   "published_as": "not published",
+   "note": "setting 4 with its tuned threshold built in (apply_threshold.py); not scored itself, the results of cnn_final_tuned come from the stored scores of cnn_final"
+  },
+  "models/upload": {
+   "folder": "models/upload",
+   "file": "model.safetensors",
+   "sha256": "28f95e25b502a1fa9f1b671fea22758d93ee3bc23557bca82478db61b117a6be",
+   "bytes": 111307920,
+   "published_as": [
+    {
+     "repo": "mkk1135/ai-image-detector",
+     "revision": "f62d9ff6067c3cff6a125ea0d1a0cf801fad06d8",
+     "refs": [
+      "round-1"
+     ],
+     "verified": "same SHA-256 as the cached Hub file"
+    },
+    {
+     "repo": "mkk1135/ai-image-detector",
+     "revision": "e1c9de5b2aca96a1a9561f8d4b025d9f41e98697",
+     "refs": [],
+     "verified": "same SHA-256 as the cached Hub file"
+    },
+    {
+     "repo": "mkk1135/ai-image-detector",
+     "revision": "363092f6a5087d036bdabddd335112b960ab336f",
+     "refs": [],
+     "verified": "same SHA-256 as the cached Hub file"
+    }
+   ],
+   "note": "folder from which an earlier version of the Hub model was uploaded; not scored itself"
+  }
+ },
+ "hub_cache": {
+  "Ateeqq/ai-vs-human-image-detector": {
+   "60e82406916921b823616bee33397baab38af3f0": {
+    "refs": [
+     "main"
+    ],
+    "file": "model.safetensors",
+    "sha256": "ab0b8cad7462a047ff4e2888cb4f11b1abe568d73ce07a2649a3f1541f73675f",
+    "bytes": 371567992,
+    "identical_local_folders": []
+   }
+  },
+  "Manish18/deepfake-detection-model": {
+   "6e80ce7cfe453fd17b32f5240720c8d226550fb4": {
+    "refs": [
+     "main"
+    ],
+    "file": "model.safetensors",
+    "sha256": "9bc005590c9e76dec03bce0483fb49a5540dd636408c3d50e919c00ac8b057d7",
+    "bytes": 343223968,
+    "identical_local_folders": []
+   }
+  },
+  "OwensLab/commfor-model-384": {
+   "6076002bf0d9dd37537f965ee2f06f826c333b61": {
+    "refs": [
+     "main"
+    ],
+    "file": "model.safetensors",
+    "sha256": "b89f36275f3bf5e2b040eee36597a8f19db051bff9a473a9cf7b2466284fb387",
+    "bytes": 87262324,
+    "identical_local_folders": []
+   }
+  },
+  "facebook/convnext-tiny-224": {
+   "6166b7613034066690a621d8bf25ffdf181a34f0": {
+    "refs": [
+     "main"
+    ],
+    "file": "pytorch_model.bin",
+    "sha256": "1fe15b2eba9e355de14c4e244e6365bf61ffef84da7d3442c0afbb2d8564f477",
+    "bytes": 114423189,
+    "identical_local_folders": []
+   },
+   "754ee4efa2810dce51a80eff8b21737c8da9a92f": {
+    "refs": [
+     "refs/pr/4"
+    ],
+    "file": "model.safetensors",
+    "sha256": "cccd7740d4b807d0442d17a08c0e36ddc1911aa27625b94b65b5a3cc76c94414",
+    "bytes": 114377888,
+    "identical_local_folders": []
+   }
+  },
+  "mkk1135/ai-image-detector": {
+   "e1c9de5b2aca96a1a9561f8d4b025d9f41e98697": {
+    "refs": [],
+    "file": "model.safetensors",
+    "sha256": "28f95e25b502a1fa9f1b671fea22758d93ee3bc23557bca82478db61b117a6be",
+    "bytes": 111307920,
+    "identical_local_folders": [
+     "models/convnext_robust",
+     "models/upload"
+    ]
+   },
+   "f62d9ff6067c3cff6a125ea0d1a0cf801fad06d8": {
+    "refs": [
+     "round-1"
+    ],
+    "file": "model.safetensors",
+    "sha256": "28f95e25b502a1fa9f1b671fea22758d93ee3bc23557bca82478db61b117a6be",
+    "bytes": 111307920,
+    "identical_local_folders": [
+     "models/convnext_robust",
+     "models/upload"
+    ]
+   },
+   "37da0ae6bfeea23e5c2c0028116e464eefaebb60": {
+    "refs": [
+     "main"
+    ],
+    "file": "model.safetensors",
+    "sha256": "d5beb54ae2f74b3df9f0e1bef9d73817318808b1c94b54c22718403bbb5f2adb",
+    "bytes": 111307920,
+    "identical_local_folders": [
+     "models/cnn_s5"
+    ]
+   },
+   "ad4953eec356f28e27fe0d5c2f804bcc343c2756": {
+    "refs": [],
+    "file": "model.safetensors",
+    "sha256": "58280bd44c4c2dea6b0ff6db4f86f306d0b5e260b6c557c6c9ad9aeb21b30525",
+    "bytes": 111307920,
+    "identical_local_folders": [
+     "models/convnext_crop_photos"
+    ]
+   },
+   "363092f6a5087d036bdabddd335112b960ab336f": {
+    "refs": [],
+    "file": "model.safetensors",
+    "sha256": "28f95e25b502a1fa9f1b671fea22758d93ee3bc23557bca82478db61b117a6be",
+    "bytes": 111307920,
+    "identical_local_folders": [
+     "models/convnext_robust",
+     "models/upload"
+    ]
+   },
+   "e4675bd220450bdf700b93214a8e98b85312fdb1": {
+    "refs": [],
+    "file": "model.safetensors",
+    "sha256": "58280bd44c4c2dea6b0ff6db4f86f306d0b5e260b6c557c6c9ad9aeb21b30525",
+    "bytes": 111307920,
+    "identical_local_folders": [
+     "models/convnext_crop_photos"
+    ]
+   }
+  },
+  "prithivMLmods/Deep-Fake-Detector-Model": {
+   "c5cb24c6a159dd2b57ca15c6a1065bd0ce8fa380": {
+    "refs": [
+     "main"
+    ],
+    "file": "model.safetensors",
+    "sha256": "3b01cae13bf09b60a11d64b4eb5f11892b5a0d561c4fa3162cf730149ab8fa89",
+    "bytes": 371567992,
+    "identical_local_folders": []
+   }
+  },
+  "umm-maybe/AI-image-detector": {
+   "2d342e5ebb6296e1a1d5ef574e5fb252c933c042": {
+    "refs": [
+     "refs/pr/4"
+    ],
+    "file": "model.safetensors",
+    "sha256": "aea31f822cb76aee2ee60950bc602dd4bf5ba5c4a444a27946a7da0017da72be",
+    "bytes": 347498816,
+    "identical_local_folders": []
+   },
+   "c7e223baf11bc40528af364ba7bdea030ef42f9e": {
+    "refs": [
+     "main"
+    ],
+    "file": "pytorch_model.bin",
+    "sha256": "f4c14ed23eb1d65b1c6ca7b163f8f91bebcf3a4d8c275296c850c9f1bbd01daf",
+    "bytes": 347596479,
+    "identical_local_folders": []
+   }
+  }
+ }
+}

@@ -32,7 +32,7 @@ def analyse(image):
     kind, confidence = classify(image.convert("RGB").crop((left, top, left + w, top + h)))
     scores = {kind: confidence, "real" if kind == "ai" else "ai": 1 - confidence}
     answer = "a real photograph" if kind == "real" else "AI-generated"
-    note = f"**The detector judges this image to be {answer}** ({confidence:.0%} confidence)."
+    note = f"**The detector judges this image to be {answer}** (detector score {confidence:.0%}; this is not a probability)."
     if confidence < 0.75:
         note += "\n\nThis is a weak decision. Treat the image as undetermined."
     if (w, h) != (width, height):

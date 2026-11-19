@@ -5,19 +5,9 @@
   "max_megapixels": 4.61,
   "threads": 14
  },
- "cnn_final": {
-  "source": "mkk1135/ai-image-detector",
-  "hub_id": "mkk1135/ai-image-detector",
-  "created": "2026-11-18",
-  "modified": "2026-11-18",
-  "downloads_last_month": 46,
-  "likes": 0,
-  "licence": "cc-by-nc-sa-4.0",
-  "base_model": "facebook/convnext-tiny-224",
-  "card_words": 929,
-  "card_unfilled_fields": 0,
+ "cnn_s5": {
+  "source": "models/cnn_s5",
   "files": [
-   ".gitattributes",
    "README.md",
    "config.json",
    "model.safetensors",
@@ -40,8 +30,46 @@
   "preprocessor_size": {
    "shortest_edge": 224
   },
-  "cpu_mean_s": 3.071,
-  "cpu_max_s": 9.533
+  "cpu_mean_s": 2.091,
+  "cpu_max_s": 5.602
+ },
+ "cnn_final": {
+  "source": "models/convnext_robust",
+  "files": [
+   "config.json",
+   "model.safetensors",
+   "optimizer.pt",
+   "preprocessor_config.json",
+   "rng_state.pth",
+   "scaler.pt",
+   "scheduler.pt",
+   "trainer_state.json",
+   "training_args.bin"
+  ],
+  "weight_files": {
+   "model.safetensors": 111.3,
+   "optimizer.pt": 222.7,
+   "rng_state.pth": 0.0,
+   "scaler.pt": 0.0,
+   "scheduler.pt": 0.0,
+   "training_args.bin": 0.0
+  },
+  "safe_weights": true,
+  "weights_million": 27.8,
+  "architecture": "ConvNextForImageClassification",
+  "model_type": "convnext",
+  "image_size": 224,
+  "patch_size": 4,
+  "labels": [
+   "ai",
+   "real"
+  ],
+  "resizes_input": false,
+  "preprocessor_size": {
+   "shortest_edge": 224
+  },
+  "cpu_mean_s": 2.058,
+  "cpu_max_s": 5.417
  },
  "cnn_setting3": {
   "source": "models/convnext_crop_photos",
@@ -78,8 +106,8 @@
   "preprocessor_size": {
    "shortest_edge": 224
   },
-  "cpu_mean_s": 3.568,
-  "cpu_max_s": 9.603
+  "cpu_mean_s": 2.05,
+  "cpu_max_s": 5.619
  },
  "cnn_setting2": {
   "source": "models/convnext_crop",
@@ -116,8 +144,8 @@
   "preprocessor_size": {
    "shortest_edge": 224
   },
-  "cpu_mean_s": 3.606,
-  "cpu_max_s": 9.504
+  "cpu_mean_s": 2.029,
+  "cpu_max_s": 5.49
  },
  "cnn_first": {
   "source": "models/convnext_resize",
@@ -154,8 +182,8 @@
   "preprocessor_size": {
    "shortest_edge": 224
   },
-  "cpu_mean_s": 0.229,
-  "cpu_max_s": 0.355
+  "cpu_mean_s": 0.112,
+  "cpu_max_s": 0.22
  },
  "commfor": {
   "source": "OwensLab/commfor-model-384",
@@ -187,8 +215,8 @@
    "one output: generated"
   ],
   "resizes_input": true,
-  "cpu_mean_s": 0.329,
-  "cpu_max_s": 0.466
+  "cpu_mean_s": 0.202,
+  "cpu_max_s": 0.238
  },
  "ateeqq": {
   "source": "Ateeqq/ai-vs-human-image-detector",
@@ -228,8 +256,8 @@
    "height": 224,
    "width": 224
   },
-  "cpu_mean_s": 0.326,
-  "cpu_max_s": 0.457
+  "cpu_mean_s": 0.301,
+  "cpu_max_s": 0.38
  },
  "umm_maybe": {
   "source": "umm-maybe/AI-image-detector",
@@ -264,8 +292,8 @@
   ],
   "resizes_input": true,
   "preprocessor_size": 224,
-  "cpu_mean_s": 0.401,
-  "cpu_max_s": 0.505
+  "cpu_mean_s": 0.288,
+  "cpu_max_s": 0.399
  },
  "vit_baseline": {
   "source": "Manish18/deepfake-detection-model",
@@ -303,8 +331,8 @@
    "height": 224,
    "width": 224
   },
-  "cpu_mean_s": 0.292,
-  "cpu_max_s": 0.344
+  "cpu_mean_s": 0.247,
+  "cpu_max_s": 0.301
  },
  "siglip2_baseline": {
   "source": "prithivMLmods/Deep-Fake-Detector-Model",
@@ -370,34 +398,7 @@
    "height": 224,
    "width": 224
   },
-  "cpu_mean_s": 0.295,
-  "cpu_max_s": 0.484
- },
- "cnn_s5": {
-  "source": "models/cnn_s5",
-  "files": [
-   "config.json",
-   "model.safetensors",
-   "preprocessor_config.json"
-  ],
-  "weight_files": {
-   "model.safetensors": 111.3
-  },
-  "safe_weights": true,
-  "weights_million": 27.8,
-  "architecture": "ConvNextForImageClassification",
-  "model_type": "convnext",
-  "image_size": 224,
-  "patch_size": 4,
-  "labels": [
-   "ai",
-   "real"
-  ],
-  "resizes_input": false,
-  "preprocessor_size": {
-   "shortest_edge": 224
-  },
-  "cpu_mean_s": 3.757,
-  "cpu_max_s": 9.849
+  "cpu_mean_s": 0.299,
+  "cpu_max_s": 0.369
  }
 }

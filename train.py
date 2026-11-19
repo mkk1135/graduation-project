@@ -28,7 +28,7 @@ from transformers import (AutoImageProcessor, AutoModelForImageClassification,
 # Community Forensics (Park and Owens, CVPR 2025), small version: 278k real photographs
 # and 278k images from 4,782 generators, in 186 shards of 2,992 images each.
 DATASET = "OwensLab/CommunityForensics-Small"
-# Ten shards, about 15 GB: 17,500 generated and 12,000 real images.
+# Ten shards, about 15 GB: 17,584 generated and 11,968 real images.
 SHARDS = [
     52, 8, 65, 7, 12,  # generated: 377 community Stable Diffusion models (latent diffusion)
     83,                # generated: GLIDE and DeepFloyd IF (pixel diffusion), BigGAN

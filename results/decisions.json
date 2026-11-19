@@ -56,6 +56,24 @@
    "development_accuracy_at_0.5": 82.62,
    "development_accuracy": 85.95,
    "development_accuracy_jpeg90": 84.47
+  },
+  "cnn_s5_seed1_raw": {
+   "model": "cnn_s5_seed1_raw",
+   "threshold_on_ai_score": 0.3789,
+   "threshold_on_real_score": 0.6211,
+   "shift_of_real_logit": -0.49422,
+   "development_accuracy_at_0.5": 84.66,
+   "development_accuracy": 85.03,
+   "development_accuracy_jpeg90": 82.07
+  },
+  "cnn_s5_seed2_raw": {
+   "model": "cnn_s5_seed2_raw",
+   "threshold_on_ai_score": 0.29925,
+   "threshold_on_real_score": 0.70075,
+   "shift_of_real_logit": -0.850872,
+   "development_accuracy_at_0.5": 84.66,
+   "development_accuracy": 86.88,
+   "development_accuracy_jpeg90": 83.18
   }
  },
  "fusion": {

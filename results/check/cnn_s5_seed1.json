@@ -1,0 +1,17 @@
+{
+  "model": "models/cnn_s5_seed1",
+  "name": "cnn_s5_seed1",
+  "images": 157,
+  "tp": 64,
+  "fn": 5,
+  "fp": 15,
+  "tn": 73,
+  "accuracy": 87.26,
+  "precision": 81.01,
+  "recall": 92.75,
+  "f1": 86.49,
+  "accuracy_ci95": [
+    81.1,
+    91.6
+  ]
+}
