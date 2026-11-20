@@ -148,3 +148,18 @@ If no candidate is adopted, the two systems are the same and nothing is tested; 
 - **Forgetting.** Candidates A and B never see the old training data again; point 2 rejects a candidate that loses more than the stated margins on the old kinds.
 - **Size.** With 384 images per set, the 95% confidence interval of an accuracy is about ±4 to 5 points; differences between single training runs of one or two points are not meaningful (second round: standard deviation 1.3 points between seeds).
 - **Development data used repeatedly.** The five development sets have been scored many times; the choice among three candidates and the thresholds are tuned on them, so the development figures are optimistic. Only the new held-out sets measure the result.
+
+## Change of 21 November 2026, before any download or training
+
+The training set was reduced to about 5,000 images at the student's request; parts and rules unchanged, each part scaled proportionally, so that photographs and generated images stay about equal in number and every listed generator and subreddit is still represented. New counts (expected 4,941; download about 10 GB):
+
+| Part | New rule and count |
+|---|---|
+| Photographs of the `core` train split | all photographs of 42 row groups chosen at random (seed 2026): 780 LAION, 671 Pexels |
+| Other generators of the `core` train split | 350 generated images drawn at random (seed 2026) from the same 42 row groups (47 generators) |
+| API generators of the `core` train split | 700: GPT Image 1 245, Imagen 4 140, Nano Banana 2 140, Grok Imagine 70, FLUX 1.1 pro 35, Ideogram 3 35, Qwen-Image 35 |
+| `supplement_civitai` | 700, a fixed number per generator, each from the row groups where that generator is densest: ChatGPT Images 290, Google's Nano Banana 160, Grok Imagine 140, OpenAI's GPT-image-1 30, Google Imagen 4 20, Qwen Image (API) 20, Wan 2.7 Image 20, Ideogram 4 20 (27 row groups) |
+| `supplement_reddit`, AI subreddits | the first 750 images of the listed AI subreddits in the 16 row groups where they are densest |
+| `supplement_reddit`, photography subreddits | 90 of each of the 11 listed photography subreddits, from the row groups where that subreddit is densest: 990 |
+
+In all: 2,441 photographs and 2,500 generated images. Everything else (exclusions, candidates, decisions, held-out sets, scoring, comparisons) is unchanged.
