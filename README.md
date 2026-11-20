@@ -4,6 +4,7 @@ Graduation project (Bachelor of Cybersecurity). It fine-tunes a detector that te
 
 - Trained model: [mkk1135/ai-image-detector](https://huggingface.co/mkk1135/ai-image-detector)
 - Online demo (runs in your browser, the image stays on your device): [huggingface.co/spaces/mkk1135/ai-image-detector](https://huggingface.co/spaces/mkk1135/ai-image-detector)
+- Public page with the combined detector and a second opinion, until 29 November 2026 (the image is analysed on the server and deleted within two hours): [35-169-35-59.sslip.io](https://35-169-35-59.sslip.io)
 - Every number, by set, source and generator: [COMPARISON.md](COMPARISON.md)
 - How decisions were taken: [PROTOCOL.md](PROTOCOL.md)
 
@@ -69,6 +70,8 @@ The images themselves are not in this repository; `make_test_set.py` downloads t
 ## Try the detector
 
 **In the browser, with nothing to install:** open the [online demo](https://huggingface.co/spaces/mkk1135/ai-image-detector) and choose an image. The demo runs setting 5 (published) of the CNN alone, not the combination, inside your browser, so the image never leaves your device. The first visit downloads the detector (about 110 MB). Of an image larger than 1024 px the demo analyses only the central 1024 x 1024 px; run that way, setting 5 (published) scores 82.0% on the final test set (`results/final/crop1024/`), against 81.5% for whole images.
+
+**On a public server, until 29 November 2026:** [https://35-169-35-59.sslip.io](https://35-169-35-59.sslip.io) runs the combined detector (the page of `app.py` described below) on an Amazon Web Services server, together with a second opinion, and gives a firm answer only when both agree; otherwise it reports the image as undetermined. The second opinion is the published Ateeqq detector, run on the server; the page is also prepared for Claude Opus 5.5 on Amazon Bedrock, which AWS had not enabled for the account by 20 November 2026. Unlike the demo and the local page, this page sends the image to the server, where it is analysed and deleted within two hours, so do not upload private images. The page was set up after the evaluation (`deploy/aws-setup.sh`) and was not itself evaluated.
 
 **On your own computer:**
 
@@ -199,7 +202,7 @@ A GitHub workflow (`.github/workflows/checks.yml`) runs on every push and pull r
 - The sets are small. On the final test set the 95% confidence interval of the combination is 92.7 to 97.0%; the ChatGPT and Gemini set has 168 images and the Reddit set 120, so differences of a few points there are not meaningful.
 - The images from GPT Image 2 and 1.5 are images that users published, and the two collections of Gemini images are community datasets with short descriptions. In the Reddit set the class of an image is the kind of subreddit it was posted in, so some labels may be wrong.
 - **Very large images.** The CNN analyses images at their original resolution, and an image of more than 8 megapixels does not fit into the memory of the 8 GB GPU used. In the evaluation, of such an image the CNN analysed only the central part of at most 2048 x 2048 pixels (`fit` in `evaluate.py`); the published detectors shrink every image themselves and received the whole image, and in the combination only the CNN part was affected. The rule affected no image of the check set, the development test set or the final test set, one photograph of the ChatGPT and Gemini set and many of the Reddit images, most of them photographs (counts in [PROTOCOL.md](PROTOCOL.md)). The local interface is stricter: of any image wider or taller than 2048 px it analyses only the central 2048 x 2048 px, with both detectors. The browser demo analyses only the central 1024 x 1024 px.
-- The fine-tuned CNN needs about 2.1 seconds per image on a laptop processor (images of 1.8 megapixels on average).
+- The fine-tuned CNN needs about 2.1 seconds per image on a laptop processor (images of 1.75 megapixels on average).
 - Only one multimodal model was tested, once per image, and it saw JPEG copies with a longest side of at most 1568 px. Whether any test image was in the training data of Claude Sonnet 5.5 or of the published detectors is not known.
 - The published model is one of three training runs of setting 5 (seed 42, fixed in advance). The two repeated runs (seeds 1 and 2) were trained and scored after the final scoring, with the same code and rules; on the final test set the three runs range from 81.5% to 83.9% (mean 83.0%, standard deviation 1.3 points), so differences of one or two points between single runs are within the variation between runs. Three runs give only a rough estimate of that variation.
 - Partly synthetic images, edited photographs, screenshots, video and deliberate evasion were not tested.
