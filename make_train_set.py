@@ -176,7 +176,10 @@ def single_images(path, group, rows):
     small = pf.read_row_group(group, columns=["row_id", "image_sha256"]).to_pylist()
     pos, end, first, out, wanted = col.data_page_offset, col.data_page_offset + col.total_compressed_size, 0, {}, set(rows)
     while pos < end and len(out) < len(wanted):
-        header, length = thrift_struct(f.fetch(pos, 256))
+        try:
+            header, length = thrift_struct(f.fetch(pos, 256))
+        except IndexError:  # a header with statistics is longer
+            header, length = thrift_struct(f.fetch(pos, 65536))
         values, body_at, body_size = header[5][1], pos + length, header[3]  # data page: number of values; page size
         inside = [k for k in range(first, first + values) if k in wanted]
         if inside:

@@ -1,0 +1,22 @@
+part,file,row_group,row,row_id,sha256,class,generator,reason
+core photos Pexels,core/train-00010-of-00032-00013.parquet,5,33,openfake-a5df51d7823a2a494ba49324da43ecc6,e559afbbb32224ab3010be7737569be9a9f64eb2cebba8a554c3882d5fbb4b77,real,pexels,difference hash within 24 bits: chat3/real/docci_25.jpg
+core photos Pexels,core/train-00014-of-00032-00017.parquet,53,47,openfake-8194fa662744175922e8ff87d3665f1f,c6a1f890d432519b6e1a9ea68601df61bdba49198a638500aceb65afba8b2b1a,real,pexels,difference hash within 24 bits: chat3/real/docci_25.jpg
+core photos Pexels,core/train-00022-of-00032-00006.parquet,47,6,openfake-cac5ebaafb235a12f00b54c1db254864,9e93391422796b8cd13e624562fbad39861ebf53b93a0d0f74ccf2646027d876,real,pexels,difference hash within 24 bits: chat3/real/docci_25.jpg
+core other generators,core/train-00030-of-00032-00010.parquet,8,50,openfake-437accb89448e4ccc0c568775ed4a764,54f9a4346bdd3f1e8fac28cd897292c4037299f9ff68c558b504282c6b430a70,ai,nano-banana-2,over 20 MB
+core API generators,core/train-00001-of-00032-00000.parquet,19,43,openfake-ed315009607ebd3f438c97e26e6be9de,66db57af333ba9b501136030a1fa0e10331b253a82584099141b5432c2af0375,ai,nano-banana-2,over 20 MB
+core API generators,core/train-00005-of-00032-00003.parquet,20,52,openfake-d02af4629731fc70161322a40a729de0,cdd3868943266fdc1e601450bde3c3dc601fdb736843364cd8144da3039b107f,ai,nano-banana-2,over 20 MB
+core API generators,core/train-00006-of-00032-00010.parquet,32,3,openfake-4d87b9ca2fc2ecb1fdd56b6cae3e5135,b20e8eaca7806501a010df95c87d8d5c267633a21ebd44890fe6bf0c92729bdc,ai,nano-banana-2,over 20 MB
+core API generators,core/train-00008-of-00032-00001.parquet,5,30,openfake-89baf7ccea0df8ac06649fca802f1d87,b9378f9718fba1b7d6238ee6d729093009937578850d5b2400c0453f12982974,ai,nano-banana-2,over 20 MB
+core API generators,core/train-00010-of-00032-00012.parquet,55,26,openfake-675a57994c4046ea412bf279c4ffc97d,55c9b82b975ad051eb70f3464ee847d7ceb5f3f393cb2c786e31d28ebb6e126e,ai,nano-banana-2,over 20 MB
+core API generators,core/train-00012-of-00032-00015.parquet,17,35,openfake-6d2b893ea80c9a3eb9a281fdd2de54ce,96123ec2c8e03e20cc2714f415c80f80cb47a39c3b827eb0c9e9188c044d72cf,ai,nano-banana-2,over 20 MB
+core API generators,core/train-00013-of-00032-00014.parquet,4,26,openfake-a49533147b7b30edfb3f26a7973873fe,c6912f0baa2076be46cd649071997dc3d177231f64051b739afb02ebb61c9cb8,ai,nano-banana-2,over 20 MB
+core API generators,core/train-00019-of-00032-00004.parquet,13,55,openfake-4e1c67bd29ef0b49a7b10bfc96d75c26,ccdbca2de1f653858c129e4e1cdf4a700abc2bf97939f65c09113796c5e2ac9e,ai,nano-banana-2,over 20 MB
+core API generators,core/train-00021-of-00032-00005.parquet,23,71,openfake-cb2890c505c6a97a28420a5ef00351b5,34ff6655fc3f000a638049bd79dc0a6baf037402681a61822b7b5e01687ce8f4,ai,nano-banana-2,over 20 MB
+core API generators,core/train-00021-of-00032-00008.parquet,7,12,openfake-94eeda0fa7840309feb18587451407c2,c16cb7d6ae81b82433bd8306e8665eb6dc9d63e16435b1f93f7748c23a096e7f,ai,nano-banana-2,over 20 MB
+core API generators,core/train-00022-of-00032-00016.parquet,2,66,openfake-9371b087dcf97d6472ecb233d52935fd,ac3d4ab6261765243a60bc86bee00de827619104feb49eb21edbfb04e70906ca,ai,nano-banana-2,over 20 MB
+core API generators,core/train-00023-of-00032-00001.parquet,46,64,openfake-89190ceda9a09626b04b34ae0610ca3e,a08b45222df2c7f1e0a019168379b30eed255a6dc0832f6fe0d9c74f61092ad5,ai,nano-banana-2,over 20 MB
+core API generators,core/train-00023-of-00032-00003.parquet,38,37,openfake-7b2a6bef8f837350f0baa8ff8ef665c8,5d7f167e384394868973b42d7900b7ddd1ebe482c33e097d4d5d847fbd277883,ai,nano-banana-2,over 20 MB
+core API generators,core/train-00023-of-00032-00017.parquet,31,5,openfake-fafd03fca3a573b64e769f17f67ca1a5,79b9b7907a75f9e2ac15a5e485f0d1eef9b036d646b234c00d923ab709a26db1,ai,nano-banana-2,over 20 MB
+core API generators,core/train-00026-of-00032-00016.parquet,51,61,openfake-fd4e59eb03c3d9dfbbadbeafbc05e475,e4ae7a27aae70f10db91d5fd042d892c50e79982a9aaf59fc127c5afe9c3509f,ai,nano-banana-2,over 20 MB
+core API generators,core/train-00029-of-00032-00016.parquet,42,48,openfake-27921b7f8bbd27f69b9e787625aa6b12,7f86d4abae037a9f3701d85b598d3961f89d95aee1b2d9045bab31895371fc31,ai,nano-banana-2,over 20 MB
+Reddit AI subreddits,supplement/reddit/2026-11/supplement_reddit-2026-11-00017.parquet,15,98,supplement_reddit/616fdf7714bc9bcd6259439e,7dc6d735365c29b5fc9e8c337434df617c32d8df4adf8afa0a1556c2061a0fec,ai,genaigallery,difference hash within 24 bits: wild3/ai/reddit-ai_159.jpg
