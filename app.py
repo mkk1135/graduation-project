@@ -26,7 +26,7 @@ else:
 HOSTED = bool(os.environ.get("SPACE_ID") or os.environ.get("DETECTOR_PUBLIC"))  # DETECTOR_PUBLIC: set by deploy/aws-setup.sh
 WHERE = ("on the server that runs this page, and this page deletes it within two hours. Do not upload private images"
          if HOSTED else "on this computer and is not sent anywhere")
-if second:
+if second and os.environ["SECOND_OPINION_MODEL"].startswith("anthropic."):  # Claude: the image leaves the server
     WHERE = (f"on the server that runs this page and, for a second opinion, by {SECOND_NAME} on Amazon Bedrock (AWS). "
              "This page deletes it within two hours. Do not upload private images")
 # Measured on the held-out sets (results/final, results/chat, results/wild; see COMPARISON.md).
@@ -60,7 +60,7 @@ def analyse(image):
     if verdict != "disagree" and confidence < 0.75:
         note += "\n\nThe detector's decision is weak. Treat the image as undetermined."
     if claude:
-        note += f"\n\n{SECOND_NAME}: \"{reason}\""
+        note += f"\n\nSecond opinion ({SECOND_NAME}): {reason}"
     elif second:
         note += f"\n\nNo second opinion: {reason}."
     if (w, h) != (width, height):
@@ -76,7 +76,7 @@ demo = gr.Interface(
     description=(
         f"Upload an image to check whether it is a real photograph or AI-generated. The image is analysed {WHERE}.\n\n"
         + (f"The answer is firm only when the detector and {SECOND_NAME} agree; otherwise the image is reported as undetermined. "
-           f"{SECOND_NAME}'s answer is a second opinion: the figures below are for the detector alone.\n\n" if second else "")
+           f"The second opinion comes from {SECOND_NAME}; the figures below are for the detector alone.\n\n" if second else "")
         + f"The answer is an indication, not proof. {MEASURED}"
     ),
     flagging_mode="never",

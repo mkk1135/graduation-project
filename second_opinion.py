@@ -31,8 +31,19 @@ def jpeg(image, longest=1568):
 
 
 def classifier(model=None, region=None):
-    """Returns a function: PIL image -> ("ai" or "real", reason), or (None, why there is no answer)."""
-    model = model or os.environ["SECOND_OPINION_MODEL"]  # e.g. anthropic.claude-opus-5-5
+    """Returns a function: PIL image -> ("ai" or "real", reason), or (None, why there is no answer).
+    model: a Claude model on Amazon Bedrock (anthropic.claude-opus-5-5), or one of the published detectors scored by
+    evaluate.py (e.g. Ateeqq/ai-vs-human-image-detector), which then runs on this server exactly as it was evaluated."""
+    model = model or os.environ["SECOND_OPINION_MODEL"]
+    if not model.startswith("anthropic."):
+        from evaluate import load
+        detect = load(model)
+
+        def run(image):
+            kind, score = detect(image)
+            return kind, f"detector score {score:.0%}"
+
+        return run
     client = AnthropicBedrockMantle(aws_region=region or os.environ.get("AWS_REGION", "us-east-1"), max_retries=1, timeout=90,
                                     middleware=[BetaRefusalFallbackMiddleware([{"model": "anthropic.claude-opus-4-8"}])])
     used = {}  # calls per day, counted in this process
