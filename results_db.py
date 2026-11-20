@@ -24,7 +24,9 @@ from pathlib import Path
 DB = Path("results/results.db")
 SETS = {"pilot": ("results/test_set.csv", "results"), "check": ("results/check/check_set.csv", "results/check"),
         "main": ("results/main/main_set.csv", "results/main"), "final": ("results/final/final_set.csv", "results/final"),
-        "chat": ("results/chat/chat_set.csv", "results/chat"), "wild": ("results/wild/wild_set.csv", "results/wild")}
+        "chat": ("results/chat/chat_set.csv", "results/chat"), "wild": ("results/wild/wild_set.csv", "results/wild"),
+        # third round: the held-out sets (PROTOCOL.md); the five sets above are its development data
+        **{s: (f"results/{s}/{s}_set.csv", f"results/{s}") for s in ("final3", "chat3", "control3", "wild3")}}
 # Historical name: "cnn_final" is the CNN of training setting 4, the final model of the FIRST round (published until the
 # second round, folder models/convnext_robust, Hub tag round-1). It has nothing to do with the final test set
 # (results/final); the published CNN of the second round is "cnn_s5". The name is kept because the result files use it.
@@ -50,6 +52,18 @@ MODELS = {  # name: (label, kind, training data as stated by its publisher)
     "cnn_setting3": ("CNN of this project, setting 3", "this project", "as setting 4, without blur and noise"),
     "cnn_setting2": ("CNN of this project, setting 2", "this project", "23,755 images: 8 shards of Community Forensics-Small; crops at original resolution"),
     "cnn_first": ("CNN of this project, first attempt (setting 1)", "this project", "23,755 images: 8 shards of Community Forensics-Small; whole images shrunk to 224 px"),
+    **{f"r3_{c}_raw": (f"CNN of this project, third round, candidate {c} before the threshold", "this project", what + "; default threshold of 50%")
+       for c, what in (("A", "setting 5 trained further on 4,920 new OpenFake images, 2 epochs, learning rate 1e-5"),
+                       ("B", "as candidate A, with the processing of a sharing platform in the augmentation"),
+                       ("C", "the base network trained on the 4,920 new OpenFake images only, 3 epochs, learning rate 5e-5"))},
+    **{f"r3_{c}": (f"CNN of this project, third round, candidate {c}", "this project",
+                   f"candidate {c}, decision threshold chosen on the 1,213 development images of the third round") for c in "ABC"},
+    "cnn_r3": ("CNN of this project, third round (adopted candidate)", "this project",
+               "the candidate adopted by the rule of the third round, its threshold built in"),
+    "fusion3": ("Combination of the third round: CNN of this project and Community Forensics detector", "this project",
+                "weighted mean of the two detectors' scores; weight and threshold chosen on the development data of the third round"),
+    "commfor_tuned3": ("Community Forensics detector, threshold tuned on the development images of the third round", "published detector, tuned",
+                       "as the published detector; only its decision threshold was chosen on the 1,213 development images of the third round"),
     "ateeqq": ("Ateeqq SigLIP 2 detector", "published detector", "card: 60,000 AI-generated and 60,000 human images; card reports 99.2% on its own test split"),
     "umm_maybe": ("umm-maybe Swin detector", "published detector", "card: made in October 2022 for artistic images, 'not a deepfake photo detector'"),
     "vit_baseline": ("Manish18 ViT detector", "published detector", "not stated: the model card is an unfilled template"),
@@ -59,7 +73,8 @@ DIAGNOSED = {"Setting 1": "cnn_first", "Setting 2": "cnn_setting2", "Setting 3":
              "Setting 5": "cnn_s5_raw", "Setting 5 with tuned threshold": "cnn_s5", "Setting 4 with tuned threshold": "cnn_final_tuned",
              "OwensLab/commfor-model-384": "commfor", "Ateeqq/ai-vs-human-image-detector": "ateeqq",
              "umm-maybe/AI-image-detector": "umm_maybe", "Manish18/deepfake-detection-model": "vit_baseline",
-             "prithivMLmods/Deep-Fake-Detector-Model": "siglip2_baseline"}  # headings in results/check/diagnosis*.txt
+             "prithivMLmods/Deep-Fake-Detector-Model": "siglip2_baseline",
+             **{f"checkpoints/r3_{c}": f"r3_{c}_raw" for c in "ABC"}}  # headings in results/check/diagnosis*.txt
 SCHEMA = """
 CREATE TABLE images (set_name TEXT, file TEXT, class TEXT, source_group TEXT, generator TEXT, author TEXT, licence TEXT, url TEXT,
                      PRIMARY KEY (set_name, file));

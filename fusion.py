@@ -19,13 +19,14 @@ def answer(p, threshold):
     return ("ai", p) if p >= 0.5 else ("real", 1 - p)
 
 
-def classifier(device="cpu", cnn=CNN):
-    """Returns a function: PIL image -> ("real" or "ai", score). The score is the probability of the class given."""
+def classifier(device="cpu", cnn=CNN, decision="fusion"):
+    """Returns a function: PIL image -> ("real" or "ai", score). The score is the probability of the class given.
+    decision: the record in results/decisions.json that holds the weight and threshold ("round3_fusion" for the third round)."""
     from transformers import pipeline  # imported here, so that answer() can be tested without PyTorch
 
     import commfor
 
-    chosen = json.loads(Path(__file__).with_name("results").joinpath("decisions.json").read_text())["fusion"]
+    chosen = json.loads(Path(__file__).with_name("results").joinpath("decisions.json").read_text())[decision]
     weight, threshold = chosen["weight_of_cnn"], chosen["threshold_on_ai_score"]
     own, other = pipeline("image-classification", model=cnn, device=device), commfor.classifier(OTHER, device)
 

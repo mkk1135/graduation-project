@@ -3,9 +3,11 @@
   python evaluate.py MODEL_ID --real data/main/real --ai data/main/ai --name short_name --out results/main
   python evaluate.py --chart   --out results/main      # bar chart of every model in that folder
   python evaluate.py --compare cnn_final --out results/main   # McNemar test of every model against one
+  python evaluate.py MODEL_ID --ai data/control3/ai --name short_name --out results/control3   # generated images only
 
 MODEL_ID is an image-classification model on the Hugging Face Hub (or a local folder), or
-OwensLab/commfor-model-384, or "fusion" (the combined detector, see fusion.py). "real" is the positive class.
+OwensLab/commfor-model-384, or "fusion" (the combined detector, see fusion.py; "fusion3:FOLDER" is the combination of
+the third round). "real" is the positive class.
 Set DETECTOR_DEVICE=cuda to use a GPU.
 """
 import argparse
@@ -95,9 +97,9 @@ assert [to_class(x) for x in ("REAL", "Fake", "hum", "artificial")] == ["real", 
 
 def load(model_id):
     """Returns a function: PIL image -> ("real" or "ai", score)."""
-    if model_id.startswith("fusion"):  # "fusion", or "fusion:FOLDER" with a local copy of the CNN
+    if model_id.startswith("fusion"):  # "fusion", or "fusion:FOLDER" with a local copy of the CNN; "fusion3:FOLDER": third round
         from fusion import CNN, classifier
-        return classifier(DEVICE, model_id.partition(":")[2] or CNN)
+        return classifier(DEVICE, model_id.partition(":")[2] or CNN, "round3_fusion" if model_id.startswith("fusion3") else "fusion")
     if model_id.startswith("OwensLab/commfor-model"):
         from commfor import classifier
         return classifier(model_id, DEVICE)
@@ -154,6 +156,8 @@ def evaluate(model_id, real_dir, ai_dir, name, jpeg=None, crop=None):
     classify = load(model_id)
     rows = []
     for truth, folder in (("real", real_dir), ("ai", ai_dir)):
+        if folder is None:  # a set of generated images only
+            continue
         files = sorted(p for p in Path(folder).iterdir() if p.suffix.lower() in IMAGE_TYPES)
         if not files:
             raise SystemExit(f"No images found in {folder}")
@@ -212,7 +216,7 @@ def compare(reference):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("model", nargs="?", help="model id")
-    parser.add_argument("--real", help="folder of real photographs")
+    parser.add_argument("--real", help="folder of real photographs (may be left out for a set of generated images only)")
     parser.add_argument("--ai", help="folder of AI-generated images")
     parser.add_argument("--name", help="short name used for the output files")
     parser.add_argument("--chart", action="store_true", help="draw the combined comparison chart")
@@ -226,7 +230,7 @@ if __name__ == "__main__":
         chart()
     elif args.compare:
         compare(args.compare)
-    elif args.model and args.real and args.ai and args.name:
+    elif args.model and args.ai and args.name:
         evaluate(args.model, args.real, args.ai, args.name, args.jpeg, args.crop)
     else:
-        parser.error("give MODEL --real DIR --ai DIR --name NAME, or --chart, or --compare NAME")
+        parser.error("give MODEL [--real DIR] --ai DIR --name NAME, or --chart, or --compare NAME")

@@ -45,3 +45,57 @@ def test_shift_of_the_real_logit_moves_the_models_own_answer_to_the_threshold(mo
     for p in (t - 0.001, t + 0.001):  # probability of "AI" just below and just above the threshold
         ai_logit, real_logit = math.log(p), math.log(1 - p)  # logits whose softmax gives p
         assert (ai_logit > real_logit + shift) == (p > t)
+
+
+# Third round (PROTOCOL.md, decision 2): a candidate qualifies with new >= 73.40, old >= 81.35, old AI >= 72.97 and
+# JPEG >= 74.67; among those the highest mean of old and new; ties: higher JPEG, then A before B before C.
+GOOD = {"new": 75.0, "old": 82.0, "old_ai": 74.0, "jpeg": 75.0}
+
+
+def candidate(**changes):
+    f = {**GOOD, **changes}
+    return {**f, "mean_old_new": (f["old"] + f["new"]) / 2}
+
+
+def test_the_limits_are_those_of_the_protocol():
+    assert decide.LIMITS3 == {"new": 73.40, "old": 81.35, "old_ai": 72.97, "jpeg": 74.67}
+
+
+def test_the_baseline_of_the_protocol_is_reproduced_from_the_database():
+    record, _ = decide.figures3("cnn_s5_raw")
+    assert round(record["threshold_on_ai_score"], 4) == 0.6594
+    assert {k: record[k] for k in ("old", "old_ai", "new", "jpeg")} == {"old": 83.35, "old_ai": 77.97, "new": 68.40, "jpeg": 76.67}
+
+
+@pytest.mark.parametrize("figure, at_limit, below", [
+    ("new", 73.40, 73.39), ("old", 81.35, 81.34), ("old_ai", 72.97, 72.96), ("jpeg", 74.67, 74.66)])
+def test_each_limit_is_inclusive_and_each_is_needed(figure, at_limit, below):
+    assert decide.qualifies(candidate(**{figure: at_limit}))
+    assert not decide.qualifies(candidate(**{figure: below}))
+
+
+def test_the_current_cnn_itself_would_not_qualify():
+    assert not decide.qualifies(candidate(new=68.40, old=83.35, old_ai=77.97, jpeg=76.67))
+
+
+def test_the_highest_mean_of_old_and_new_is_adopted():
+    assert decide.choose({"A": candidate(new=74.0), "B": candidate(new=80.0), "C": candidate(new=76.0)}) == "B"
+
+
+def test_a_candidate_that_forgets_the_old_kinds_is_not_adopted_however_good_on_the_new():
+    assert decide.choose({"A": candidate(new=74.0), "B": candidate(new=95.0, old_ai=70.0), "C": candidate(new=95.0, old=80.0)}) == "A"
+
+
+def test_ties_go_to_the_higher_jpeg_figure_then_to_the_order_a_b_c():
+    assert decide.choose({"A": candidate(jpeg=75.0), "B": candidate(jpeg=76.0), "C": candidate(jpeg=76.0)}) == "B"
+    assert decide.choose({"A": candidate(), "B": candidate(), "C": candidate()}) == "A"
+
+
+def test_no_candidate_qualifies_and_none_is_adopted():
+    assert decide.choose({"A": candidate(new=70.0), "B": candidate(jpeg=70.0), "C": candidate(old=80.0)}) is None
+
+
+def test_fusion_weight_by_the_mean_of_old_and_new_then_jpeg_then_the_smaller_weight():
+    tried = {0.25: {"mean_old_new": 80.0, "jpeg": 75.0}, 0.5: {"mean_old_new": 82.0, "jpeg": 70.0}, 0.75: {"mean_old_new": 82.0, "jpeg": 71.0}}
+    assert decide.pick_weight(tried) == 0.75
+    assert decide.pick_weight({0.25: {"mean_old_new": 82.0, "jpeg": 71.0}, 0.5: {"mean_old_new": 82.0, "jpeg": 71.0}}) == 0.25

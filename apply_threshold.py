@@ -16,7 +16,9 @@ from transformers import AutoImageProcessor, AutoModelForImageClassification
 
 if __name__ == "__main__":
     source, run, out = sys.argv[1:4]
-    chosen = json.loads(Path("results/decisions.json").read_text())["threshold"][run]
+    decisions = json.loads(Path("results/decisions.json").read_text())
+    chosen = decisions["threshold"].get(run) or next(  # a candidate of the third round: its threshold of decision 1
+        c for c in decisions["round3"]["candidates"].values() if c["model"] == run)
     model = AutoModelForImageClassification.from_pretrained(source).eval()
     ai, real = model.config.label2id["ai"], model.config.label2id["real"]
     x = torch.rand(4, 3, 256, 256) * 4 - 2
