@@ -1,4 +1,4 @@
-name: checks
+name: checks and unit tests
 on: [push, pull_request]
 jobs:
   results:
@@ -16,3 +16,7 @@ jobs:
         run: |
           pip install pillow
           python -c "import evaluate, decide, results_db, sys; assert 'torch' not in sys.modules; print('self-checks passed')"
+      - name: Run the unit tests (tests/, pytest; CPU only, no model is downloaded or loaded)
+        run: |
+          pip install pillow==13.0.0 pytest==9.2.0 anthropic==2.12.0
+          python -m pytest -v tests
