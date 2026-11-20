@@ -54,9 +54,11 @@ ReadWritePaths=/var/lib/detector
 WantedBy=multi-user.target
 EOF
 
-# Second opinion (second_opinion.py): the published Ateeqq detector, run on this server. Claude Opus 5.5 on Amazon
-# Bedrock is prepared: once AWS has enabled Bedrock for the account and the instance role may call the model
-# (bedrock-mantle:CreateInference), swap the two Environment lines below, then systemctl daemon-reload and restart.
+# Second opinion (second_opinion.py): the published Ateeqq detector, run on this server. Two Claude variants are
+# prepared (swap the Environment lines below, then systemctl daemon-reload and restart the service):
+#  - Claude API: key in /etc/detector/anthropic.env as ANTHROPIC_API_KEY=... (root only, mode 600; systemd passes it
+#    to the service), plus EnvironmentFile=/etc/detector/anthropic.env and SECOND_OPINION_MODEL=claude-opus-5-5;
+#  - Amazon Bedrock: once AWS has enabled Bedrock for the account and the instance role may call the model.
 "$APP/.venv/bin/pip" install --no-cache-dir "anthropic[bedrock]==2.12.0"
 mkdir -p /etc/systemd/system/detector.service.d
 cat > /etc/systemd/system/detector.service.d/second-opinion.conf <<'EOF'

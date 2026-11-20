@@ -1,9 +1,11 @@
-"""Second opinion on an image from Claude Opus 5.5 on Amazon Bedrock: real photograph or AI-generated?
+"""Second opinion on an image: real photograph or AI-generated? From Claude Opus 5.5 (Claude API or Amazon Bedrock)
+or from a published detector run on the same server.
 
 app.py asks it when the environment variable SECOND_OPINION_MODEL is set (deploy/aws-setup.sh sets it on the AWS
-server) and shows a firm answer only when the detector and Claude agree. Claude gets the question of the blind test
-(results/blind_prompt.txt) and the whole image as a JPEG with its longest side at most 1568 px, as in that test; it is
-also asked for a one-sentence reason. Credentials come from the server's IAM role: no key is stored on the server.
+server) and shows a firm answer only when the detector and the second opinion agree. Claude gets the question of the
+blind test (results/blind_prompt.txt) and the whole image as a JPEG with its longest side at most 1568 px, as in that
+test; it is also asked for a one-sentence reason. Credentials: on the Claude API the key in ANTHROPIC_API_KEY (on the
+server read by systemd from a file only root can read); on Bedrock the server's IAM role.
 """
 import base64
 import io
@@ -32,10 +34,18 @@ def jpeg(image, longest=1568):
 
 def classifier(model=None, region=None):
     """Returns a function: PIL image -> ("ai" or "real", reason), or (None, why there is no answer).
-    model: a Claude model on Amazon Bedrock (anthropic.claude-opus-5-5), or one of the published detectors scored by
-    evaluate.py (e.g. Ateeqq/ai-vs-human-image-detector), which then runs on this server exactly as it was evaluated."""
+    model: a Claude model on the Claude API (claude-opus-5-5; key in ANTHROPIC_API_KEY), a Claude model on Amazon
+    Bedrock (anthropic.claude-opus-5-5; the server's IAM role), or one of the published detectors scored by evaluate.py
+    (e.g. Ateeqq/ai-vs-human-image-detector), which then runs on this server exactly as it was evaluated."""
     model = model or os.environ["SECOND_OPINION_MODEL"]
-    if not model.startswith("anthropic."):
+    if model.startswith("claude-"):  # refusals are retried by the API itself on a suitable model
+        client, extra = anthropic.Anthropic(max_retries=1, timeout=90), {
+            "betas": ["server-side-fallback-2026-07-01"], "fallbacks": "default"}
+    elif model.startswith("anthropic."):  # Bedrock has no server-side fallback: the SDK middleware retries refusals
+        client, extra = AnthropicBedrockMantle(
+            aws_region=region or os.environ.get("AWS_REGION", "us-east-1"), max_retries=1, timeout=90,
+            middleware=[BetaRefusalFallbackMiddleware([{"model": "anthropic.claude-opus-4-8"}])]), {}
+    else:
         from evaluate import load
         detect = load(model)
 
@@ -44,8 +54,6 @@ def classifier(model=None, region=None):
             return kind, f"detector score {score:.0%}"
 
         return run
-    client = AnthropicBedrockMantle(aws_region=region or os.environ.get("AWS_REGION", "us-east-1"), max_retries=1, timeout=90,
-                                    middleware=[BetaRefusalFallbackMiddleware([{"model": "anthropic.claude-opus-4-8"}])])
     used = {}  # calls per day, counted in this process
 
     def ask(image):
@@ -61,7 +69,7 @@ def classifier(model=None, region=None):
                 output_config={"effort": "low", "format": {"type": "json_schema", "schema": SCHEMA}},
                 messages=[{"role": "user", "content": [
                     {"type": "image", "source": {"type": "base64", "media_type": "image/jpeg", "data": jpeg(image)}},
-                    {"type": "text", "text": QUESTION}]}])
+                    {"type": "text", "text": QUESTION}]}], **extra)
         except anthropic.APIStatusError as error:
             return None, f"the request failed (HTTP {error.status_code})"
         except anthropic.APIConnectionError:

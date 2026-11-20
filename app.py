@@ -8,7 +8,7 @@ Community Forensics detector. The public demo is a separate page that runs the C
 visitor's browser: space/index.html.
 With the environment variable SECOND_OPINION_MODEL set (on the AWS server, see deploy/aws-setup.sh), a second
 classifier gives a second opinion (second_opinion.py) and the answer is firm only when both agree: a published
-detector run on the same server (the AWS server uses the Ateeqq detector), or Claude on Amazon Bedrock.
+detector run on the same server, or Claude Opus 5.5 on the Claude API or on Amazon Bedrock.
 """
 import os
 from concurrent.futures import ThreadPoolExecutor
@@ -27,8 +27,10 @@ else:
 HOSTED = bool(os.environ.get("SPACE_ID") or os.environ.get("DETECTOR_PUBLIC"))  # DETECTOR_PUBLIC: set by deploy/aws-setup.sh
 WHERE = ("on the server that runs this page, and this page deletes it within two hours. Do not upload private images"
          if HOSTED else "on this computer and is not sent anywhere")
-if second and os.environ["SECOND_OPINION_MODEL"].startswith("anthropic."):  # Claude: the image leaves the server
-    WHERE = (f"on the server that runs this page and, for a second opinion, by {SECOND_NAME} on Amazon Bedrock (AWS). "
+PROVIDERS = {"claude-": "Anthropic", "anthropic.": "Amazon Bedrock (AWS)"}  # Claude: the image leaves the server
+provider = next((name for prefix, name in PROVIDERS.items() if second and os.environ["SECOND_OPINION_MODEL"].startswith(prefix)), None)
+if provider:
+    WHERE = (f"on the server that runs this page and, for a second opinion, by {SECOND_NAME} at {provider}. "
              "This page deletes it within two hours. Do not upload private images")
 # Measured on the held-out sets (results/final, results/chat, results/wild; see COMPARISON.md).
 MEASURED = ("On a held-out test of 384 photographs and generated images of familiar kinds the detector was wrong for 18 images. "
