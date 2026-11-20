@@ -19,7 +19,8 @@ apt-get update
 apt-get install -y python3-venv git caddy
 
 useradd --system --home-dir "$DATA" --create-home --shell /usr/sbin/nologin detector
-git clone --depth 1 "$REPO" "$APP"
+git clone --depth 1 "$REPO" "$APP"   # the current main branch; the installed commit is written to the log:
+git -C "$APP" log --oneline -1
 python3 -m venv "$APP/.venv"
 # The versions with which the results were measured (requirements.lock.txt), CPU build of PyTorch.
 # torchvision 0.29.2 has no CPU build for Python 3.12; 0.29.1 is used (only for resizing and cropping in commfor.py).
@@ -53,13 +54,15 @@ ReadWritePaths=/var/lib/detector
 WantedBy=multi-user.target
 EOF
 
-# Second opinion from Claude Opus 5.5 on Amazon Bedrock (second_opinion.py). The instance role needs
-# bedrock-mantle:CreateInference for this model; without it the page shows the detector's answer alone.
+# Second opinion (second_opinion.py): the published Ateeqq detector, run on this server. Claude Opus 5.5 on Amazon
+# Bedrock is prepared: once AWS has enabled Bedrock for the account and the instance role may call the model
+# (bedrock-mantle:CreateInference), swap the two Environment lines below, then systemctl daemon-reload and restart.
 "$APP/.venv/bin/pip" install --no-cache-dir "anthropic[bedrock]==2.12.0"
 mkdir -p /etc/systemd/system/detector.service.d
 cat > /etc/systemd/system/detector.service.d/second-opinion.conf <<'EOF'
 [Service]
-Environment=AWS_REGION=us-east-1 SECOND_OPINION_MODEL=anthropic.claude-opus-5-5 "SECOND_OPINION_NAME=Claude Opus 5.5"
+# Environment=AWS_REGION=us-east-1 SECOND_OPINION_MODEL=anthropic.claude-opus-5-5 "SECOND_OPINION_NAME=Claude Opus 5.5"
+Environment=AWS_REGION=us-east-1 SECOND_OPINION_MODEL=Ateeqq/ai-vs-human-image-detector "SECOND_OPINION_NAME=the published Ateeqq detector"
 EOF
 
 cat > /usr/local/bin/detector-caddyfile <<'EOF'
