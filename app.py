@@ -6,8 +6,9 @@ The image is analysed on this computer. Nothing is uploaded elsewhere.
 The page runs the combined detector (fusion.py): the CNN of this project together with the published
 Community Forensics detector. The public demo is a separate page that runs the CNN alone inside the
 visitor's browser: space/index.html.
-With the environment variable SECOND_OPINION_MODEL set (on the AWS server, see deploy/aws-setup.sh), Claude on
-Amazon Bedrock gives a second opinion (second_opinion.py) and the answer is firm only when both agree.
+With the environment variable SECOND_OPINION_MODEL set (on the AWS server, see deploy/aws-setup.sh), a second
+classifier gives a second opinion (second_opinion.py) and the answer is firm only when both agree: a published
+detector run on the same server (the AWS server uses the Ateeqq detector), or Claude on Amazon Bedrock.
 """
 import os
 from concurrent.futures import ThreadPoolExecutor
@@ -85,4 +86,6 @@ demo = gr.Interface(
 )
 
 if __name__ == "__main__":
+    # one image at a time; on a public server at most 20 more may wait, further requests are refused instead of queued
+    demo.queue(default_concurrency_limit=1, max_size=20 if HOSTED else None)
     demo.launch(max_file_size="20mb" if HOSTED else None)
