@@ -1,0 +1,2 @@
+# Shell scripts run on Linux (deploy/aws-setup.sh is pasted as EC2 user data): Windows line endings would break them.
+*.sh text eol=lf

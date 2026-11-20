@@ -12,3 +12,6 @@ PROJECT_PROMPT.md
 *.log
 models/
 .claude/
+
+# Snapshots and logs of the Playwright browser tool
+.playwright-mcp/

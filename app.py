@@ -15,8 +15,9 @@ from fusion import classifier
 
 LARGEST = 2048  # of a bigger image only the central 2048 x 2048 pixels are analysed, at original resolution
 classify = classifier()
-WHERE = ("on Hugging Face's servers, and this page deletes it within two hours. Do not upload private images"
-         if os.environ.get("SPACE_ID") else "on this computer and is not sent anywhere")
+HOSTED = bool(os.environ.get("SPACE_ID") or os.environ.get("DETECTOR_PUBLIC"))  # DETECTOR_PUBLIC: set by deploy/aws-setup.sh
+WHERE = ("on the server that runs this page, and this page deletes it within two hours. Do not upload private images"
+         if HOSTED else "on this computer and is not sent anywhere")
 # Measured on the held-out sets (results/final, results/chat, results/wild; see COMPARISON.md).
 MEASURED = ("On a held-out test of 384 photographs and generated images of familiar kinds the detector was wrong for 18 images. "
             "On images from the newest generators and from social media it recognised fewer than half of the generated images, "
@@ -55,4 +56,4 @@ demo = gr.Interface(
 )
 
 if __name__ == "__main__":
-    demo.launch()
+    demo.launch(max_file_size="20mb" if HOSTED else None)

@@ -1,0 +1,94 @@
+#!/bin/bash
+# First-boot setup of the detector's web page (app.py) on an Amazon EC2 instance with Ubuntu Server 24.04.
+# Paste this file as "User data" when launching the instance; it runs once, as root. Log: /var/log/detector-setup.log
+#
+# Result: app.py runs as a service of an unprivileged user on 127.0.0.1:7860 (not reachable from outside).
+# Caddy answers on ports 80 and 443 and serves the page over HTTPS at https://<public-ip-with-dashes>.sslip.io
+# (sslip.io: a free DNS name that points to the IP address; Let's Encrypt certificate obtained by Caddy).
+# The hostname is re-derived from the instance's public IPv4 address at every boot, so after an Elastic IP is
+# associated a reboot is enough. No SSH: shell access through AWS Systems Manager Session Manager.
+set -euxo pipefail
+exec > >(tee -a /var/log/detector-setup.log) 2>&1
+
+REPO=https://github.com/mkk1135/graduation-project.git
+APP=/opt/detector    # code and Python environment, owned by root: the service cannot change them
+DATA=/var/lib/detector  # the service user's only writable place (model downloads)
+
+export DEBIAN_FRONTEND=noninteractive
+apt-get update
+apt-get install -y python3-venv git caddy
+
+useradd --system --home-dir "$DATA" --create-home --shell /usr/sbin/nologin detector
+git clone --depth 1 "$REPO" "$APP"
+python3 -m venv "$APP/.venv"
+# The versions with which the results were measured (requirements.lock.txt), CPU build of PyTorch.
+# torchvision 0.29.2 has no CPU build for Python 3.12; 0.29.1 is used (only for resizing and cropping in commfor.py).
+"$APP/.venv/bin/pip" install --no-cache-dir torch==2.15.0 torchvision==0.29.1 --index-url https://download.pytorch.org/whl/cpu
+"$APP/.venv/bin/pip" install --no-cache-dir transformers==5.23.0 gradio==6.32.0 timm==1.0.31 huggingface_hub==2.4.0 \
+    safetensors==0.8.0 pillow==13.0.0 numpy==2.5.4
+
+cat > /etc/systemd/system/detector.service <<'EOF'
+[Unit]
+Description=AI-generated image detector (app.py of github.com/mkk1135/graduation-project)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=detector
+WorkingDirectory=/var/lib/detector
+Environment=DETECTOR_PUBLIC=1 HF_HOME=/var/lib/detector/hf GRADIO_SERVER_NAME=127.0.0.1 GRADIO_SERVER_PORT=7860
+ExecStart=/opt/detector/.venv/bin/python /opt/detector/app.py
+Restart=on-failure
+RestartSec=10
+# Peak measured for a 2048 x 2048 image: about 2.1 GB. Above this limit the service is restarted, not the machine frozen.
+MemoryMax=3G
+NoNewPrivileges=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/var/lib/detector
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+cat > /usr/local/bin/detector-caddyfile <<'EOF'
+#!/bin/bash
+# Writes /etc/caddy/Caddyfile for this instance's current public IPv4 address (IMDSv2).
+set -euo pipefail
+token=$(curl -sf -X PUT http://169.254.169.254/latest/api/token -H "X-aws-ec2-metadata-token-ttl-seconds: 60")
+ip=$(curl -sf -H "X-aws-ec2-metadata-token: $token" http://169.254.169.254/latest/meta-data/public-ipv4)
+cat > /etc/caddy/Caddyfile <<CADDY
+${ip//./-}.sslip.io {
+	request_body {
+		max_size 25MB
+	}
+	header Strict-Transport-Security "max-age=31536000"
+	reverse_proxy 127.0.0.1:7860
+}
+CADDY
+EOF
+chmod 755 /usr/local/bin/detector-caddyfile
+
+cat > /etc/systemd/system/detector-caddyfile.service <<'EOF'
+[Unit]
+Description=Point Caddy at this instance's public IPv4 address
+Wants=network-online.target
+After=network-online.target
+Before=caddy.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/detector-caddyfile
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+systemctl daemon-reload
+systemctl enable --now detector.service
+systemctl enable detector-caddyfile.service
+systemctl start detector-caddyfile.service
+systemctl restart caddy
+echo "setup finished"
