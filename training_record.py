@@ -46,6 +46,9 @@ if __name__ == "__main__":
     parser.add_argument("--commit", help="commit whose train.py made the run (default: the train.py in this folder)")
     parser.add_argument("--images", type=int, default=36562, help="images after the NSFW filter (training + validation)")
     parser.add_argument("--note", help="anything else a reader must know about the run")
+    parser.add_argument("--epochs", type=int, help="if the run did not use the default of train.py")
+    parser.add_argument("--lr", type=float, help="if the run did not use the default of train.py")
+    parser.add_argument("--init", help="weights the run started from, if not the base model")
     args = parser.parse_args()
 
     source = (subprocess.run(["git", "show", f"{args.commit}:train.py"], capture_output=True, text=True, check=True).stdout
@@ -54,7 +57,7 @@ if __name__ == "__main__":
     state = json.loads(Path(args.state).read_text(encoding="utf-8"))
     validation = math.ceil(d["test_size"] * args.images)  # the rule of datasets' train_test_split
     training = args.images - validation
-    epochs = d["epochs"]
+    epochs = args.epochs or d["epochs"]
     # Checks against the trainer state: steps per epoch and the number of images evaluated.
     assert state["global_step"] == epochs * math.ceil(training / d["batch-size"]), (state["global_step"], training)
     for entry in state["log_history"]:
@@ -62,7 +65,9 @@ if __name__ == "__main__":
             assert round(entry["eval_runtime"] * entry["eval_samples_per_second"]) == validation, entry
     run = {"command": args.command, "code": f"train.py of commit {args.commit}" if args.commit else "train.py of this repository",
            "seed": args.seed, "setting": args.setting, "base_model": d["base"], "epochs": epochs, "batch_size": d["batch-size"],
-           "learning_rate": d["lr"], "crop": d["crop"], "training_images": training, "validation_images": validation}
+           "learning_rate": args.lr or d["lr"], "crop": d["crop"], "training_images": training, "validation_images": validation}
+    if args.init:
+        run["init"] = args.init
     if args.note:
         run["note"] = args.note
     record = {"run": run, "global_step": state["global_step"],

@@ -1,4 +1,4 @@
-"""Build one of the six evaluation sets and record what was drawn.
+"""Build one of the evaluation sets and record what was drawn.
 
   python make_test_set.py test     # 48 images:  pilot test set -> data/test,  results/test_set.csv
   python make_test_set.py check    # 157 images: check set      -> data/check, results/check/check_set.csv
@@ -6,6 +6,15 @@
   python make_test_set.py final    # 384 images: held-out final test set -> data/final, results/final/final_set.csv
   python make_test_set.py chat     # 168 images: ChatGPT and Gemini set -> data/chat, results/chat/chat_set.csv
   python make_test_set.py wild     # 120 images: Reddit set (images as shared online) -> data/wild, results/wild/wild_set.csv
+
+Third round (PROTOCOL.md), drawn in this order; the images are kept on drive D: (ROUND3_DIR, default D:/ai-detector-round3):
+  python make_test_set.py final3   # 384 images: final test set 3          -> D:/ai-detector-round3/data/final3
+  python make_test_set.py chat3    # 384 images: ChatGPT and Gemini set 3   -> D:/ai-detector-round3/data/chat3
+  python make_test_set.py control3 #  48 images: Seedream 5.0 control       -> D:/ai-detector-round3/data/control3
+  python make_test_set.py wild3    # 384 images: Reddit set 3               -> D:/ai-detector-round3/data/wild3
+  Their lists (results/<set>/<set>_set.csv) add the SHA-256 of every file and the folder it is kept in. Every OpenFake
+  row of an earlier set is skipped, and so is every image whose SHA-256 equals that of an image of an earlier set (or of
+  the round-3 training data, results/round3/train_set.csv, if it exists) or of an image already taken.
 
 Real photographs
   Wikimedia Commons: from each listed category, going back from the most recently added file, the
@@ -38,8 +47,10 @@ the day it is run, so an existing list is never overwritten.
 import argparse
 import collections
 import csv
+import hashlib
 import io
 import json
+import os
 import random
 import re
 import time
@@ -63,6 +74,10 @@ TEST_SHARDS = [38, 96, 99, 129, 136, 150, 169, 176, 189, 213, 237, 281, 294, 346
 CHECK_SHARDS = TEST_SHARDS + [47, 139, 175, 207, 282, 330, 341, 384]                             # 300 MB more
 MAIN_SHARDS = CHECK_SHARDS + [7, 21, 55, 71, 80, 214, 246, 311, 357, 381]                         # 735 MB more
 FINAL_SHARDS = MAIN_SHARDS + [84, 100, 205, 308]                                                  # 158 MB more
+# Third round: 19 shards that no earlier set has read, the smallest that hold enough images of every generator (1.47 GB)
+FINAL3_SHARDS = [5, 17, 31, 46, 62, 86, 158, 173, 183, 191, 208, 217, 238, 253, 263, 284, 317, 360, 389]
+R3 = os.environ.get("ROUND3_DIR", "D:/ai-detector-round3")
+OLD_SETS = ["test", "check", "main", "final", "chat", "wild"]
 SETS = {
     "test": dict(
         root="data/test", listing="results/test_set.csv", earlier=[],
@@ -91,7 +106,24 @@ SETS = {
              ("julienlucas/nanobanana-pro-dataset", "data/test-00000-of-00001.parquet", 0, "nano-banana-pro", 24)]),  # label 0 = generated
     "wild": dict(
         root="data/wild", listing="results/wild/wild_set.csv", earlier=[], openfake={"reddit-ai": 60, "reddit-real": 60}, openfake_split="reddit"),
+    "final3": dict(  # drawn like the final test set, from shards, categories and photographers not used before
+        root=f"{R3}/data/final3", listing="results/final3/final3_set.csv", earlier=OLD_SETS, may_fall_short=True, round3=True,
+        commons={**{c: 8 for c in ("lakes", "palaces", "gardens", "horses", "statues", "boats", "waterfalls", "towers")}, "plants": None},
+        commons_total=64, unsplash=64, open_images=64, seed=2028,
+        shards=FINAL3_SHARDS, generators={**{g: 12 for g in COMMERCIAL}, **{g: 6 for g in OPEN_SOURCE}}),
+    "chat3": dict(
+        root=f"{R3}/data/chat3", listing="results/chat3/chat3_set.csv", earlier=OLD_SETS + ["final3"], round3=True,
+        openfake={"gpt-image-2": 48, "gpt-image-1.5": 48, "docci": 96, "imagenet": 96},
+        hub=[("bitmind/nano-banana", "data/train-00001-of-00031.parquet", None, "nano-banana", 48),
+             ("julienlucas/nanobanana-pro-dataset", "data/test-00000-of-00001.parquet", 0, "nano-banana-pro", 48)]),
+    "control3": dict(  # a generator that no training data of any round contains
+        root=f"{R3}/data/control3", listing="results/control3/control3_set.csv", earlier=OLD_SETS + ["final3", "chat3"], round3=True,
+        openfake={"seedream-v5.0": 48}),
+    "wild3": dict(
+        root=f"{R3}/data/wild3", listing="results/wild3/wild3_set.csv", earlier=OLD_SETS + ["final3", "chat3", "control3"], round3=True,
+        openfake={"reddit-ai": 192, "reddit-real": 192}, openfake_split="reddit"),
 }
+TRAIN3 = Path("results/round3/train_set.csv")
 
 
 def download(url, path):
@@ -213,17 +245,20 @@ def extension(data):
     return {"JPEG": ".jpg", "PNG": ".png", "WEBP": ".webp"}[Image.open(io.BytesIO(data)).format]
 
 
-def hub_images(folder, repo, file, label, generator, wanted):
-    """The first images of one parquet file of a dataset on the Hub (those with the given label, if one is given)."""
-    sha, count = HfApi().dataset_info(repo).sha, 0  # the listing names the exact version that was read
-    with HfFileSystem().open(f"datasets/{repo}@{sha}/{file}") as f:
+def hub_images(folder, repo, file, label, generator, wanted, skip_sha=frozenset()):
+    """The first images of one parquet file of a dataset on the Hub (those with the given label, if one is given),
+    leaving out images whose SHA-256 is in skip_sha."""
+    sha, count, skip_sha = HfApi().dataset_info(repo).sha, 0, set(skip_sha)  # the listing names the exact version that was read
+    with HfFileSystem().open(f"datasets/{repo}@{sha}/{file}", block_size=2 ** 18) as f:
         parquet = pq.ParquetFile(f)
         for group in range(parquet.num_row_groups):
             if label is not None and label not in parquet.read_row_group(group, columns=["label"]).column("label").to_pylist():
                 continue  # nothing wanted in this group: its images are not downloaded
             for number, row in enumerate(parquet.read_row_group(group).to_pylist()):
-                if count < wanted and (label is None or row["label"] == label):
+                digest = hashlib.sha256(row["image"]["bytes"]).hexdigest()
+                if count < wanted and (label is None or row["label"] == label) and digest not in skip_sha:
                     count += 1
+                    skip_sha.add(digest)
                     name = f"{generator}_{count}{extension(row['image']['bytes'])}"
                     (folder / name).write_bytes(row["image"]["bytes"])
                     yield [f"ai/{name}", "ai", f"{repo} on the Hugging Face Hub", generator, "MIT",
@@ -233,25 +268,32 @@ def hub_images(folder, repo, file, label, generator, wanted):
     raise SystemExit(f"Only {count} of {wanted} images found in {repo}")
 
 
-def openfake_images(root, wanted, split="core"):
+def openfake_images(root, wanted, split="core", skip_ids=frozenset(), skip_sha=frozenset()):
     """The first images of each listed generator or photo source in a test split of OpenFake, in file order.
 
     In the reddit split the generator is unknown; its images are named reddit-ai and reddit-real after their label.
+    Video frames are left out, and so are rows whose row_id is in skip_ids or whose image SHA-256 is in skip_sha or
+    was taken already.
     """
-    fs, taken = HfFileSystem(), collections.Counter()
+    fs, taken, skip_sha = HfFileSystem(), collections.Counter(), set(skip_sha)
+
+    def usable(row):
+        return row["type"] != "video" and row["row_id"] not in skip_ids and row["image_sha256"] not in skip_sha
     name_of = (lambda row: "reddit-ai" if row["label"] == "fake" else "reddit-real") if split == "reddit" else (lambda row: row["model"])
     for path in sorted(fs.glob(f"datasets/ComplexDataLab/OpenFake@v2.1/{split}/test-*.parquet")):
-        with fs.open(path) as f:
+        with fs.open(path, block_size=2 ** 18) as f:
             parquet = pq.ParquetFile(f)
             for group in range(parquet.num_row_groups):
-                models = [name_of(row) for row in parquet.read_row_group(group, columns=["model", "label", "type"]).to_pylist() if row["type"] != "video"]
+                small = parquet.read_row_group(group, columns=["model", "label", "type", "row_id", "image_sha256"]).to_pylist()
+                models = [name_of(row) for row in small if usable(row)]
                 if not any(taken[m] < wanted.get(m, 0) for m in models):
                     continue  # nothing needed from this group: its images (about 100 MB) are not downloaded
-                for row in parquet.read_row_group(group, columns=["image", "label", "model", "type", "row_id"]).to_pylist():
+                for row in parquet.read_row_group(group, columns=["image", "label", "model", "type", "row_id", "image_sha256"]).to_pylist():
                     model = name_of(row)
-                    if taken[model] >= wanted.get(model, 0) or row["type"] == "video":  # no frames taken from videos
+                    if taken[model] >= wanted.get(model, 0) or not usable(row):
                         continue
                     taken[model] += 1
+                    skip_sha.add(row["image_sha256"])
                     kind = "ai" if row["label"] == "fake" else "real"
                     name = f"{model}_{taken[model]}{extension(row['image']['bytes'])}"
                     (root / kind / name).write_bytes(row["image"]["bytes"])
@@ -267,6 +309,19 @@ def listed(name):
     return list(csv.DictReader(open(SETS[name]["listing"], encoding="utf-8")))
 
 
+def sha256(path):
+    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
+def earlier_hashes(names):
+    """SHA-256 of every image of the named sets (from the list, or from the stored file) and of the round-3 training data."""
+    hashes = {row["sha256"] for row in csv.DictReader(open(TRAIN3, encoding="utf-8"))} if TRAIN3.exists() else set()
+    for name in names:
+        for row in listed(name):
+            hashes.add(row.get("sha256") or sha256(Path(SETS[name]["root"]) / row["file"]))
+    return hashes
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("set", choices=SETS)
@@ -277,14 +332,21 @@ if __name__ == "__main__":
     for sub in ("real", "ai"):
         (root / sub).mkdir(parents=True, exist_ok=True)
     earlier = [row for name in spec["earlier"] for row in listed(name)]
+    skip_ids = {m[1] for row in earlier if (m := re.search(r"\(row (openfake-[0-9a-f]+)\)", row["url"]))}
+    skip_sha = earlier_hashes(spec["earlier"]) if spec.get("round3") else set()
     rows = [*(ai_images(root / "ai", spec["shards"], spec["generators"], earlier) if "generators" in spec else []),
-            *(openfake_images(root, spec["openfake"], spec.get("openfake_split", "core")) if "openfake" in spec else []),
-            *(row for source in spec.get("hub", []) for row in hub_images(root / "ai", *source)),
+            *(openfake_images(root, spec["openfake"], spec.get("openfake_split", "core"), skip_ids, skip_sha) if "openfake" in spec else []),
+            *(row for source in spec.get("hub", []) for row in hub_images(root / "ai", *source, skip_sha=skip_sha)),
             *(unsplash_photos(root / "real", spec["unsplash"], spec.get("seed", 2026), earlier) if "unsplash" in spec else []),
             *(open_images_photos(root / "real", spec["open_images"], spec.get("seed", 2026), earlier) if "open_images" in spec else []),
             *(commons_photos(root / "real", spec["commons"], earlier, spec.get("may_fall_short", False), spec.get("commons_total"))
               if "commons" in spec else [])]
+    header = ["file", "class", "source", "author_or_generator", "licence", "url"]
+    if spec.get("round3"):  # the SHA-256 of every file, and where the images are kept
+        header, rows = header + ["sha256", "stored_in"], [[*row, sha256(root / row[0]), spec["root"]] for row in rows]
+        repeated = [h for h, n in collections.Counter(row[-2] for row in rows).items() if n > 1]
+        assert not repeated and not {row[-2] for row in rows} & skip_sha, "an image is repeated or was used before"
     listing.parent.mkdir(parents=True, exist_ok=True)
     with open(listing, "w", newline="", encoding="utf-8") as f:
-        csv.writer(f).writerows([["file", "class", "source", "author_or_generator", "licence", "url"], *rows])
+        csv.writer(f).writerows([header, *rows])
     print(f"wrote {len(rows)} images to {root} and {listing}:", dict(collections.Counter(row[1] for row in rows)))
