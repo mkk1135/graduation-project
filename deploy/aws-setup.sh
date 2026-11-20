@@ -53,6 +53,15 @@ ReadWritePaths=/var/lib/detector
 WantedBy=multi-user.target
 EOF
 
+# Second opinion from Claude Opus 5.5 on Amazon Bedrock (second_opinion.py). The instance role needs
+# bedrock-mantle:CreateInference for this model; without it the page shows the detector's answer alone.
+"$APP/.venv/bin/pip" install --no-cache-dir "anthropic[bedrock]==2.12.0"
+mkdir -p /etc/systemd/system/detector.service.d
+cat > /etc/systemd/system/detector.service.d/second-opinion.conf <<'EOF'
+[Service]
+Environment=AWS_REGION=us-east-1 SECOND_OPINION_MODEL=anthropic.claude-opus-5-5 "SECOND_OPINION_NAME=Claude Opus 5.5"
+EOF
+
 cat > /usr/local/bin/detector-caddyfile <<'EOF'
 #!/bin/bash
 # Writes /etc/caddy/Caddyfile for this instance's current public IPv4 address (IMDSv2).

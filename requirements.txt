@@ -16,6 +16,8 @@ timm
 gradio>=6.0
 
 # Optional, only for the extra tools:
+# second opinion from Claude on Amazon Bedrock in app.py (second_opinion.py; used on the AWS server)
+# anthropic[bedrock]>=2.12
 # export of the detector for the browser demo (export_onnx.py)
 # onnx
 # onnxscript
