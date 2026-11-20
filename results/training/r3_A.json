@@ -1,0 +1,98 @@
+{
+ "run": {
+  "command": "python train.py --data round3 --init checkpoints/s5_seed42/checkpoint-3087 --epochs 2 --lr 1e-5 --out D:/ai-detector-round3/checkpoints/A",
+  "code": "train.py of commit 18146cd",
+  "seed": 42,
+  "setting": 5,
+  "base_model": "facebook/convnext-tiny-224",
+  "epochs": 2,
+  "batch_size": 32,
+  "learning_rate": 1e-05,
+  "crop": 256,
+  "training_images": 4428,
+  "validation_images": 492,
+  "init": "checkpoints/s5_seed42/checkpoint-3087",
+  "note": "Candidate A of the third round (PROTOCOL.md): setting 5 trained further on the new data only (results/round3/train_set.csv, 4,920 images), augmentation of setting 5. Trained on 21 November 2026, before any scoring of this round. Not published."
+ },
+ "global_step": 278,
+ "log_history": [
+  {
+   "step": 25,
+   "epoch": 0.17985611510791366,
+   "loss": 1.0823056030273437,
+   "learning_rate": 9.136690647482015e-06
+  },
+  {
+   "step": 50,
+   "epoch": 0.3597122302158273,
+   "loss": 0.7917933654785156,
+   "learning_rate": 8.237410071942446e-06
+  },
+  {
+   "step": 75,
+   "epoch": 0.539568345323741,
+   "loss": 0.7568673706054687,
+   "learning_rate": 7.338129496402878e-06
+  },
+  {
+   "step": 100,
+   "epoch": 0.7194244604316546,
+   "loss": 0.6174400329589844,
+   "learning_rate": 6.43884892086331e-06
+  },
+  {
+   "step": 125,
+   "epoch": 0.8992805755395683,
+   "loss": 0.5883554458618164,
+   "learning_rate": 5.539568345323741e-06
+  },
+  {
+   "step": 139,
+   "epoch": 1.0,
+   "eval_accuracy": 0.8211382113821138,
+   "eval_loss": 0.4007743000984192
+  },
+  {
+   "step": 150,
+   "epoch": 1.079136690647482,
+   "loss": 0.5621036529541016,
+   "learning_rate": 4.640287769784173e-06
+  },
+  {
+   "step": 175,
+   "epoch": 1.2589928057553956,
+   "loss": 0.5330644989013672,
+   "learning_rate": 3.741007194244605e-06
+  },
+  {
+   "step": 200,
+   "epoch": 1.4388489208633093,
+   "loss": 0.5507842254638672,
+   "learning_rate": 2.8417266187050364e-06
+  },
+  {
+   "step": 225,
+   "epoch": 1.6187050359712232,
+   "loss": 0.5245531845092773,
+   "learning_rate": 1.942446043165468e-06
+  },
+  {
+   "step": 250,
+   "epoch": 1.7985611510791366,
+   "loss": 0.4777788543701172,
+   "learning_rate": 1.0431654676258993e-06
+  },
+  {
+   "step": 275,
+   "epoch": 1.9784172661870505,
+   "loss": 0.508132209777832,
+   "learning_rate": 1.4388489208633095e-07
+  },
+  {
+   "step": 278,
+   "epoch": 2.0,
+   "eval_accuracy": 0.8353658536585366,
+   "eval_loss": 0.38041338324546814
+  }
+ ]
+}

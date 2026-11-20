@@ -1,0 +1,133 @@
+{
+ "run": {
+  "command": "python train.py --data round3 --out D:/ai-detector-round3/checkpoints/C",
+  "code": "train.py of commit 18146cd",
+  "seed": 42,
+  "setting": 5,
+  "base_model": "facebook/convnext-tiny-224",
+  "epochs": 3,
+  "batch_size": 32,
+  "learning_rate": 5e-05,
+  "crop": 256,
+  "training_images": 4428,
+  "validation_images": 492,
+  "note": "Candidate C of the third round (PROTOCOL.md): the base network trained on the new data only (results/round3/train_set.csv, 4,920 images), augmentation of setting 5. Trained on 21 November 2026, before any scoring of this round. Not published."
+ },
+ "global_step": 417,
+ "log_history": [
+  {
+   "step": 25,
+   "epoch": 0.17985611510791366,
+   "loss": 0.6699609375,
+   "learning_rate": 4.7122302158273385e-05
+  },
+  {
+   "step": 50,
+   "epoch": 0.3597122302158273,
+   "loss": 0.610247802734375,
+   "learning_rate": 4.4124700239808154e-05
+  },
+  {
+   "step": 75,
+   "epoch": 0.539568345323741,
+   "loss": 0.5903710174560547,
+   "learning_rate": 4.112709832134293e-05
+  },
+  {
+   "step": 100,
+   "epoch": 0.7194244604316546,
+   "loss": 0.5548088073730468,
+   "learning_rate": 3.81294964028777e-05
+  },
+  {
+   "step": 125,
+   "epoch": 0.8992805755395683,
+   "loss": 0.5438152694702149,
+   "learning_rate": 3.513189448441247e-05
+  },
+  {
+   "step": 139,
+   "epoch": 1.0,
+   "eval_accuracy": 0.766260162601626,
+   "eval_loss": 0.48658809065818787
+  },
+  {
+   "step": 150,
+   "epoch": 1.079136690647482,
+   "loss": 0.5221480178833008,
+   "learning_rate": 3.2134292565947245e-05
+  },
+  {
+   "step": 175,
+   "epoch": 1.2589928057553956,
+   "loss": 0.4903649139404297,
+   "learning_rate": 2.9136690647482018e-05
+  },
+  {
+   "step": 200,
+   "epoch": 1.4388489208633093,
+   "loss": 0.47208709716796876,
+   "learning_rate": 2.6139088729016788e-05
+  },
+  {
+   "step": 225,
+   "epoch": 1.6187050359712232,
+   "loss": 0.4739475631713867,
+   "learning_rate": 2.314148681055156e-05
+  },
+  {
+   "step": 250,
+   "epoch": 1.7985611510791366,
+   "loss": 0.4715087890625,
+   "learning_rate": 2.0143884892086333e-05
+  },
+  {
+   "step": 275,
+   "epoch": 1.9784172661870505,
+   "loss": 0.4804706573486328,
+   "learning_rate": 1.7146282973621103e-05
+  },
+  {
+   "step": 278,
+   "epoch": 2.0,
+   "eval_accuracy": 0.7947154471544715,
+   "eval_loss": 0.4374656081199646
+  },
+  {
+   "step": 300,
+   "epoch": 2.158273381294964,
+   "loss": 0.461882209777832,
+   "learning_rate": 1.4148681055155877e-05
+  },
+  {
+   "step": 325,
+   "epoch": 2.338129496402878,
+   "loss": 0.4335986328125,
+   "learning_rate": 1.1151079136690648e-05
+  },
+  {
+   "step": 350,
+   "epoch": 2.5179856115107913,
+   "loss": 0.43277511596679685,
+   "learning_rate": 8.153477218225421e-06
+  },
+  {
+   "step": 375,
+   "epoch": 2.697841726618705,
+   "loss": 0.4400312042236328,
+   "learning_rate": 5.155875299760192e-06
+  },
+  {
+   "step": 400,
+   "epoch": 2.8776978417266186,
+   "loss": 0.44141334533691406,
+   "learning_rate": 2.1582733812949645e-06
+  },
+  {
+   "step": 417,
+   "epoch": 3.0,
+   "eval_accuracy": 0.806910569105691,
+   "eval_loss": 0.4086460769176483
+  }
+ ]
+}
