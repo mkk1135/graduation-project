@@ -62,7 +62,9 @@
      depending on its size and on your device.</p>
 </main>
 
-<script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.31.1/dist/ort.wasm.min.js"></script>
+<!-- Pinned version; the browser runs the script only if it is byte for byte the published file (Subresource Integrity). -->
+<script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.31.1/dist/ort.wasm.min.js"
+        integrity="sha384-tNxIwEqSlcdvKtUte98AsccPbDKM958LBXB/+3BLS42TTihXHKTWgdqPqXI/lot8" crossorigin="anonymous"></script>
 <script>
 "use strict";
 const LARGEST = 1024;  // of a bigger image only the central 1024 x 1024 pixels are analysed, at original resolution
