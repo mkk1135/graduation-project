@@ -1,17 +1,22 @@
-"""app.py: what the page shows, through analyse(), with a checker (the public page: one result, the checker's) and without
-(on this computer: the detector's answer), and the per-visitor limit of the public page. Gradio and the detectors are
-replaced by stand-ins before app.py is imported, so no model is loaded."""
+"""app.py: what the page shows, through analyse(), with a checker (the public page: a logo, one result, the checker's)
+and without (on this computer: the detector's answer), and the per-visitor limit of the public page. Gradio and the
+detectors are replaced by stand-ins before app.py is imported, so no model is loaded."""
+import base64
 import importlib
+import re
 import sys
 import threading
 from concurrent.futures import ThreadPoolExecutor
+from pathlib import Path
 from types import ModuleType, SimpleNamespace
+from xml.etree import ElementTree
 
 import pytest
 from PIL import Image
 
 import second_opinion
 
+ROOT = Path(__file__).resolve().parent.parent
 ATEEQQ = "Ateeqq/ai-vs-human-image-detector"  # SECOND_OPINION_MODEL and SECOND_OPINION_NAME on the AWS server
 ATEEQQ_NAME = "the published Ateeqq detector"
 UNAVAILABLE = "The result is unavailable right now. Please try again."
@@ -43,11 +48,27 @@ class Failing:
 @pytest.fixture
 def load_app(monkeypatch):
     def load(detector, checker=None, model=ATEEQQ, hosted=False, name=ATEEQQ_NAME):
-        gradio = ModuleType("gradio")
+        gradio, drawn = ModuleType("gradio"), []
+
+        class Interface:
+            """As gr.Interface (6.32): keeps its arguments and draws the title and the description first."""
+
+            def __init__(self, **kwargs):
+                self.__dict__.update(kwargs)
+                start = len(drawn)
+                self.render_title_description()
+                self.drawn = drawn[start:]  # what was drawn above the input and output components
+
+            def render_title_description(self):
+                gradio.Markdown(f"<h1 style='text-align: center; margin-bottom: 1rem'>{self.title}</h1>")
+                if self.description:
+                    gradio.Markdown(self.description)
+
         gradio.Image = lambda *args, **kwargs: "Image"
         gradio.Label = lambda *args, **kwargs: "Label"
-        gradio.Markdown = lambda *args, **kwargs: "Markdown"
-        gradio.Interface = lambda **kwargs: SimpleNamespace(**kwargs)  # app.demo holds the title, text and outputs
+        gradio.Markdown = lambda value=None, **kwargs: drawn.append(("Markdown", value, kwargs)) or "Markdown"
+        gradio.HTML = lambda value=None, **kwargs: drawn.append(("HTML", value, kwargs)) or "HTML"
+        gradio.Interface = Interface
         gradio.Request = object
         fusion = ModuleType("fusion")
         fusion.classifier = lambda: detector
@@ -111,13 +132,54 @@ def test_page_without_a_checker_keeps_its_text_and_two_outputs(load_app):
     assert "Do not upload private images" in load_app(StandIn("ai", 0.9), hosted=True).demo.description
 
 
-# With a checker (the public page): only the checker's result, as one line.
+def test_page_without_a_checker_has_no_logo_and_gradios_own_look(load_app):
+    for hosted in (False, True):
+        app = load_app(StandIn("ai", 0.9), hosted=hosted)
+        assert type(app.demo) is sys.modules["gradio"].Interface and app.LOOK == {}  # launch() gets no css or favicon
+        assert [kind for kind, _, _ in app.demo.drawn] == ["Markdown", "Markdown"]
+        assert app.demo.drawn[1] == ("Markdown", app.demo.description, {})
+
+
+# With a checker (the public page): a logo, the title, the tagline and only the checker's result, as one line.
 
 def test_page_with_a_checker_has_the_title_one_sentence_and_one_output(load_app):
     app = load_app(StandIn("ai", 0.9), StandIn(0.5, None), hosted=True)
     assert app.demo.title == "AI-Generated Image Detection System"
     assert app.demo.description == "Real or AI? Find out in seconds."
     assert app.demo.outputs == "Markdown"
+
+
+def test_public_page_draws_the_logo_above_the_title_and_the_tagline_and_no_other_text(load_app):
+    app = load_app(StandIn("ai", 0.9), StandIn(0.5, None), hosted=True)
+    local = load_app(StandIn("ai", 0.9), hosted=True)
+    (logo_kind, logo, logo_options), title, tagline = app.demo.drawn
+    assert logo_kind == "HTML" and logo_options == {"elem_id": "logo"}
+    assert title == local.demo.drawn[0]  # the title exactly as gr.Interface draws it
+    assert tagline == ("Markdown", "Real or AI? Find out in seconds.", {"elem_id": "tagline"})
+    text = [re.sub(r"<[^>]*>", "", value).strip() for _, value, _ in app.demo.drawn]
+    assert [t for t in text if t] == ["AI-Generated Image Detection System", "Real or AI? Find out in seconds."]
+    image_tag = re.fullmatch(r'<img src="data:image/svg\+xml;base64,([A-Za-z0-9+/=]+)" alt="([^"]+)" width="112" height="112">', logo)
+    assert base64.b64decode(image_tag[1]) == (ROOT / "assets" / "logo.svg").read_bytes()  # embedded, so the CSP allows it
+    assert image_tag[2] == "Logo: a magnifying glass over a photo and pixels"
+
+
+def test_public_page_look_goes_to_launch(load_app):
+    look = load_app(StandIn("ai", 0.9), StandIn(0.5, None), hosted=True).LOOK
+    assert set(look) == {"css", "favicon_path"} and look["favicon_path"] == str(ROOT / "assets" / "logo.svg")
+    css = look["css"]
+    assert "#logo img" in css and "#tagline p" in css and "font-weight: 800" in css and "clamp(" in css
+    assert "linear-gradient(90deg, #4338ca, #7c3aed, #db2777)" in css  # on the light theme
+    assert ".dark #tagline p" in css and "linear-gradient(90deg, #a5b4fc, #c4b5fd, #f9a8d4)" in css  # on the dark theme
+    assert "@supports" not in css  # Gradio drops @supports blocks from custom CSS
+
+
+def test_logo_is_a_text_free_svg_with_a_name():
+    svg = ElementTree.parse(ROOT / "assets" / "logo.svg").getroot()
+    ns = "{http://www.w3.org/2000/svg}"
+    assert svg.tag == f"{ns}svg" and svg.get("viewBox") == "0 0 64 64"
+    assert svg.get("role") == "img" and svg.get("aria-label") == svg.find(f"{ns}title").text
+    assert not list(svg.iter(f"{ns}text")) and not list(svg.iter(f"{ns}script")) and not list(svg.iter(f"{ns}image"))
+    assert "href" not in (ROOT / "assets" / "logo.svg").read_text(encoding="utf-8")  # nothing loaded from elsewhere
 
 
 def test_public_page_shows_only_the_checkers_score(load_app):

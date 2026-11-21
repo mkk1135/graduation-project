@@ -62,9 +62,10 @@ WantedBy=multi-user.target
 EOF
 
 # Checker (second_opinion.py): the published Ateeqq detector, run on this server at the same time as the detector.
-# With SECOND_OPINION_MODEL set, the page shows only the title, the sentence "Real or AI? Find out in seconds." and one
-# result: the checker's score for "AI-generated" in percent ("97% AI-generated"). The detector's answer is computed but
-# not shown; if the checker gives no result, the page says "The result is unavailable right now. Please try again."
+# With SECOND_OPINION_MODEL set, the page shows only a logo (assets/logo.svg, also the favicon), the title, the
+# sentence "Real or AI? Find out in seconds." in large type, and one result: the checker's score for "AI-generated"
+# in percent ("97% AI-generated"). The detector's answer is computed but not shown; if the checker gives no result,
+# the page says "The result is unavailable right now. Please try again."
 # The variable names SECOND_OPINION_* and the file second-opinion.conf are kept from the earlier second opinion;
 # SECOND_OPINION_NAME is no longer shown. second_opinion.py imports the anthropic package in any case. Two Claude
 # variants are prepared as checker; they give a class, not a number (swap the Environment lines below, then
