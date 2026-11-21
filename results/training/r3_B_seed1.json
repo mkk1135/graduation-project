@@ -1,0 +1,98 @@
+{
+ "run": {
+  "command": "python train.py --data round3 --init checkpoints/s5_seed42/checkpoint-3087 --epochs 2 --lr 1e-5 --social --seed 1 --out D:/ai-detector-round3/checkpoints/B_seed1",
+  "code": "train.py of commit 18146cd",
+  "seed": 1,
+  "setting": 5,
+  "base_model": "facebook/convnext-tiny-224",
+  "epochs": 2,
+  "batch_size": 32,
+  "learning_rate": 1e-05,
+  "crop": 256,
+  "training_images": 4428,
+  "validation_images": 492,
+  "init": "checkpoints/s5_seed42/checkpoint-3087",
+  "note": "Candidate B of the third round, trained again with seed 1 after the final scoring (PROTOCOL.md, decision 6), to measure the variation between runs. Not published."
+ },
+ "global_step": 278,
+ "log_history": [
+  {
+   "step": 25,
+   "epoch": 0.17985611510791366,
+   "loss": 1.0989199829101564,
+   "learning_rate": 9.136690647482015e-06
+  },
+  {
+   "step": 50,
+   "epoch": 0.3597122302158273,
+   "loss": 0.842633285522461,
+   "learning_rate": 8.237410071942446e-06
+  },
+  {
+   "step": 75,
+   "epoch": 0.539568345323741,
+   "loss": 0.74565185546875,
+   "learning_rate": 7.338129496402878e-06
+  },
+  {
+   "step": 100,
+   "epoch": 0.7194244604316546,
+   "loss": 0.6571846008300781,
+   "learning_rate": 6.43884892086331e-06
+  },
+  {
+   "step": 125,
+   "epoch": 0.8992805755395683,
+   "loss": 0.6558907318115235,
+   "learning_rate": 5.539568345323741e-06
+  },
+  {
+   "step": 139,
+   "epoch": 1.0,
+   "eval_accuracy": 0.8109756097560976,
+   "eval_loss": 0.4220407009124756
+  },
+  {
+   "step": 150,
+   "epoch": 1.079136690647482,
+   "loss": 0.5903642654418946,
+   "learning_rate": 4.640287769784173e-06
+  },
+  {
+   "step": 175,
+   "epoch": 1.2589928057553956,
+   "loss": 0.6165217590332032,
+   "learning_rate": 3.741007194244605e-06
+  },
+  {
+   "step": 200,
+   "epoch": 1.4388489208633093,
+   "loss": 0.5572942352294922,
+   "learning_rate": 2.8417266187050364e-06
+  },
+  {
+   "step": 225,
+   "epoch": 1.6187050359712232,
+   "loss": 0.5696018981933594,
+   "learning_rate": 1.942446043165468e-06
+  },
+  {
+   "step": 250,
+   "epoch": 1.7985611510791366,
+   "loss": 0.579059181213379,
+   "learning_rate": 1.0431654676258993e-06
+  },
+  {
+   "step": 275,
+   "epoch": 1.9784172661870505,
+   "loss": 0.5224471664428711,
+   "learning_rate": 1.4388489208633095e-07
+  },
+  {
+   "step": 278,
+   "epoch": 2.0,
+   "eval_accuracy": 0.8130081300813008,
+   "eval_loss": 0.4049760401248932
+  }
+ ]
+}
