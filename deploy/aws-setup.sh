@@ -12,6 +12,8 @@ set -euxo pipefail
 exec > >(tee -a /var/log/detector-setup.log) 2>&1
 
 REPO=https://github.com/mkk1135/graduation-project.git
+# The one commit that is installed (full SHA). Update it when redeploying a newer version of the code.
+COMMIT=e06be27fc3486932df5a30888c4b0e780f6b05e6
 APP=/opt/detector    # code and Python environment, owned by root: the service cannot change them
 DATA=/var/lib/detector  # the service user's only writable place (model downloads)
 
@@ -20,8 +22,11 @@ apt-get update
 apt-get install -y python3-venv git caddy
 
 useradd --system --home-dir "$DATA" --create-home --shell /usr/sbin/nologin detector
-git clone --depth 1 "$REPO" "$APP"   # the current main branch; the installed commit is written to the log:
-git -C "$APP" log --oneline -1
+git init -q "$APP"   # only commit $COMMIT, shallow and detached; the installed commit is written to the log:
+git -C "$APP" remote add origin "$REPO"
+git -C "$APP" fetch --depth 1 origin "$COMMIT"
+git -C "$APP" checkout --detach "$COMMIT"
+git -C "$APP" log -1 --format='installed commit %H %s'
 python3 -m venv "$APP/.venv"
 # The versions with which the results were measured (requirements.lock.txt), CPU build of PyTorch.
 # torchvision 0.29.2 has no CPU build for Python 3.12; 0.29.1 is used (only for resizing and cropping in commfor.py).
