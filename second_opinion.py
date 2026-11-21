@@ -1,11 +1,13 @@
-"""Second opinion on an image: real photograph or AI-generated? From Claude Opus 5.5 (Claude API or Amazon Bedrock)
-or from a published detector run on the same server.
+"""Checker of an image, shown on the page of app.py next to the detector's answer: a published detector run on the
+same server, which gives its score for "AI-generated", or Claude Opus 5.5 (Claude API or Amazon Bedrock), which gives
+a class (real photograph or AI-generated) and a one-sentence reason.
 
-app.py asks it when the environment variable SECOND_OPINION_MODEL is set (deploy/aws-setup.sh sets it on the AWS
-server) and shows a firm answer only when the detector and the second opinion agree. Claude gets the question of the
-blind test (results/blind_prompt.txt) and the whole image as a JPEG with its longest side at most 1568 px, as in that
-test; it is also asked for a one-sentence reason. Credentials: on the Claude API the key in ANTHROPIC_API_KEY (on the
-server read by systemd from a file only root can read); on Bedrock the server's IAM role.
+app.py runs it when the environment variable SECOND_OPINION_MODEL is set (deploy/aws-setup.sh sets it on the AWS
+server; the variable names are those of the earlier second opinion) and shows its result as a separate line that does
+not change the detector's answer. Claude gets the question of the blind test (results/blind_prompt.txt) and the whole
+image as a JPEG with its longest side at most 1568 px, as in that test; it is also asked for a one-sentence reason.
+Credentials: on the Claude API the key in ANTHROPIC_API_KEY (on the server read by systemd from a file only root can
+read); on Bedrock the server's IAM role.
 """
 import base64
 import io
@@ -33,7 +35,9 @@ def jpeg(image, longest=1568):
 
 
 def classifier(model=None, region=None):
-    """Returns a function: PIL image -> ("ai" or "real", reason), or (None, why there is no answer).
+    """Returns a function: PIL image -> (result, detail).
+    For a published detector: (its score for "AI-generated", from 0 to 1; None).
+    For Claude: ("ai" or "real", the reason given), or (None, why there is no answer).
     model: a Claude model on the Claude API (claude-opus-5-5; key in ANTHROPIC_API_KEY), a Claude model on Amazon
     Bedrock (anthropic.claude-opus-5-5; the server's IAM role), or one of the published detectors scored by evaluate.py
     (e.g. Ateeqq/ai-vs-human-image-detector), which then runs on this server exactly as it was evaluated."""
@@ -49,9 +53,10 @@ def classifier(model=None, region=None):
         from evaluate import load
         detect = load(model)
 
-        def run(image):
+        def run(image):  # load() gives the score of the class it chose; the Ateeqq detector has two classes,
+            # whose scores (softmax) sum to 1
             kind, score = detect(image)
-            return kind, f"detector score {score:.0%}"
+            return (score if kind == "ai" else 1 - score), None
 
         return run
     used = {}  # calls per day, counted in this process
@@ -59,7 +64,7 @@ def classifier(model=None, region=None):
     def ask(image):
         today = time.strftime("%Y-%m-%d")
         if used.get(today, 0) >= DAILY_LIMIT:
-            return None, "the daily limit of second opinions has been reached"
+            return None, "the daily limit of checks has been reached"
         if today not in used:
             used.clear()
         used[today] = used.get(today, 0) + 1
@@ -84,15 +89,3 @@ def classifier(model=None, region=None):
         return ("ai" if answer["answer"] == "AI-Generated" else "real"), answer["reason"].strip()
 
     return ask
-
-
-def combine(detector, claude):
-    """The page's verdict: firm only when both say the same. detector, claude: "ai", "real" or None (no answer)."""
-    if claude is None:
-        return "detector only"
-    return "agree" if detector == claude else "disagree"
-
-
-assert combine("ai", "ai") == combine("real", "real") == "agree"
-assert combine("ai", "real") == combine("real", "ai") == "disagree"
-assert combine("real", None) == "detector only"

@@ -1,5 +1,6 @@
-"""second_opinion.py: the agreement rule, the image sent to Claude, and how the answer is read. No request leaves the
-computer: the Claude client and the published detector are replaced by stand-ins."""
+"""second_opinion.py, the checker of the page: the score for "AI-generated" of a published detector, the image sent to
+Claude, and how Claude's answer is read. No request leaves the computer: the Claude client and the published detector
+are replaced by stand-ins."""
 import base64
 import io
 import json
@@ -10,17 +11,9 @@ from PIL import Image
 
 import evaluate
 import second_opinion
-from second_opinion import combine, jpeg
+from second_opinion import jpeg
 
 IMAGE = Image.new("RGB", (64, 64))
-
-
-@pytest.mark.parametrize("detector, other, verdict", [
-    ("ai", "ai", "agree"), ("real", "real", "agree"), ("ai", "real", "disagree"), ("real", "ai", "disagree"),
-    ("ai", None, "detector only"), ("real", None, "detector only"),
-])
-def test_verdict_is_firm_only_when_both_agree(detector, other, verdict):
-    assert combine(detector, other) == verdict
 
 
 @pytest.mark.parametrize("size, sent", [((4000, 3000), (1568, 1176)), ((1000, 3000), (523, 1568)), ((800, 600), (800, 600))])
@@ -72,9 +65,13 @@ def test_daily_limit_stops_the_paid_requests(claude, monkeypatch):
     monkeypatch.setattr(second_opinion, "DAILY_LIMIT", 2)
     ask, requests = claude(json.dumps({"answer": "Real", "reason": "Sharp detail."}))
     assert [ask(IMAGE)[0] for _ in range(3)] == ["real", "real", None] and len(requests) == 2
-    assert ask(IMAGE) == (None, "the daily limit of second opinions has been reached")
+    assert ask(IMAGE) == (None, "the daily limit of checks has been reached")
 
 
-def test_a_published_detector_as_second_opinion_reports_its_score(monkeypatch):
-    monkeypatch.setattr(evaluate, "load", lambda model: lambda image: ("ai", 0.934))
-    assert second_opinion.classifier("Ateeqq/ai-vs-human-image-detector")(IMAGE) == ("ai", "detector score 93%")
+@pytest.mark.parametrize("answer, ai", [(("ai", 0.934), 0.934), (("real", 0.9), 0.1), (("ai", 0.5), 0.5), (("real", 1.0), 0.0)])
+def test_a_published_detector_as_checker_gives_its_score_for_ai_generated(monkeypatch, answer, ai):
+    # evaluate.load gives the class the detector chose and the score of that class
+    loaded = []
+    monkeypatch.setattr(evaluate, "load", lambda model: loaded.append(model) or (lambda image: answer))
+    result, detail = second_opinion.classifier("Ateeqq/ai-vs-human-image-detector")(IMAGE)
+    assert result == pytest.approx(ai) and detail is None and loaded == ["Ateeqq/ai-vs-human-image-detector"]
