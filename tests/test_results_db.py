@@ -55,3 +55,13 @@ def test_prediction_files_and_their_conditions(tmp_path):
 def test_table_is_markdown_with_empty_cells_for_missing_values():
     assert table(["Approach", "AUC"], [["CNN", 0.9], ["Claude", None]]) == (
         "| Approach | AUC |\n|---|---|\n| CNN | 0.9 |\n| Claude |  |\n")
+
+
+def test_the_written_comparison_leaves_out_the_detector_of_the_public_page():
+    # it stays in the database (MODELS), but not in the models of the written tables, nor in the notes as written
+    assert "ateeqq" in results_db.MODELS and "ateeqq" not in results_db.SHOWN
+    notes = open("results/comparison_notes.md", encoding="utf-8").read()
+    written = results_db.without_hidden(notes)
+    assert "Ateeqq" in notes and "Ateeqq" not in written
+    assert "6. **Limits of the third round.**" in written and "7. **Limits of the third round.**" not in written
+    assert notes.count("\n") - written.count("\n") == 1  # one item of the notes is left out, nothing else

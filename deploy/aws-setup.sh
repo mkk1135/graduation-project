@@ -6,7 +6,7 @@
 # Caddy answers on ports 80 and 443 and serves the page over HTTPS at https://<public-ip-with-dashes>.sslip.io
 # (sslip.io: a free DNS name that points to the IP address; Let's Encrypt certificate obtained by Caddy), with security
 # headers and without a Server header. app.py analyses at most 20 images per visitor (IP address) in 10 minutes and
-# shows the detector's answer together with a separate check by the published Ateeqq detector (see "Checker" below).
+# shows as its only result the score of the published Ateeqq detector (see "Checker" below).
 # The hostname is re-derived from the instance's public IPv4 address at every boot, so after an Elastic IP is
 # associated a reboot is enough. No SSH: shell access through AWS Systems Manager Session Manager.
 set -euxo pipefail
@@ -62,12 +62,13 @@ WantedBy=multi-user.target
 EOF
 
 # Checker (second_opinion.py): the published Ateeqq detector, run on this server at the same time as the detector.
-# The page's answer is the detector's answer alone; below it, as a separate line, the page shows the checker's score
-# for "AI-generated" in percent ("Check by the published Ateeqq detector: 97% AI-generated"), which never changes the
-# answer. If the check fails, the answer is shown with a note that the check was unavailable. The variable names
-# SECOND_OPINION_* and the file second-opinion.conf are kept from the earlier second opinion. second_opinion.py imports
-# the anthropic package in any case. Two Claude variants are prepared as checker; they give a class and a reason, not a
-# number (swap the Environment lines below, then systemctl daemon-reload and restart the service):
+# With SECOND_OPINION_MODEL set, the page shows only the title, the sentence "Real or AI? Find out in seconds." and one
+# result: the checker's score for "AI-generated" in percent ("97% AI-generated"). The detector's answer is computed but
+# not shown; if the checker gives no result, the page says "The result is unavailable right now. Please try again."
+# The variable names SECOND_OPINION_* and the file second-opinion.conf are kept from the earlier second opinion;
+# SECOND_OPINION_NAME is no longer shown. second_opinion.py imports the anthropic package in any case. Two Claude
+# variants are prepared as checker; they give a class, not a number (swap the Environment lines below, then
+# systemctl daemon-reload and restart the service):
 #  - Claude API: key in /etc/detector/anthropic.env as ANTHROPIC_API_KEY=... (root only, mode 600; systemd passes it
 #    to the service), plus EnvironmentFile=/etc/detector/anthropic.env and SECOND_OPINION_MODEL=claude-opus-5-5;
 #  - Amazon Bedrock: once AWS has enabled Bedrock for the account and the instance role may call the model.

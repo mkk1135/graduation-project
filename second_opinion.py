@@ -1,11 +1,12 @@
-"""Checker of an image, shown on the page of app.py next to the detector's answer: a published detector run on the
-same server, which gives its score for "AI-generated", or Claude Opus 5.5 (Claude API or Amazon Bedrock), which gives
-a class (real photograph or AI-generated) and a one-sentence reason.
+"""Checker of an image, whose result is the one result of the page of app.py when it is configured: a published
+detector run on the same server, which gives its score for "AI-generated", or Claude Opus 5.5 (Claude API or Amazon
+Bedrock), which gives a class (real photograph or AI-generated) and a one-sentence reason (not shown on the page).
 
 app.py runs it when the environment variable SECOND_OPINION_MODEL is set (deploy/aws-setup.sh sets it on the AWS
-server; the variable names are those of the earlier second opinion) and shows its result as a separate line that does
-not change the detector's answer. Claude gets the question of the blind test (results/blind_prompt.txt) and the whole
-image as a JPEG with its longest side at most 1568 px, as in that test; it is also asked for a one-sentence reason.
+server; the variable names are those of the earlier second opinion), at the same time as the detector, and shows only
+its result; the detector's answer is computed but not shown. Claude gets the question of the blind test
+(results/blind_prompt.txt) and the whole image as a JPEG with its longest side at most 1568 px, as in that test; it is
+also asked for a one-sentence reason.
 Credentials: on the Claude API the key in ANTHROPIC_API_KEY (on the server read by systemd from a file only root can
 read); on Bedrock the server's IAM role.
 """

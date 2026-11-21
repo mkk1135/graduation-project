@@ -76,6 +76,33 @@ MODELS = {  # name: (label, kind, training data as stated by its publisher)
     "vit_baseline": ("Manish18 ViT detector", "published detector", "not stated: the model card is an unfilled template"),
     "siglip2_baseline": ("prithivMLmods SigLIP 2 detector", "published detector", "card: its own deepfake data; card reports 94.4% on its own test data"),
 }
+# Left out of what comparison() writes (COMPARISON.md and the results block of README.md), by the student's choice: the
+# published detector that the public page uses. It stays in the database and its result files in results/. The notes
+# (results/comparison_notes.md, unchanged) are written without the sentences about it: each pair is (text, written as).
+HIDDEN, HIDDEN_NAME = {"ateeqq"}, "Ateeqq"
+SHOWN = [m for m in MODELS if m not in HIDDEN]
+NOTES_WITHOUT_HIDDEN = [
+    ("6. **Second opinion.** The new combination and the Ateeqq detector agree on 74.5% of final test set 3, 72.7% of ChatGPT "
+     "and Gemini set 3 and 74.0% of Reddit set 3; where they agree the answer is right for 96.9%, 93.2% and 94.7% of the images.\n"
+     "7. **Limits of the third round.**", "6. **Limits of the third round.**"),
+    ("Claude Sonnet 5.5 is the most accurate (85.1%), followed by the Ateeqq detector (82.1%).",
+     "Claude Sonnet 5.5 is the most accurate (85.1%)."),
+    ("Claude Sonnet 5.5 is again the most accurate (96.7%), followed by the Ateeqq detector (83.3%) and setting 4 (first round) (79.2%).",
+     "Claude Sonnet 5.5 is again the most accurate (96.7%)."),
+]
+LEFT_OUT = ("One of the five published detectors that were evaluated, the one that the public page uses, is left out of these "
+            "tables; its predictions are in the database `results/results.db` and its result files in `results/`.")
+
+
+def without_hidden(text):
+    """The notes without the sentences about the hidden detector; stops if the notes changed, so that none is missed."""
+    for old, new in NOTES_WITHOUT_HIDDEN:
+        if old not in text:
+            raise SystemExit(f"results/comparison_notes.md changed: update NOTES_WITHOUT_HIDDEN in results_db.py ({old[:40]}...)")
+        text = text.replace(old, new)
+    return text
+
+
 DIAGNOSED = {"Setting 1": "cnn_first", "Setting 2": "cnn_setting2", "Setting 3": "cnn_setting3", "Setting 4": "cnn_final",
              "Setting 5": "cnn_s5_raw", "Setting 5 with tuned threshold": "cnn_s5", "Setting 4 with tuned threshold": "cnn_final_tuned",
              "OwensLab/commfor-model-384": "commfor", "Ateeqq/ai-vs-human-image-detector": "ateeqq",
@@ -278,29 +305,32 @@ def comparison(db):
         order = [m for m, in q("SELECT model FROM scores WHERE set_name=? AND condition='as downloaded' ORDER BY accuracy DESC", set_name)]
         return [m for m in order if m in models] + [m for m in MODELS if m in models and m not in order]
 
-    ranked = by_accuracy(primary, list(MODELS))
+    ranked = by_accuracy(primary, SHOWN)
     # From the counts, not from the view's accuracy: that is already rounded to two decimals (322/384 = 83.85), and
     # rounding it again would print 83.8% instead of 83.9%.
     cell = {(m, s, c): f"{percent(rc + ac, n)}% ({rc}/{ac})" for m, s, c, n, rc, ac in q("SELECT model, set_name, condition, images, real_correct, ai_correct FROM scores")}
     out = ["# Comparison of the approaches\n",
            "Written by `python results_db.py` from the database `results/results.db`, which holds every prediction of every "
            "approach on every evaluation image. Nothing here is typed by hand, except the notes at the end. The roles of the "
-           "sets and the rules by which decisions were taken are in [PROTOCOL.md](PROTOCOL.md).\n",
+           "sets and the rules by which decisions were taken are in [PROTOCOL.md](PROTOCOL.md). "
+           + LEFT_OUT.replace("these tables", "this comparison, and the notes at the end are shown without the sentences about it") + "\n",
            "## 1. What each model is\n",
            "From the files of each model (`python analyse_models.py`) and its page on the Hugging Face Hub.\n",
            table(["Approach", "Architecture", "Weights (million)", "File (MB)", "Safe file format", "Input", "Licence", "Published", "Downloads last month", "Model card"],
                  [[lab, arch, wm, mb, {1: "yes (safetensors)", 0: "**no (pickle)**"}.get(safe, ""), inp, lic or ("" if not hub else "none stated"), created, dl,
                    "" if words is None else f"{words} words" + (f", {unfilled} unfilled fields" if unfilled else "")]
-                  for lab, arch, wm, mb, safe, inp, lic, created, dl, words, unfilled, hub in q(
-                      "SELECT label, architecture, weights_million, weights_mb, safe_weights, input, licence, created, downloads_last_month, "
-                      "card_words, card_unfilled_fields, hub_id FROM models WHERE architecture IS NOT NULL ORDER BY kind DESC, weights_million")]),
+                  for model, lab, arch, wm, mb, safe, inp, lic, created, dl, words, unfilled, hub in q(
+                      "SELECT model, label, architecture, weights_million, weights_mb, safe_weights, input, licence, created, downloads_last_month, "
+                      "card_words, card_unfilled_fields, hub_id FROM models WHERE architecture IS NOT NULL ORDER BY kind DESC, weights_million")
+                  if model not in HIDDEN]),
            "What each publisher says about the training data:\n",
-           "\n".join(f"- **{lab}:** {training}." for lab, training in q("SELECT label, training FROM models ORDER BY kind DESC, label")) + "\n",
+           "\n".join(f"- **{lab}:** {training}." for model, lab, training in q("SELECT model, label, training FROM models ORDER BY kind DESC, label")
+                     if model not in HIDDEN) + "\n",
            "## 2. Accuracy on every set\n",
            "Percent of images classified correctly (real photographs correct / AI images correct). JPEG 90 = every image re-compressed first.\n"]
     held_out = []  # the held-out tables, for README.md
     for heading, sets, wanted in ACCURACY_TABLES:
-        models = [m for m in MODELS if wanted(m)]
+        models = [m for m in SHOWN if wanted(m)]
         columns = [(s, c, f"{title[s]} ({size[s]})" + ("" if c == "as downloaded" else ", JPEG 90")) for s in sets if s in size
                    for c in ("as downloaded", "jpeg90") if any((m, s, c) in have for m in models)]
         shown = [m for m in by_accuracy(sets[0], models) if any((m, s, c) in have for s, c, _ in columns)]
@@ -312,13 +342,15 @@ def comparison(db):
     text = readme.read_text(encoding="utf-8") if readme.exists() else ""
     if held_out and "<!-- results -->" in text:  # the README shows the held-out results of both rounds
         start, end = text.index("<!-- results -->"), text.index("<!-- /results -->")
-        readme.write_text(text[:start] + "<!-- results -->\n" + "\n".join(held_out) + text[end:], encoding="utf-8", newline="\n")
+        block = "\n".join(held_out + [LEFT_OUT + "\n"])
+        assert HIDDEN_NAME not in block
+        readme.write_text(text[:start] + "<!-- results -->\n" + block + text[end:], encoding="utf-8", newline="\n")
     sections = [s for s in ("final3", "chat3", "wild3", "control3", "final", "chat", "wild", "main") if any((m, s, "as downloaded") in have for m in MODELS)]
     for number, set_name in enumerate(sections, 3):
         out.append(f"## {number}. {title[set_name]}: images classified correctly, by source and generator\n")
         third = set_name.endswith("3")  # on the earlier sets only the models of the first two rounds (the candidates are in section 2)
         shown = [m for m, in q("SELECT model FROM scores WHERE set_name=? AND condition='as downloaded' ORDER BY accuracy DESC", set_name)
-                 if third or not third_round(m)]
+                 if (third or not third_round(m)) and m not in HIDDEN]
         kinds = q("SELECT class, generator, COUNT(*) FROM images WHERE set_name=? GROUP BY class, generator ORDER BY class DESC, COUNT(*) DESC, generator", set_name)
         got = {(m, g): c for m, g, c in q("SELECT model, generator, correct FROM by_generator WHERE set_name=? AND condition='as downloaded'", set_name)}
         groups = q("SELECT class, source_group, COUNT(*) FROM images WHERE set_name=? GROUP BY class, source_group ORDER BY class DESC, source_group", set_name)
@@ -334,7 +366,7 @@ def comparison(db):
         out.append("Images of the check set (69 real, 88 AI) still classified correctly after one processing step, as real / AI. "
                    "A detector that reads sharpness or cleanness instead of the way an image was made loses real photographs here.\n")
         cells = {(m, s): (r, a, rn + an) for m, s, r, rn, a, an in q("SELECT model, step, real_correct, real_images, ai_correct, ai_images FROM processing")}
-        tested = sorted({m for m, _ in cells}, key=lambda m: -sum(r + a for (mm, _), (r, a, _) in cells.items() if mm == m))
+        tested = sorted({m for m, _ in cells if m not in HIDDEN}, key=lambda m: -sum(r + a for (mm, _), (r, a, _) in cells.items() if mm == m))
         out.append(table(["Approach", *steps, "Mean accuracy"],
                          [[label[m], *(f"{cells[m, s][0]} / {cells[m, s][1]}" for s in steps),
                            f"{100 * sum(cells[m, s][0] + cells[m, s][1] for s in steps) / sum(cells[m, s][2] for s in steps):.1f}%"] for m in tested]))
@@ -356,7 +388,8 @@ def comparison(db):
     out.append(table(["Approach", "AUC", "Correct when the score is 0.9 or more", "Correct when the score is below 0.75", "Seconds per image (mean)", "Seconds (slowest image)"], rows))
     notes = Path("results/comparison_notes.md")
     if notes.exists():
-        out.append(notes.read_text(encoding="utf-8"))
+        out.append(without_hidden(notes.read_text(encoding="utf-8")))
+    assert HIDDEN_NAME not in "\n".join(out)
     Path("COMPARISON.md").write_text("\n".join(out), encoding="utf-8", newline="\n")
     print(f"wrote COMPARISON.md (final measurement: {title[primary].lower()})")
 
