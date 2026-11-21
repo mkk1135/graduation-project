@@ -58,6 +58,13 @@ MODELS = {  # name: (label, kind, training data as stated by its publisher)
                        ("C", "the base network trained on the 4,920 new OpenFake images only, 3 epochs, learning rate 5e-5"))},
     **{f"r3_{c}": (f"CNN of this project, third round, candidate {c}", "this project",
                    f"candidate {c}, decision threshold chosen on the 1,213 development images of the third round") for c in "ABC"},
+    **{f"r3_B_seed{s}_raw": (f"CNN of this project, third round, candidate B, run with seed {s}, before the threshold", "this project",
+                             "candidate B trained again with another seed; default threshold of 50%") for s in (1, 2)},
+    **{f"cnn_r3_seed{s}": (f"CNN of this project, third round, candidate B, run with seed {s}", "this project",
+                           "candidate B trained again with another seed, its threshold chosen on the development data and built in") for s in (1, 2)},
+    **{f"fusion3_seed{s}": (f"Combination of the third round with the run of seed {s}", "this project",
+                            "as the combination of the third round, with the CNN of the run of seed {s}; threshold chosen again on the development data".format(s=s))
+       for s in (1, 2)},
     "cnn_r3": ("CNN of this project, third round (adopted candidate)", "this project",
                "the candidate adopted by the rule of the third round, its threshold built in"),
     "fusion3": ("Combination of the third round: CNN of this project and Community Forensics detector", "this project",

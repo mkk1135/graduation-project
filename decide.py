@@ -8,6 +8,8 @@
 Third round (PROTOCOL.md, "Third round"): the five sets scored in the first two rounds are the development data.
   python decide.py round3         # decisions 1 and 2: thresholds of the current CNN and the candidates; which candidate
   python decide.py round3_fusion  # decision 4: combination of the adopted candidate (threshold built in) with Community Forensics
+  python decide.py round3_seeds         # decision 6: thresholds of the repeated runs of the adopted candidate (seeds 1 and 2)
+  python decide.py round3_seeds_fusion  # their combinations, with the weight of decision 4 and the threshold chosen again
 
 Rules 1 to 3 read only the check set and the development test set; the third-round rules read all five development sets.
 Run `python results_db.py` first.
@@ -184,10 +186,36 @@ def round3_fusion(cnn="cnn_r3", other="commfor"):
             "parts_alone": {m: {k: round(v, 2) for k, v in f.items()} for m, f in alone.items()}, "adopted": adopted}
 
 
+SEEDS = {"seed1": "r3_B_seed1_raw", "seed2": "r3_B_seed2_raw"}  # decision 6: candidate B trained again
+
+
+def round3_seeds():
+    """The threshold of each repeated run, chosen as for the candidates (decision 1), and its figures."""
+    assert json.loads(OUT.read_text())["round3"]["adopted"] == "B"
+    return {seed: {"model": model, **figures3(model)[0]} for seed, model in SEEDS.items()}
+
+
+def round3_seeds_fusion(other="commfor"):
+    """Each repeated run with its threshold built in (cnn_r3_seed1, cnn_r3_seed2), combined with Community Forensics with the
+    weight of decision 4, the threshold chosen again on the development data by rule 2, as for the adopted combination."""
+    w = json.loads(OUT.read_text())["round3_fusion"]["weight_of_cnn"]
+    out = {}
+    for seed in SEEDS:
+        cnn = f"cnn_r3_{seed}"
+        parts = {c: (dev3_scores(cnn, c), dev3_scores(other, c)) for c in ("as downloaded", "jpeg90")}
+        mixed = {c: {k: (s, cl, w * a[k][2] + (1 - w) * b[k][2]) for k, (s, cl, _) in a.items()} for c, (a, b) in parts.items()}
+        t = best_threshold({k: (cl, p) for k, (_, cl, p) in mixed["as downloaded"].items()})
+        exact = {"old": share(mixed["as downloaded"], t, OLD), "old_ai": share(mixed["as downloaded"], t, OLD, "ai"),
+                 "new": share(mixed["as downloaded"], t, NEW), "jpeg": share(mixed["jpeg90"], t)}
+        exact["mean_old_new"] = (exact["old"] + exact["new"]) / 2
+        out[seed] = {"cnn": cnn, "weight_of_cnn": w, "threshold_on_ai_score": round(t, 6), **{k: round(v, 2) for k, v in exact.items()}}
+    return out
+
+
 def check():
     recorded = json.loads(OUT.read_text())
     again = {"setting": setting, "threshold": lambda: {model: threshold(model) for model in recorded["threshold"]}, "fusion": fusion,
-             "round3": round3, "round3_fusion": round3_fusion}
+             "round3": round3, "round3_fusion": round3_fusion, "round3_seeds": round3_seeds, "round3_seeds_fusion": round3_seeds_fusion}
     for name, decision in recorded.items():
         assert json.loads(json.dumps(again[name]())) == decision, f"the decision '{name}' is not reproduced from the database"
     print("reproduced from the database:", ", ".join(recorded))
@@ -195,7 +223,8 @@ def check():
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("decision", choices=["setting", "threshold", "fusion", "round3", "round3_fusion", "check"])
+    parser.add_argument("decision", choices=["setting", "threshold", "fusion", "round3", "round3_fusion", "round3_seeds",
+                                             "round3_seeds_fusion", "check"])
     parser.add_argument("--model", default="cnn_s5_raw", help="for threshold: the run whose threshold is chosen")
     args = parser.parse_args()
     if args.decision == "check":
@@ -205,6 +234,7 @@ if __name__ == "__main__":
         decisions.setdefault("threshold", {})[args.model] = threshold(args.model)
         shown = decisions["threshold"][args.model]
     else:
-        shown = decisions[args.decision] = {"setting": setting, "fusion": fusion, "round3": round3, "round3_fusion": round3_fusion}[args.decision]()
+        shown = decisions[args.decision] = {"setting": setting, "fusion": fusion, "round3": round3, "round3_fusion": round3_fusion,
+                                            "round3_seeds": round3_seeds, "round3_seeds_fusion": round3_seeds_fusion}[args.decision]()
     OUT.write_text(json.dumps(decisions, indent=1))
     print(json.dumps(shown, indent=1))
