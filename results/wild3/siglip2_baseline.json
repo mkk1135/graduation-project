@@ -1,0 +1,17 @@
+{
+  "model": "prithivMLmods/Deep-Fake-Detector-Model",
+  "name": "siglip2_baseline",
+  "images": 384,
+  "tp": 76,
+  "fn": 116,
+  "fp": 93,
+  "tn": 99,
+  "accuracy": 45.57,
+  "precision": 44.97,
+  "recall": 39.58,
+  "f1": 42.11,
+  "accuracy_ci95": [
+    40.7,
+    50.6
+  ]
+}

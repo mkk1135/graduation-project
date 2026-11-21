@@ -1,0 +1,17 @@
+{
+  "model": "umm-maybe/AI-image-detector",
+  "name": "umm_maybe",
+  "images": 384,
+  "tp": 168,
+  "fn": 24,
+  "fp": 117,
+  "tn": 75,
+  "accuracy": 63.28,
+  "precision": 58.95,
+  "recall": 87.5,
+  "f1": 70.44,
+  "accuracy_ci95": [
+    58.4,
+    67.9
+  ]
+}

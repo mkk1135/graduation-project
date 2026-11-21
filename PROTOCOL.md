@@ -190,3 +190,26 @@ The rules were coded in `decide.py` and committed with tests (commit fbd0010) be
 5. **Repeated runs.** Candidate B is trained again with seeds 1 and 2 after the final scoring.
 
 As decided earlier, Nano Banana Pro image 15 of ChatGPT and Gemini set 3 and the three related Seedream 5.0 images stay in the held-out sets: their rules exclude identical files only. In the final scoring the published detectors are read from the same local copies (Hub revisions) as in the second round, without downloading.
+
+## Final scoring of the third round (21 November 2026)
+
+After the decisions above were committed (commit 6a47cc0), every approach named in the protocol was scored once on final test set 3, ChatGPT and Gemini set 3, the Seedream 5.0 control and Reddit set 3, as downloaded and after JPEG re-compression at quality 90 (`results/final3/`, `results/chat3/`, `results/control3/`, `results/wild3/`). The candidates received their thresholds of decision 1, and the Community Forensics detector its threshold of decision 4, from their stored scores (`rethreshold.py --round3`). Nothing was changed afterwards. Accuracy with its 95% Wilson interval; exact McNemar tests on the same images.
+
+**Primary comparisons**, the system of the third round (combination of candidate B and the Community Forensics detector) against that of the second round:
+
+| Images | Third round | Second round | Right only with the third / only with the second | p |
+|---|---|---|---|---|
+| ChatGPT and Gemini set 3 and Reddit set 3 (768) | 82.9% (80.1 to 85.4) | 73.7% (70.5 to 76.7) | 102 / 31 | 4.9e-10 |
+| The same, after JPEG 90 | 82.2% | 70.3% | 115 / 24 | 1.9e-15 |
+| Final test set 3 (384) | 92.4% (89.4 to 94.7) | 94.5% (91.8 to 96.4) | 6 / 14 | 0.115 |
+| The same, after JPEG 90 | 90.6% | 89.8% | 15 / 12 | 0.70 |
+
+The third round reached its aim on the new kinds of image (ChatGPT and Gemini set 3 81.8% against 75.5%; Reddit set 3 84.1% against 71.9%). On final test set 3 the new system is 2.1 points less accurate; the difference is not significant. It recognises more generated images there (93.2% against 90.6%) but accepts fewer photographs (91.7% against 98.4%: Open Images 59 against 64, Unsplash 60 against 63, Wikimedia Commons 57 against 62, of 64 each); in ChatGPT and Gemini set 3 it accepts 76 of 96 ImageNet photographs against 96.
+
+**Secondary measurements.**
+- The CNN alone (candidate B with its threshold) against setting 5 (published): final test set 3 82.6% against 82.8% (p = 1.0); ChatGPT and Gemini set 3 77.6% against 71.9% (p = 0.006); Reddit set 3 83.1% against 73.2% (p = 7e-8). Seedream 5.0 control, generated images recognised: 38 of 48 against 19 (combinations: 41 against 21).
+- Candidate C, which the rule rejected for forgetting, is the most accurate approach on ChatGPT and Gemini set 3 (89.1%) and Reddit set 3 (85.9%), and the least accurate CNN on final test set 3 (73.7%), as on the development data. Candidate A: 82.0%, 76.6% and 82.8%.
+- The Community Forensics detector with the threshold of decision 4: final test set 3 91.9%, ChatGPT and Gemini set 3 73.7%, Reddit set 3 69.0%. The Ateeqq detector: 77.3%, 81.0% and 82.0%, and 44 of the 48 Seedream 5.0 images.
+- Second opinion: the system of the third round and the Ateeqq detector agree on 74.5% of final test set 3, 72.7% of ChatGPT and Gemini set 3 and 74.0% of Reddit set 3; where they agree, the answer is right for 96.9%, 93.2% and 94.7% of the images (system of the second round: agreement 76.0%, 71.1%, 63.3%; right 97.3%, 89.7%, 92.6%).
+
+All figures, for every approach, set and condition, are in the result files and in `results/results.db`. Limits as stated in advance: the generators of ChatGPT and Gemini set 3 and the subreddits of Reddit set 3 are in the new training data, so these two sets measure new images of the kinds trained on; final test set 3 and the Seedream 5.0 control measure generators absent from all training data.

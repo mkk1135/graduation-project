@@ -1,0 +1,17 @@
+{
+  "model": "r3_B_raw, threshold 0.8072 on the 'AI' score (chosen on development data)",
+  "name": "r3_B",
+  "images": 384,
+  "tp": 183,
+  "fn": 9,
+  "fp": 56,
+  "tn": 136,
+  "accuracy": 83.07,
+  "precision": 76.57,
+  "recall": 95.31,
+  "f1": 84.92,
+  "accuracy_ci95": [
+    79.0,
+    86.5
+  ]
+}

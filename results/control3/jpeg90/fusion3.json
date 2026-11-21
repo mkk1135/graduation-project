@@ -1,0 +1,17 @@
+{
+  "model": "fusion3:models/cnn_r3",
+  "name": "fusion3",
+  "images": 48,
+  "tp": 0,
+  "fn": 0,
+  "fp": 6,
+  "tn": 42,
+  "accuracy": 87.5,
+  "precision": 0.0,
+  "recall": 0.0,
+  "f1": 0.0,
+  "accuracy_ci95": [
+    75.3,
+    94.1
+  ]
+}

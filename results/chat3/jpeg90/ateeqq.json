@@ -1,0 +1,17 @@
+{
+  "model": "Ateeqq/ai-vs-human-image-detector",
+  "name": "ateeqq",
+  "images": 384,
+  "tp": 156,
+  "fn": 36,
+  "fp": 39,
+  "tn": 153,
+  "accuracy": 80.47,
+  "precision": 80.0,
+  "recall": 81.25,
+  "f1": 80.62,
+  "accuracy_ci95": [
+    76.2,
+    84.1
+  ]
+}

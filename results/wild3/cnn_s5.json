@@ -1,0 +1,17 @@
+{
+  "model": "models/cnn_s5",
+  "name": "cnn_s5",
+  "images": 384,
+  "tp": 184,
+  "fn": 8,
+  "fp": 95,
+  "tn": 97,
+  "accuracy": 73.18,
+  "precision": 65.95,
+  "recall": 95.83,
+  "f1": 78.13,
+  "accuracy_ci95": [
+    68.5,
+    77.4
+  ]
+}
