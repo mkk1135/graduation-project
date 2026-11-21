@@ -1,15 +1,28 @@
+<div align="center">
+
 # AI-Generated Image Detection System
 
-Graduation project (Bachelor of Cybersecurity). It fine-tunes a detector that tells real photographs from AI-generated images, and measures it against five published detectors and a general-purpose multimodal model on the same documented images, with a held-out final test set and decision rules that were written down before that set was scored.
+*Graduation project (Bachelor of Cybersecurity).*
 
-- Trained model: [mkk1135/ai-image-detector](https://huggingface.co/mkk1135/ai-image-detector)
-- Online demo (runs in your browser, the image stays on your device): [huggingface.co/spaces/mkk1135/ai-image-detector](https://huggingface.co/spaces/mkk1135/ai-image-detector)
-- Public page, until 29 November 2026 (it shows the score of a published detector from the Hugging Face Hub; the image is analysed on the server and deleted within two hours): [35-169-35-59.sslip.io](https://35-169-35-59.sslip.io)
-- Every number, by set, source and generator: [COMPARISON.md](COMPARISON.md)
-- How decisions were taken: [PROTOCOL.md](PROTOCOL.md)
+[![checks](https://img.shields.io/github/actions/workflow/status/mkk1135/graduation-project/checks.yml?branch=main&label=checks)](https://github.com/mkk1135/graduation-project/actions/workflows/checks.yml) [![Python 3.13.2](https://img.shields.io/badge/python-3.13.2-3776AB?logo=python&logoColor=white)](requirements.lock.txt) [![Model licence: CC BY-NC-SA 4.0](https://img.shields.io/badge/model%20licence-CC%20BY--NC--SA%204.0-lightgrey)](#limits) [![Trained model: mkk1135/ai-image-detector](https://img.shields.io/badge/trained%20model-mkk1135%2Fai--image--detector-FFD21E?logo=huggingface&logoColor=black)](https://huggingface.co/mkk1135/ai-image-detector) [![Online demo: runs in your browser](https://img.shields.io/badge/online%20demo-runs%20in%20your%20browser-FFD21E?logo=huggingface&logoColor=black)](https://huggingface.co/spaces/mkk1135/ai-image-detector) [![Public page: until 29 November 2026](https://img.shields.io/badge/public%20page-until%2029%20November%202026-FF9900)](https://35-169-35-59.sslip.io)
+
+[Results on held-out images](#results-on-held-out-images) · [How the evaluation was done](#how-the-evaluation-was-done) · [Try the detector](#try-the-detector) · [The detector](#the-detector) · [Reproduce the evaluation](#reproduce-the-evaluation) · [Blind test of a chat model](#blind-test-of-a-chat-model) · [Limits](#limits)
+
+</div>
+
+---
+
+It fine-tunes a detector that tells real photographs from AI-generated images, and measures it against five published detectors and a general-purpose multimodal model on the same documented images, with a held-out final test set and decision rules that were written down before that set was scored.
+
+- **Trained model:** [mkk1135/ai-image-detector](https://huggingface.co/mkk1135/ai-image-detector)
+- **Online demo** (runs in your browser, the image stays on your device): [huggingface.co/spaces/mkk1135/ai-image-detector](https://huggingface.co/spaces/mkk1135/ai-image-detector)
+- **Public page, until 29 November 2026** (it shows the score of a published detector from the Hugging Face Hub; the image is analysed on the server and deleted within two hours): [35-169-35-59.sslip.io](https://35-169-35-59.sslip.io)
+- **Every number, by set, source and generator:** [COMPARISON.md](COMPARISON.md)
+- **How decisions were taken:** [PROTOCOL.md](PROTOCOL.md)
 
 <!-- live-system: the one sentence that names the system of the public demonstration; change it when that changes -->
-**The public demonstration keeps the system of the second round.** By the student's choice, the online demo and the model on Hugging Face and the public page on Amazon Web Services deliberately keep the system of the second round (the public page runs it but shows the score of a published detector as its result; see below); the system of the third round is evaluated here but not deployed. The third-round system is better on new kinds of image, but it flags more photographs as AI-generated and is slightly less accurate on final test set 3.
+> [!IMPORTANT]
+> **The public demonstration keeps the system of the second round.** By the student's choice, the online demo and the model on Hugging Face and the public page on Amazon Web Services deliberately keep the system of the second round (the public page runs it but shows the score of a published detector as its result; see below); the system of the third round is evaluated here but not deployed. The third-round system is better on new kinds of image, but it flags more photographs as AI-generated and is slightly less accurate on final test set 3.
 
 ## Results on held-out images
 
@@ -56,14 +69,15 @@ Percent of images classified correctly (real photographs correct / AI images cor
 | umm-maybe Swin detector | 59.4% (165/63) | 56.2% (164/52) | 52.4% (59/29) | 54.2% (63/28) | 59.2% (53/18) | 60.0% (54/18) |
 | prithivMLmods SigLIP 2 detector | 50.0% (102/90) | 49.7% (101/90) | 57.7% (45/52) | 57.1% (43/53) | 46.7% (26/30) | 46.7% (26/30) |
 
-One of the five published detectors that were evaluated, the one that the public page uses, is left out of these tables; its predictions are in the database `results/results.db` and its result files in `results/`.
+> [!NOTE]
+> One of the five published detectors that were evaluated, the one that the public page uses, is left out of these tables; its predictions are in the database `results/results.db` and its result files in `results/`.
 <!-- /results -->
 
 ### What the third round shows
 
 The third round trained the CNN further on 4,920 new images from OpenFake v2.1 only (photographs from LAION, Pexels and photography subreddits; images of recent API generators and from AI subreddits), chose among three candidates by a rule committed in advance, and scored every approach once on four new held-out sets ([PROTOCOL.md](PROTOCOL.md)).
 
-1. **Better on new kinds of image, not overall.** The combination of the third round (candidate B with the Community Forensics detector, weight 0.5) scores 82.9% on ChatGPT and Gemini set 3 and Reddit set 3 together (768 images), against 73.7% for the combination of the second round (102 images right only with the new one, 31 only with the old; exact McNemar test, p = 4.9e-10). On final test set 3, of the older kinds, it scores 92.4% against 94.5% (6 against 14; p = 0.12, not significant).
+1. **Better on new kinds of image, not overall.** The combination of the third round (candidate B with the Community Forensics detector, weight 0.5) scores **82.9%** on ChatGPT and Gemini set 3 and Reddit set 3 together (768 images), against **73.7%** for the combination of the second round (102 images right only with the new one, 31 only with the old; exact McNemar test, p = 4.9e-10). On final test set 3, of the older kinds, it scores **92.4%** against **94.5%** (6 against 14; p = 0.12, not significant).
 2. **The cost is more false alarms on photographs.** The new combination accepts 176 of the 192 photographs of final test set 3 (second round: 189) and 76 of the 96 ImageNet photographs of ChatGPT and Gemini set 3 (second round: 96).
 3. **Forgetting is real.** Candidate C, trained from the base network on the new data only, was rejected on the development data because it lost the older generators. On the held-out sets it is the most accurate approach on ChatGPT and Gemini set 3 (89.1%) and Reddit set 3 (85.9%), and the least accurate CNN on final test set 3 (73.7%).
 4. **Runs differ.** Of three training runs of candidate B, the published seed-42 run is the best on the new kinds (82.9%, 81.1%, 81.2% in the combination) and the lowest on final test set 3 (92.4%, 93.8%, 93.2%). The Seedream 5.0 control, a generator in no training data, varies most (75.0% to 85.4% for the combination) and has only 48 images.
@@ -71,7 +85,7 @@ The third round trained the CNN further on 4,920 new images from OpenFake v2.1 o
 
 ### What the second-round results show
 
-1. **Images of known kinds (final test set, 384 images).** Claude Sonnet 5.5 96.6%, the combination 95.3%, the published Community Forensics detector 92.2%, the CNN of this project, setting 5 (published), 81.5%, the four other published detectors 50.0% to 75.8%. The combination is significantly better than the Community Forensics detector as distributed (exact McNemar test, p = 0.004). Much of that gain comes from the decision threshold: with a threshold tuned on the same development images, that detector alone reaches 94.0%, and what the CNN adds beyond it is not significant (p = 0.302). The difference between the combination and Claude Sonnet 5.5 is not significant either (p = 0.458).
+1. **Images of known kinds (final test set, 384 images).** Claude Sonnet 5.5 **96.6%**, the combination **95.3%**, the published Community Forensics detector **92.2%**, the CNN of this project, setting 5 (published), **81.5%**, the four other published detectors 50.0% to 75.8%. The combination is significantly better than the Community Forensics detector as distributed (exact McNemar test, p = 0.004). Much of that gain comes from the decision threshold: with a threshold tuned on the same development images, that detector alone reaches 94.0%, and what the CNN adds beyond it is not significant (p = 0.302). The difference between the combination and Claude Sonnet 5.5 is not significant either (p = 0.458).
 2. **JPEG re-compression.** The Community Forensics detector falls from 92.2% to 82.3%, because it then misses generated images (126 recognised instead of 164); the combination falls from 95.3% to 90.1%.
 3. **New generators and images from Reddit.** On images from GPT Image 2, GPT Image 1.5, Nano Banana and Nano Banana Pro the combination scores 69.0% and on images taken from Reddit 70.8%: it accepts nearly every photograph but recognises fewer than half of the generated images. Claude Sonnet 5.5 is the most accurate on both sets (85.1% and 96.7%). No detector was good on every kind of image.
 4. **An answer "generated" is more reliable than an answer "real".** When the combination called an image generated, it was right for 98% of those images on the final test set, 98% on the ChatGPT and Gemini set and 96% on the Reddit set. When it called an image real, it was right for 93%, 58% and 63%. On new kinds of image, "real" means only that no known trace was found.
@@ -79,17 +93,24 @@ The third round trained the CNN further on 4,920 new images from OpenFake v2.1 o
 6. **A small test set misleads.** An earlier CNN (setting 3) scored 97.9% on the pilot test set of 48 images and 80.7% on the 384 images of what is now the development test set.
 7. **Variation between training runs.** Setting 5 was trained three times with the same code and data, differing only in the seed, and each run received its own threshold by the same rule. On the final test set the three runs score 81.5% (seed 42, published), 83.6% (seed 1) and 83.9% (seed 2): mean 83.0%, standard deviation 1.3 points. The chosen thresholds on the "AI" score differ widely: 0.69, 0.38 and 0.30. The published run was fixed in advance as the seed-42 run and is the least accurate of the three on the final test set.
 
-The answer of any of these detectors is an indication, not proof.
+> [!WARNING]
+> The answer of any of these detectors is an indication, not proof.
 
 ## How the evaluation was done
 
 1. **First round.** A pilot test set of 48 images was too small and too much like the data used for tuning: an early model scored far higher on it than on a test set of 384 images (point 6 above). All approaches were then scored once on that larger set (`results/main/`).
 2. **Why a second round.** Those results showed where the fine-tuned CNN was weak, so any further change would have been tuned on that test set. It was demoted to the *development test set*. The check set and the development test set together (541 images) are called the *development images* in this README; every decision of the second round was taken on them.
-3. **Second round.** Three new sets were drawn and held out: a final test set of 384 images, a set of images from the generators behind ChatGPT and Gemini, and a set of images as shared on Reddit. The decision rules (which training setting to adopt, how to choose the threshold, whether to combine detectors, which comparisons count) were committed in [PROTOCOL.md](PROTOCOL.md) before any of these images was scored. `decide.py` applies the rules to the results database. The decisions were committed in commit `7b8e05d`; every approach was then scored once on the three held-out sets, and nothing was changed afterwards.
-4. **Third round.** The second round's held-out sets showed that the system was weak on new generators and on images as shared online, so all five scored sets became development data (1,213 images) and four new sets were drawn: final test set 3, ChatGPT and Gemini set 3, a Seedream 5.0 control and Reddit set 3. The training data (only new data, from OpenFake v2.1, 4,920 images; `make_train_set.py`, list in `results/round3/`), three candidates (A: setting 5 trained further; B: the same with the processing of a sharing platform; C: the base network trained on the new data only), the rule for adopting one, the held-out sets and the primary comparisons were committed in [PROTOCOL.md](PROTOCOL.md) (commit `4aa51fd`) before any image of the round was downloaded; the reduction of the training set to about 5,000 images at the student's request was committed before any download (`c2f4104`). The decisions were committed in `6a47cc0` before any held-out image was scored, and the final scoring in `5cb2054`. `decide.py round3` reproduces the decisions from the database.
+3. **Second round.** Three new sets were drawn and held out: a final test set of 384 images, a set of images from the generators behind ChatGPT and Gemini, and a set of images as shared on Reddit.
+
+   The decision rules (which training setting to adopt, how to choose the threshold, whether to combine detectors, which comparisons count) were committed in [PROTOCOL.md](PROTOCOL.md) before any of these images was scored. `decide.py` applies the rules to the results database. The decisions were committed in commit `7b8e05d`; every approach was then scored once on the three held-out sets, and nothing was changed afterwards.
+4. **Third round.** The second round's held-out sets showed that the system was weak on new generators and on images as shared online, so all five scored sets became development data (1,213 images) and four new sets were drawn: final test set 3, ChatGPT and Gemini set 3, a Seedream 5.0 control and Reddit set 3.
+
+   The training data (only new data, from OpenFake v2.1, 4,920 images; `make_train_set.py`, list in `results/round3/`), three candidates (A: setting 5 trained further; B: the same with the processing of a sharing platform; C: the base network trained on the new data only), the rule for adopting one, the held-out sets and the primary comparisons were committed in [PROTOCOL.md](PROTOCOL.md) (commit `4aa51fd`) before any image of the round was downloaded; the reduction of the training set to about 5,000 images at the student's request was committed before any download (`c2f4104`).
+
+   The decisions were committed in `6a47cc0` before any held-out image was scored, and the final scoring in `5cb2054`. `decide.py round3` reproduces the decisions from the database.
 
 | Set | Folder | Images | Role |
-|---|---|---|---|
+|:---|:---|---:|:---|
 | Pilot test set | `results/` | 48 | first round: early scores |
 | Check set | `results/check/` | 157 | choosing training settings; processing test; development in every round |
 | Development test set | `results/main/` | 384 | first round: test. Second and third rounds: development |
@@ -113,7 +134,14 @@ The lists of the third-round sets also give the SHA-256 of every file and the fo
 
 **In the browser, with nothing to install:** open the [online demo](https://huggingface.co/spaces/mkk1135/ai-image-detector) and choose an image. The demo runs setting 5 (published) of the CNN alone, not the combination, inside your browser, so the image never leaves your device. The first visit downloads the detector (about 110 MB). Of an image larger than 1024 px the demo analyses only the central 1024 x 1024 px; run that way, setting 5 (published) scores 82.0% on the final test set (`results/final/crop1024/`), against 81.5% for whole images.
 
-**On a public server, until 29 November 2026:** [https://35-169-35-59.sslip.io](https://35-169-35-59.sslip.io) is the page of `app.py` on an Amazon Web Services server, in a different mode from the local page described below. It runs the combined detector of this project and, at the same time, a published detector from the Hugging Face Hub (`second_opinion.py`; the model is set in `deploy/aws-setup.sh`), and shows as its only result that published detector's score for "AI-generated" in percent, for example "97% AI-generated". The answer of the combined detector is computed but not shown. When the published detector gives no result, the page says that the result is unavailable; it does not show the combined detector's answer instead. Apart from its title, the upload field and the result, the page shows only the sentence "Real or AI? Find out in seconds." The page can use Claude Opus 5.5 on the Claude API or on Amazon Bedrock in place of the published detector (AWS had not enabled Bedrock for the account by 20 November 2026); Claude gives a class, not a number. Unlike the demo and the local page, this page sends the image to the server, where it is analysed and deleted within two hours, so do not upload private images. The page was set up after the evaluation (`deploy/aws-setup.sh`) and was not itself evaluated. It analyses at most 20 images from one IP address in any 10 minutes. Its web server (Caddy) sends security headers (HSTS, Content-Security-Policy, X-Frame-Options, X-Content-Type-Options, Referrer-Policy and Permissions-Policy) and no Server header, and the server runs one fixed commit of this repository (`COMMIT` in `deploy/aws-setup.sh`).
+**On a public server, until 29 November 2026:** [https://35-169-35-59.sslip.io](https://35-169-35-59.sslip.io) is the page of `app.py` on an Amazon Web Services server, in a different mode from the local page described below. It runs the combined detector of this project and, at the same time, a published detector from the Hugging Face Hub (`second_opinion.py`; the model is set in `deploy/aws-setup.sh`), and shows as its only result that published detector's score for "AI-generated" in percent, for example "97% AI-generated". The answer of the combined detector is computed but not shown. When the published detector gives no result, the page says that the result is unavailable; it does not show the combined detector's answer instead. Apart from its title, the upload field and the result, the page shows only the sentence "Real or AI? Find out in seconds."
+
+The page can use Claude Opus 5.5 on the Claude API or on Amazon Bedrock in place of the published detector (AWS had not enabled Bedrock for the account by 20 November 2026); Claude gives a class, not a number.
+
+> [!WARNING]
+> Unlike the demo and the local page, this page sends the image to the server, where it is analysed and deleted within two hours, so do not upload private images.
+
+The page was set up after the evaluation (`deploy/aws-setup.sh`) and was not itself evaluated. It analyses at most 20 images from one IP address in any 10 minutes. Its web server (Caddy) sends security headers (HSTS, Content-Security-Policy, X-Frame-Options, X-Content-Type-Options, Referrer-Policy and Permissions-Policy) and no Server header, and the server runs one fixed commit of this repository (`COMMIT` in `deploy/aws-setup.sh`).
 
 **On your own computer:**
 
@@ -122,7 +150,8 @@ pip install -r requirements.txt
 python app.py
 ```
 
-`requirements.txt` gives minimum versions; `requirements.lock.txt` pins the exact environment (Python 3.13.2) in which every result was produced: `pip install -r requirements.lock.txt`.
+> [!NOTE]
+> `requirements.txt` gives minimum versions; `requirements.lock.txt` pins the exact environment (Python 3.13.2) in which every result was produced: `pip install -r requirements.lock.txt`.
 
 Then open http://127.0.0.1:7860 and upload an image. The page runs the combination: setting 5 (published) of the CNN together with the published Community Forensics detector, which is downloaded on first use (87 MB). The image is analysed on your own computer and is not sent anywhere. The page shows the answer, the detector score for that answer with the remark that it is not a probability, and a warning that the decision is weak when that score is below 75%. Of an image wider or taller than 2048 px, both detectors see only the central 2048 x 2048 px.
 
@@ -146,16 +175,18 @@ print(combined(Image.open("photo.jpg").convert("RGB")))   # ("real" or "ai", sco
 `train.py` fine-tunes ConvNeXt-Tiny (`facebook/convnext-tiny-224`), a CNN pretrained on ImageNet, for three epochs on 36,562 images. A random 10% is held out for validation. Images flagged NSFW by Community Forensics are removed.
 
 | Class | Source | Images |
-|---|---|---|
+|:---|:---|---:|
 | Generated | [Community Forensics-Small](https://huggingface.co/datasets/OwensLab/CommunityForensics-Small) (Park and Owens, CVPR 2025): 377 community Stable Diffusion models | 14,592 |
 | Generated | Community Forensics-Small: GLIDE, DeepFloyd IF, BigGAN | 2,992 |
 | Real | Community Forensics-Small: COCO (4,831), VISION (1,153), Landscapes HQ (2,992), FFHQ (2,992) | 11,968 |
 | Real | [DataSeeds.AI Sample Dataset](https://huggingface.co/datasets/Dataseeds/DataSeeds.AI-Sample-Dataset-DSD): peer-ranked photographs of varied subjects | 7,010 |
 
-The model trains on 256 x 256 crops taken at the images' original resolution, and at inference it sees the whole image without resizing, because shrinking an image removes the fine traces that generators leave. Training images are randomly shrunk, flipped, blurred, given noise and JPEG-compressed up to twice, so that the model cannot use an image's processing history (generated images are uncompressed PNG, most real ones JPEG) or its sharpness as a shortcut. Five training settings were tried; `train.py` contains settings 4 and 5 (`--setting 4`, `--setting 5`, the default):
+The model trains on 256 x 256 crops taken at the images' original resolution, and at inference it sees the whole image without resizing, because shrinking an image removes the fine traces that generators leave. Training images are randomly shrunk, flipped, blurred, given noise and JPEG-compressed up to twice, so that the model cannot use an image's processing history (generated images are uncompressed PNG, most real ones JPEG) or its sharpness as a shortcut.
+
+Five training settings were tried; `train.py` contains settings 4 and 5 (`--setting 4`, `--setting 5`, the default):
 
 | Setting | Change | Effect |
-|---|---|---|
+|:---:|:---|:---|
 | 1 | whole image shrunk to 224 px | first attempt |
 | 2 | crops at original resolution | kept fine detail, but took most clean photographs of subjects other than landscapes and faces for generated images |
 | 3 | 7,010 photographs of varied subjects and more generated images added | far fewer clean photographs of other subjects taken for generated images; the setting changed more than one thing at once, so the cause was not isolated |
@@ -188,7 +219,8 @@ python results_db.py                          # database of every prediction, an
 python decide.py check                        # are the recorded decisions reproduced from the database?
 ```
 
-The decisions themselves were taken on the development images only, with these commands:
+<details>
+<summary>The decisions themselves were taken on the development images only, with these commands:</summary>
 
 ```bash
 python decide.py setting                      # rule 1: does setting 5 replace setting 4?
@@ -198,14 +230,17 @@ python apply_threshold.py checkpoints/s5_seed42/checkpoint-3087 cnn_s5_raw model
 python rethreshold.py commfor results/final results/final/jpeg90 results/chat results/chat/jpeg90 results/wild results/wild/jpeg90
 ```
 
-Set `DETECTOR_DEVICE=cuda` to run the detectors on a GPU.
+</details>
+
+> [!TIP]
+> Set `DETECTOR_DEVICE=cuda` to run the detectors on a GPU.
 
 ### Which model files were scored
 
 The result files name the model given to `evaluate.py`: a Hub model id or a local folder of this project. `results/provenance.json`, written by `python provenance.py`, records for every approach the SHA-256 of the weight file behind that name: for a published detector the exact Hub revision (commit) from which it was loaded, and for a model of this project the file in its folder together with every Hub revision that holds the identical file. The CNN scored as setting 5 (published) is byte for byte the file of commit `37da0ae` of `mkk1135/ai-image-detector`, and setting 4 (first round) the file of the tag `round-1` (commit `f62d9ff`). Models that were never published, such as the first attempt and setting 5 before the threshold, are identified by their hash only.
 
 | Script | Purpose |
-|---|---|
+|:---|:---|
 | `train.py` | fine-tunes the detector |
 | `make_test_set.py` | builds the six evaluation sets and records every image |
 | `evaluate.py` | scores a detector; `--jpeg 90` re-compresses first, `--crop 1024` analyses the centre only, `--compare NAME` runs McNemar tests against one model, `--chart` draws a bar chart |
@@ -220,10 +255,11 @@ The result files name the model given to `evaluate.py`: a Hub model id or a loca
 
 ### The results database
 
-`results/results.db` holds every prediction of every approach on every evaluation image: 39,060 predictions on 1,261 images.
+<details>
+<summary><code>results/results.db</code> holds every prediction of every approach on every evaluation image: 39,060 predictions on 1,261 images.</summary>
 
 | Table or view | Content |
-|---|---|
+|:---|:---|
 | `images` | one row per evaluation image: set, class, source group, generator or photo category, author, licence, URL |
 | `models` | one row per approach: architecture, number of weights, file size and format, input size, licence, speed |
 | `predictions` | one row per model, set, condition and image: the answer and its score |
@@ -234,11 +270,17 @@ The result files name the model given to `evaluate.py`: a Hub model id or a loca
 sqlite3 results/results.db "select model, accuracy from scores where set_name = 'final' and condition = 'as downloaded' order by 2 desc"
 ```
 
+</details>
+
 A GitHub workflow (`.github/workflows/checks.yml`) runs on every push and pull request. It rebuilds this database with `python results_db.py`, which computes every figure of every result file again from the stored predictions (the four counts, accuracy, precision, recall, F1 and the 95% interval) and fails if any of them differs, and runs `python decide.py check`, which fails if the decisions recorded in `results/decisions.json` are not reproduced from the database.
 
 ## Blind test of a chat model
 
-`blind_test.py prepare` writes shuffled copies of the images with neutral file names and no metadata, all re-encoded as JPEG with a longest side of at most 1568 px. The model is shown each copy with the question "Is this image a real photograph taken by a camera, or is it AI-generated / synthetic? Answer with only one word: Real or AI-Generated." and nothing else. Claude Sonnet 5.5 (`claude-sonnet-5-5`) was run as separate agents, in a single pass with no retries. Each agent was given the folder with the anonymised copies of the whole set and told to open only the 40 to 48 copies of its batch and nothing else; this was an instruction, checked afterwards against the agents' transcripts (claude_blind_audit.txt in each results folder). Its raw answers are in each results folder (`claude_blind_answers.txt`), and the exact instruction each agent received is in `results/blind_prompt.txt`. Each agent judged the 40 to 48 images of its batch one after another in one context, whereas the detectors classify every image independently. The answer keys were not in the folder given to the model: it held only the anonymised copies (`blind_test.py prepare` now writes the keys to a separate folder, `data/keys/`). An audit of the complete transcripts of the 15 runs on the held-out sets (`claude_blind_audit.txt` in each results folder) shows that every run opened exactly the images of its own batch, each once, with no other tool call than returning its answers, and that the returned answers are those recorded.
+`blind_test.py prepare` writes shuffled copies of the images with neutral file names and no metadata, all re-encoded as JPEG with a longest side of at most 1568 px. The model is shown each copy with the question "Is this image a real photograph taken by a camera, or is it AI-generated / synthetic? Answer with only one word: Real or AI-Generated." and nothing else.
+
+Claude Sonnet 5.5 (`claude-sonnet-5-5`) was run as separate agents, in a single pass with no retries. Each agent was given the folder with the anonymised copies of the whole set and told to open only the 40 to 48 copies of its batch and nothing else; this was an instruction, checked afterwards against the agents' transcripts (claude_blind_audit.txt in each results folder). Its raw answers are in each results folder (`claude_blind_answers.txt`), and the exact instruction each agent received is in `results/blind_prompt.txt`. Each agent judged the 40 to 48 images of its batch one after another in one context, whereas the detectors classify every image independently.
+
+The answer keys were not in the folder given to the model: it held only the anonymised copies (`blind_test.py prepare` now writes the keys to a separate folder, `data/keys/`). An audit of the complete transcripts of the 15 runs on the held-out sets (`claude_blind_audit.txt` in each results folder) shows that every run opened exactly the images of its own batch, each once, with no other tool call than returning its answers, and that the returned answers are those recorded.
 
 ## Limits
 

@@ -342,7 +342,7 @@ def comparison(db):
     text = readme.read_text(encoding="utf-8") if readme.exists() else ""
     if held_out and "<!-- results -->" in text:  # the README shows the held-out results of both rounds
         start, end = text.index("<!-- results -->"), text.index("<!-- /results -->")
-        block = "\n".join(held_out + [LEFT_OUT + "\n"])
+        block = "\n".join(held_out + ["> [!NOTE]\n> " + LEFT_OUT + "\n"])  # the sentence as a GitHub note
         assert HIDDEN_NAME not in block
         readme.write_text(text[:start] + "<!-- results -->\n" + block + text[end:], encoding="utf-8", newline="\n")
     sections = [s for s in ("final3", "chat3", "wild3", "control3", "final", "chat", "wild", "main") if any((m, s, "as downloaded") in have for m in MODELS)]
