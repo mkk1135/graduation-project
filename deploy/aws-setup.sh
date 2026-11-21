@@ -14,7 +14,7 @@ exec > >(tee -a /var/log/detector-setup.log) 2>&1
 
 REPO=https://github.com/mkk1135/graduation-project.git
 # The one commit that is installed (full SHA). Update it when redeploying a newer version of the code.
-COMMIT=c8116071bdce2a04852436973129705e16614639
+COMMIT=72a8f8a94e1977bdf44e4b351be2986c3fdf3ab8
 APP=/opt/detector    # code and Python environment, owned by root: the service cannot change them
 DATA=/var/lib/detector  # the service user's only writable place (model downloads)
 
