@@ -155,8 +155,8 @@ def test_public_page_draws_the_logo_above_the_title_and_the_tagline_and_no_other
     (logo_kind, logo, logo_options), title, tagline = app.demo.drawn
     assert logo_kind == "HTML" and logo_options == {"elem_id": "logo"}
     assert title == local.demo.drawn[0]  # the title exactly as gr.Interface draws it
-    assert tagline == ("Markdown", "Real or AI? Find out in seconds.", {"elem_id": "tagline"})
-    text = [re.sub(r"<[^>]*>", "", value).strip() for _, value, _ in app.demo.drawn]
+    assert tagline == ("Markdown", "<span>Real or AI?</span> <span>Find out in seconds.</span>", {"elem_id": "tagline"})
+    text = [re.sub(r"<[^>]*>", "", value).strip() for _, value, _ in app.demo.drawn]  # the words, read as text
     assert [t for t in text if t] == ["AI-Generated Image Detection System", "Real or AI? Find out in seconds."]
     image_tag = re.fullmatch(r'<img src="data:image/svg\+xml;base64,([A-Za-z0-9+/=]+)" alt="([^"]+)" width="112" height="112">', logo)
     assert base64.b64decode(image_tag[1]) == (ROOT / "assets" / "logo.svg").read_bytes()  # embedded, so the CSP allows it
@@ -166,10 +166,15 @@ def test_public_page_draws_the_logo_above_the_title_and_the_tagline_and_no_other
 def test_public_page_look_goes_to_launch(load_app):
     look = load_app(StandIn("ai", 0.9), StandIn(0.5, None), hosted=True).LOOK
     assert set(look) == {"css", "favicon_path"} and look["favicon_path"] == str(ROOT / "assets" / "logo.svg")
-    css = look["css"]
-    assert "#logo img" in css and "#tagline p" in css and "font-weight: 800" in css and "clamp(" in css
-    assert "linear-gradient(90deg, #4338ca, #7c3aed, #db2777)" in css  # on the light theme
-    assert ".dark #tagline p" in css and "linear-gradient(90deg, #a5b4fc, #c4b5fd, #f9a8d4)" in css  # on the dark theme
+    css = re.sub(r"\s+", " ", look["css"])
+    first, second = "#tagline p span:first-child", "#tagline p span:last-child"
+    assert "#logo img" in css and "#tagline p span { display: block; }" in css
+    rule = lambda selector: re.search(re.escape(selector) + r" \{([^}]*)\}", css)[1]
+    assert "font-size: clamp(1.6rem, 1rem + 2.6vw, 2.6rem)" in rule(first) and "font-weight: 800" in rule(first)
+    assert "font-size: clamp(0.96rem, 0.6rem + 1.56vw, 1.56rem)" in rule(second)  # 60% of the first line at any width
+    assert "color: #0f172a" in rule(first) and "color: #64748b" in rule(second)  # navy and grey on the light theme
+    assert "color: #fbbf24" in rule(".dark " + first) and "color: #94a3b8" in rule(".dark " + second)  # gold and grey
+    assert "gradient" not in css and "text-fill" not in css  # no gradient text
     assert "@supports" not in css  # Gradio drops @supports blocks from custom CSS
 
 
@@ -179,7 +184,9 @@ def test_logo_is_a_text_free_svg_with_a_name():
     assert svg.tag == f"{ns}svg" and svg.get("viewBox") == "0 0 64 64"
     assert svg.get("role") == "img" and svg.get("aria-label") == svg.find(f"{ns}title").text
     assert not list(svg.iter(f"{ns}text")) and not list(svg.iter(f"{ns}script")) and not list(svg.iter(f"{ns}image"))
-    assert "href" not in (ROOT / "assets" / "logo.svg").read_text(encoding="utf-8")  # nothing loaded from elsewhere
+    text = (ROOT / "assets" / "logo.svg").read_text(encoding="utf-8")
+    assert "href" not in text  # nothing loaded from elsewhere
+    assert all(colour in text for colour in ("#0f172a", "#1e3a8a", "#fbbf24", "#f59e0b"))  # navy badge, gold accents
 
 
 def test_public_page_shows_only_the_checkers_score(load_app):

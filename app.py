@@ -11,7 +11,7 @@ the detector and, at the same time, a checker (second_opinion.py) on the same im
 result as one line: the score for "AI-generated" in percent of a published detector run on the same server, or the
 class given by Claude Opus 5.5 on the Claude API or on Amazon Bedrock. The detector's answer is computed but not shown,
 and it is never shown in place of a missing result. Besides a logo (assets/logo.svg, also the favicon), the title, the
-upload field and the result, the page then shows only one sentence (TAGLINE), large and in the colours of the logo.
+upload field and the result, the page then shows only one sentence (TAGLINE), in two lines and two tones.
 On a public server the page analyses at most 20 images from one IP address in any 10 minutes.
 """
 import base64
@@ -39,7 +39,8 @@ HOSTED = bool(os.environ.get("SPACE_ID") or os.environ.get("DETECTOR_PUBLIC"))  
 # The text of the page without a checker (with a checker: TAGLINE only)
 WHERE = ("on the server that runs this page, and this page deletes it within two hours. Do not upload private images"
          if HOSTED else "on this computer and is not sent anywhere")
-TAGLINE = "Real or AI? Find out in seconds."
+TAGLINE_LINES = ("Real or AI?", "Find out in seconds.")  # the public page shows them as two lines
+TAGLINE = " ".join(TAGLINE_LINES)
 RESULT = {"ai": "AI-generated", "real": "Real photograph"}  # the result of a checker that gives a class (Claude)
 UNAVAILABLE = "The result is unavailable right now. Please try again."
 # Measured on the held-out sets (results/final, results/chat, results/wild; see COMPARISON.md).
@@ -135,32 +136,35 @@ def result(checked):
 # The look of the page with a checker (the public page); the page without a checker keeps Gradio's defaults.
 LOGO = Path(__file__).with_name("assets") / "logo.svg"
 LOGO_ALT = "Logo: a magnifying glass over a photo and pixels"
-# The tagline is text in a gradient of the logo's colours (darker shades on the light theme, lighter ones on the dark),
-# solid violet where text cannot be filled with a gradient. Gradio drops @supports blocks from custom CSS.
+# The tagline in two tones: its first line large and bold in navy (gold on the dark theme), its second line at 60% of
+# that size in grey. Gradio drops @supports blocks from custom CSS, so none is used.
 CSS = """
 #logo { display: flex; justify-content: center; }
 #logo img { width: 112px; height: 112px; }
-#tagline p {
-  width: fit-content; margin: 0 auto; text-align: center; line-height: 1.2;
-  font-size: clamp(1.5rem, 1rem + 2.5vw, 2.6rem); font-weight: 800; color: #6d28d9;
-  background-image: linear-gradient(90deg, #4338ca, #7c3aed, #db2777);
-  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+#tagline p { margin: 0; text-align: center; }
+#tagline p span { display: block; }
+#tagline p span:first-child {
+  font-size: clamp(1.6rem, 1rem + 2.6vw, 2.6rem); font-weight: 800; line-height: 1.15; color: #0f172a;
 }
-.dark #tagline p { color: #c4b5fd; background-image: linear-gradient(90deg, #a5b4fc, #c4b5fd, #f9a8d4); }
+#tagline p span:last-child {
+  font-size: clamp(0.96rem, 0.6rem + 1.56vw, 1.56rem); font-weight: 600; line-height: 1.3; margin-top: 0.3rem; color: #64748b;
+}
+.dark #tagline p span:first-child { color: #fbbf24; }
+.dark #tagline p span:last-child { color: #94a3b8; }
 @media (max-width: 640px) { #logo img { width: 96px; height: 96px; } }
 """
 LOOK = {"css": CSS, "favicon_path": str(LOGO)} if checker else {}  # passed to launch()
 
 
 class PublicPage(gr.Interface):
-    """gr.Interface with the logo above the title and the description (TAGLINE) as a tagline styled by CSS.
+    """gr.Interface with the logo above the title and the description (TAGLINE) as a two-line tagline styled by CSS.
     gr.Interface draws the title and the description in this method; the title is drawn exactly as there."""
 
     def render_title_description(self):
         logo = base64.b64encode(LOGO.read_bytes()).decode()  # a data URI: allowed by the page's Content-Security-Policy
         gr.HTML(f'<img src="data:image/svg+xml;base64,{logo}" alt="{LOGO_ALT}" width="112" height="112">', elem_id="logo")
         gr.Markdown(f"<h1 style='text-align: center; margin-bottom: 1rem'>{self.title}</h1>")
-        gr.Markdown(self.description, elem_id="tagline")
+        gr.Markdown(" ".join(f"<span>{line}</span>" for line in TAGLINE_LINES), elem_id="tagline")  # read as TAGLINE
 
 
 demo = (PublicPage if checker else gr.Interface)(
