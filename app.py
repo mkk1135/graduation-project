@@ -9,8 +9,13 @@ visitor's browser: space/index.html.
 With the environment variable SECOND_OPINION_MODEL set (on the AWS server, see deploy/aws-setup.sh), a second
 classifier gives a second opinion (second_opinion.py) and the answer is firm only when both agree: a published
 detector run on the same server, or Claude Opus 5.5 on the Claude API or on Amazon Bedrock.
+On a public server the page analyses at most 20 images from one IP address in any 10 minutes.
 """
+import math
 import os
+import threading
+import time
+from collections import deque
 from concurrent.futures import ThreadPoolExecutor
 
 import gradio as gr
@@ -37,11 +42,52 @@ MEASURED = ("On a held-out test of 384 photographs and generated images of famil
             "On images from the newest generators and from social media it recognised fewer than half of the generated images, "
             "so an answer \"real\" means only that no known trace was found.")
 NAMES = {"ai": "AI-generated", "real": "a real photograph"}
+RATE_LIMIT, RATE_WINDOW = 20, 600  # on a public server: at most 20 analyses per visitor in any 10 minutes
 
 
-def analyse(image):
+class RateLimit:
+    """At most `limit` calls per key in any `window` seconds (sliding window), safe to use from several threads.
+    Memory: at most `limit` times per key; keys without a call in the last window are dropped once per window."""
+
+    def __init__(self, limit, window, clock=time.monotonic):
+        self.limit, self.window, self.clock = limit, window, clock
+        self.calls, self.lock, self.pruned = {}, threading.Lock(), clock()
+
+    def wait(self, key):
+        """Counts a call and returns 0; over the limit, counts nothing and returns the seconds until a call is allowed."""
+        with self.lock:
+            now = self.clock()
+            start = now - self.window
+            if now - self.pruned >= self.window:
+                self.calls = {k: times for k, times in self.calls.items() if times and times[-1] > start}
+                self.pruned = now
+            times = self.calls.setdefault(key, deque())
+            while times and times[0] <= start:
+                times.popleft()
+            if len(times) >= self.limit:
+                return times[0] - start
+            times.append(now)
+            return 0
+
+
+limit = RateLimit(RATE_LIMIT, RATE_WINDOW)
+
+
+def visitor(request):
+    """The visitor's IP address. Caddy trusts no proxy, so it replaces an X-Forwarded-For sent by the client with the
+    address the connection came from; the last entry is the one Caddy added in any case."""
+    forwarded = (getattr(request, "headers", None) or {}).get("x-forwarded-for") or ""
+    return forwarded.split(",")[-1].strip() or getattr(getattr(request, "client", None), "host", None)
+
+
+def analyse(image, request: gr.Request = None):
     if image is None:
         return None, "Choose an image first."
+    wait = limit.wait(visitor(request)) if HOSTED else 0
+    if wait:  # refused before any model runs
+        minutes = math.ceil(wait / 60)
+        return None, (f"**Not analysed: this page analyses at most {RATE_LIMIT} images from one address in "
+                      f"{RATE_WINDOW // 60} minutes.** Try again in {minutes} minute{'s' if minutes > 1 else ''}.")
     image = image.convert("RGB")  # decoded once here: the two threads below must not read the file at the same time
     width, height = image.size
     w, h = min(width, LARGEST), min(height, LARGEST)
@@ -73,7 +119,8 @@ def analyse(image):
 
 demo = gr.Interface(
     fn=analyse,
-    inputs=gr.Image(type="pil", label="Image (JPEG, PNG or WebP)"),
+    # on a public server the camera is turned off (Permissions-Policy in deploy/aws-setup.sh), so no webcam button
+    inputs=gr.Image(type="pil", label="Image (JPEG, PNG or WebP)", sources=["upload", "clipboard"] if HOSTED else None),
     outputs=[gr.Label(num_top_classes=2, label="Result of the detector"), gr.Markdown()],
     title="AI-Generated Image Detection System",
     description=(

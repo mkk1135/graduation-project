@@ -4,7 +4,8 @@
 #
 # Result: app.py runs as a service of an unprivileged user on 127.0.0.1:7860 (not reachable from outside).
 # Caddy answers on ports 80 and 443 and serves the page over HTTPS at https://<public-ip-with-dashes>.sslip.io
-# (sslip.io: a free DNS name that points to the IP address; Let's Encrypt certificate obtained by Caddy).
+# (sslip.io: a free DNS name that points to the IP address; Let's Encrypt certificate obtained by Caddy), with security
+# headers and without a Server header. app.py analyses at most 20 images per visitor (IP address) in 10 minutes.
 # The hostname is re-derived from the instance's public IPv4 address at every boot, so after an Elastic IP is
 # associated a reboot is enough. No SSH: shell access through AWS Systems Manager Session Manager.
 set -euxo pipefail
@@ -73,13 +74,26 @@ cat > /usr/local/bin/detector-caddyfile <<'EOF'
 set -euo pipefail
 token=$(curl -sf -X PUT http://169.254.169.254/latest/api/token -H "X-aws-ec2-metadata-token-ttl-seconds: 60")
 ip=$(curl -sf -H "X-aws-ec2-metadata-token: $token" http://169.254.169.254/latest/meta-data/public-ipv4)
+# Security headers on the responses of the page. The CSP restricts only framing, plugins and <base>: Gradio needs inline
+# scripts and styles. The Server header (Caddy's and uvicorn's) is removed; deleting a field makes the block deferred.
 cat > /etc/caddy/Caddyfile <<CADDY
 ${ip//./-}.sslip.io {
 	request_body {
 		max_size 25MB
 	}
-	header Strict-Transport-Security "max-age=31536000"
-	reverse_proxy 127.0.0.1:7860
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "DENY"
+		Referrer-Policy "no-referrer"
+		Permissions-Policy "camera=(), microphone=(), geolocation=()"
+		Content-Security-Policy "frame-ancestors 'none'; object-src 'none'; base-uri 'self'"
+		-Server
+		defer
+	}
+	reverse_proxy 127.0.0.1:7860 {
+		header_down -Server
+	}
 }
 CADDY
 EOF
