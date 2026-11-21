@@ -9,7 +9,7 @@ Graduation project (Bachelor of Cybersecurity). It fine-tunes a detector that te
 - How decisions were taken: [PROTOCOL.md](PROTOCOL.md)
 
 <!-- live-system: the one sentence that names the system of the public demonstration; change it when that changes -->
-**Status at the time of writing (21 November 2026):** the public demonstration (the online demo and the model on Hugging Face, and the public page on Amazon Web Services) still runs the system of the second round; whether the system of the third round replaces it has not been decided.
+**The public demonstration keeps the system of the second round.** By the student's choice, the online demo and the model on Hugging Face and the public page on Amazon Web Services deliberately keep the system of the second round; the system of the third round is evaluated here but not deployed. The third-round system is better on new kinds of image, but it flags more photographs as AI-generated and is slightly less accurate on final test set 3.
 
 ## Results on held-out images
 
@@ -171,7 +171,7 @@ python train.py --setting 4 --out checkpoints/s4               # setting 4 (firs
 python train.py --dry-run                                      # one epoch on 64 images, nothing uploaded
 ```
 
-**Third round.** `train.py --data round3` trains on the new data of `make_train_set.py` instead; `--init` starts from other weights and `--social` adds the processing of a sharing platform to the augmentation (the exact commands of candidates A, B and C are in the docstring of `train.py` and in `results/training/r3_*.json`). Candidate B, adopted by the rule of the third round, is not published: the model on the Hub is still setting 5 of the second round.
+**Third round.** `train.py --data round3` trains on the new data of `make_train_set.py` instead; `--init` starts from other weights and `--social` adds the processing of a sharing platform to the augmentation (the exact commands of candidates A, B and C are in the docstring of `train.py` and in `results/training/r3_*.json`). Candidate B, adopted by the rule of the third round, is evaluated but not published: the model on the Hub is setting 5 of the second round (see the note on the public demonstration at the top).
 
 The records of the published run (`results/training/s5_seed42.json`) and of setting 4 (`results/training/s4.json`) are in `results/training/`. Each holds the configuration of the run (command line, commit of the code, seed, setting, base model, epochs, batch size, learning rate, crop size, numbers of training and validation images) and its curves: training loss and learning rate every 25 steps, and validation accuracy and loss after each epoch. The run of setting 4 cannot be repeated exactly, because its classifier head was initialised before the seed was set. `python training_record.py TRAINER_STATE.json NAME --command ... --seed ... --setting ...` writes such a record from the `trainer_state.json` of a run.
 

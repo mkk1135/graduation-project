@@ -448,7 +448,7 @@ AUC = probability that a real photograph gets a higher 'real' score than a gener
 Notes on the tables above. Every number in them is filled in from the results database. Statistical tests are exact McNemar tests on the same images; no correction for multiple comparisons was applied, and only the primary comparisons of each round were fixed in advance in [PROTOCOL.md](PROTOCOL.md).
 
 <!-- live-system: the one sentence that names the system of the public demonstration; change it when that changes -->
-**Status at the time of writing (21 November 2026):** the public demonstration (the page on Amazon Web Services and the model and demo page on Hugging Face) still runs the system of the second round; whether the system of the third round replaces it has not been decided.
+**The public demonstration keeps the system of the second round.** By the student's choice, the page on Amazon Web Services and the model and demo page on Hugging Face deliberately keep the system of the second round; the system of the third round is evaluated here but not deployed. It is better on new kinds of image, but it flags more photographs as AI-generated and is slightly less accurate on final test set 3.
 
 ### Third round
 
