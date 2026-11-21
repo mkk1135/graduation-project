@@ -213,3 +213,23 @@ The third round reached its aim on the new kinds of image (ChatGPT and Gemini se
 - Second opinion: the system of the third round and the Ateeqq detector agree on 74.5% of final test set 3, 72.7% of ChatGPT and Gemini set 3 and 74.0% of Reddit set 3; where they agree, the answer is right for 96.9%, 93.2% and 94.7% of the images (system of the second round: agreement 76.0%, 71.1%, 63.3%; right 97.3%, 89.7%, 92.6%).
 
 All figures, for every approach, set and condition, are in the result files and in `results/results.db`. Limits as stated in advance: the generators of ChatGPT and Gemini set 3 and the subreddits of Reddit set 3 are in the new training data, so these two sets measure new images of the kinds trained on; final test set 3 and the Seedream 5.0 control measure generators absent from all training data.
+
+## Repeated runs of candidate B (21 November 2026, after the final scoring)
+
+As decision 6 orders, candidate B was trained twice more with the committed code, with seeds 1 and 2 (`results/training/r3_B_seed1.json`, `r3_B_seed2.json`); the published model stays the seed-42 run. Each run was treated like candidate B. Its threshold was chosen on the 1,213 development images by rule 2: 0.7486 for seed 1, 0.7758 for seed 2 (seed 42: 0.8072). That threshold was built into the run and checked on the development data. In the combination with the Community Forensics detector, with the weight of decision 4 (0.5), the threshold was chosen again on the development data by rule 2: 0.3355 for seed 1, 0.3503 for seed 2 (seed 42: 0.2804). These thresholds are recorded in `results/decisions.json` (keys `round3_seeds`, `round3_seeds_fusion`) and were committed (commit d8440af) before the two runs were scored once on the held-out sets.
+
+On the development data: seed 1 old 82.38, old AI 76.06, new 80.21, JPEG 79.31; seed 2 old 82.49, old AI 76.91, new 80.21, JPEG 79.88 (seed 42: 82.59, 74.58, 81.94, 79.06).
+
+Accuracy on the held-out sets, as downloaded, for the seeds 42 / 1 / 2, with the mean and the range:
+
+| Images | Candidate B alone | Mean (range) | Combination | Mean (range) |
+|---|---|---|---|---|
+| Final test set 3 (384) | 82.6 / 81.5 / 81.2 | 81.8 (81.2 to 82.6) | 92.4 / 93.8 / 93.2 | 93.1 (92.4 to 93.8) |
+| ChatGPT and Gemini set 3 (384) | 77.6 / 76.3 / 76.6 | 76.8 (76.3 to 77.6) | 81.8 / 79.7 / 80.5 | 80.6 (79.7 to 81.8) |
+| Reddit set 3 (384) | 83.1 / 84.1 / 83.9 | 83.7 (83.1 to 84.1) | 84.1 / 82.6 / 82.0 | 82.9 (82.0 to 84.1) |
+| ChatGPT and Gemini set 3 and Reddit set 3 (768) | 80.3 / 80.2 / 80.2 | 80.3 (80.2 to 80.3) | 82.9 / 81.1 / 81.2 | 81.8 (81.1 to 82.9) |
+| Seedream 5.0 control (48), recognised | 79.2 / 81.2 / 83.3 | 81.2 (79.2 to 83.3) | 85.4 / 81.2 / 75.0 | 80.6 (75.0 to 85.4) |
+
+After JPEG 90, combination: final test set 3 90.6 / 90.4 / 91.4, ChatGPT and Gemini set 3 and Reddit set 3 82.2 / 80.2 / 80.2; candidate B alone: 78.4 / 78.9 / 78.4 and 80.1 / 79.4 / 79.7.
+
+Against the system of the second round (73.7% on the 768 images of the new kinds, 94.5% on final test set 3), the combinations of the two other runs score 81.1% and 81.2% on the new kinds (right only with the new system / only with the old: 88 / 31, p = 1.7e-7; 83 / 25, p = 1.9e-8), and 93.8% and 93.2% on final test set 3 (6 / 9, p = 0.61; 5 / 10, p = 0.30). The published seed-42 run is among the better ones on the new kinds and the lowest of the three on final test set 3; the gain on the new kinds holds for all three runs, and the difference on final test set 3 is not significant for any of them. The primary comparisons remain those of the seed-42 run, as fixed in advance.

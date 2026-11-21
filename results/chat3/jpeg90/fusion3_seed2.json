@@ -1,0 +1,17 @@
+{
+  "model": "fusion3_seed2:models/cnn_r3_seed2",
+  "name": "fusion3_seed2",
+  "images": 384,
+  "tp": 181,
+  "fn": 11,
+  "fp": 70,
+  "tn": 122,
+  "accuracy": 78.91,
+  "precision": 72.11,
+  "recall": 94.27,
+  "f1": 81.72,
+  "accuracy_ci95": [
+    74.5,
+    82.7
+  ]
+}
