@@ -1,0 +1,24 @@
+
+checkpoints/r3_A
+  as downloaded                real correct 56/69   AI correct 81/88
+  Gaussian blur, radius 0.6    real correct 42/69   AI correct 81/88
+  Gaussian blur, radius 1.0    real correct 53/69   AI correct 79/88
+  unsharp mask (sharpen)       real correct 59/69   AI correct 81/88
+  downscaled to half size      real correct 58/69   AI correct 82/88
+  Gaussian noise, sd 3         real correct 59/69   AI correct 80/88
+
+checkpoints/r3_B
+  as downloaded                real correct 53/69   AI correct 82/88
+  Gaussian blur, radius 0.6    real correct 36/69   AI correct 82/88
+  Gaussian blur, radius 1.0    real correct 44/69   AI correct 82/88
+  unsharp mask (sharpen)       real correct 58/69   AI correct 82/88
+  downscaled to half size      real correct 56/69   AI correct 83/88
+  Gaussian noise, sd 3         real correct 57/69   AI correct 81/88
+
+checkpoints/r3_C
+  as downloaded                real correct 39/69   AI correct 76/88
+  Gaussian blur, radius 0.6    real correct 39/69   AI correct 71/88
+  Gaussian blur, radius 1.0    real correct 38/69   AI correct 78/88
+  unsharp mask (sharpen)       real correct 43/69   AI correct 74/88
+  downscaled to half size      real correct 32/69   AI correct 80/88
+  Gaussian noise, sd 3         real correct 49/69   AI correct 68/88

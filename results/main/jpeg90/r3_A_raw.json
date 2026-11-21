@@ -1,0 +1,17 @@
+{
+  "model": "checkpoints/r3_A",
+  "name": "r3_A_raw",
+  "images": 384,
+  "tp": 138,
+  "fn": 54,
+  "fp": 39,
+  "tn": 153,
+  "accuracy": 75.78,
+  "precision": 77.97,
+  "recall": 71.88,
+  "f1": 74.8,
+  "accuracy_ci95": [
+    71.3,
+    79.8
+  ]
+}

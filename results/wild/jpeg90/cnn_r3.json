@@ -1,0 +1,17 @@
+{
+  "model": "models/cnn_r3",
+  "name": "cnn_r3",
+  "images": 120,
+  "tp": 57,
+  "fn": 3,
+  "fp": 19,
+  "tn": 41,
+  "accuracy": 81.67,
+  "precision": 75.0,
+  "recall": 95.0,
+  "f1": 83.82,
+  "accuracy_ci95": [
+    73.8,
+    87.6
+  ]
+}

@@ -109,5 +109,127 @@
    }
   },
   "adopted": true
+ },
+ "round3": {
+  "baseline": {
+   "model": "cnn_s5_raw",
+   "threshold_on_ai_score": 0.65945,
+   "threshold_on_real_score": 0.34055,
+   "shift_of_real_logit": 0.660844,
+   "old": 83.35,
+   "old_ai": 77.97,
+   "new": 68.4,
+   "jpeg": 76.67,
+   "mean_old_new": 75.88
+  },
+  "limits": {
+   "new": 73.4,
+   "old": 81.35,
+   "old_ai": 72.97,
+   "jpeg": 74.67
+  },
+  "candidates": {
+   "A": {
+    "model": "r3_A_raw",
+    "threshold_on_ai_score": 0.75035,
+    "threshold_on_real_score": 0.24965,
+    "shift_of_real_logit": 1.10048,
+    "old": 83.14,
+    "old_ai": 76.69,
+    "new": 79.86,
+    "jpeg": 79.39,
+    "mean_old_new": 81.5,
+    "qualifies": true
+   },
+   "B": {
+    "model": "r3_B_raw",
+    "threshold_on_ai_score": 0.80715,
+    "threshold_on_real_score": 0.19285,
+    "shift_of_real_logit": 1.431597,
+    "old": 82.59,
+    "old_ai": 74.58,
+    "new": 81.94,
+    "jpeg": 79.06,
+    "mean_old_new": 82.27,
+    "qualifies": true
+   },
+   "C": {
+    "model": "r3_C_raw",
+    "threshold_on_ai_score": 0.6902,
+    "threshold_on_real_score": 0.3098,
+    "shift_of_real_logit": 0.801054,
+    "old": 72.65,
+    "old_ai": 60.59,
+    "new": 86.46,
+    "jpeg": 74.44,
+    "mean_old_new": 79.55,
+    "qualifies": false
+   }
+  },
+  "adopted": "B",
+  "adopted_model": "r3_B_raw",
+  "commfor": {
+   "threshold_on_ai_score": 0.0477,
+   "threshold_on_real_score": 0.9523,
+   "shift_of_real_logit": -2.993949,
+   "old": 92.43,
+   "old_ai": 92.58,
+   "new": 70.49,
+   "jpeg": 82.52,
+   "mean_old_new": 81.46
+  }
+ },
+ "round3_fusion": {
+  "cnn": "cnn_r3",
+  "weight_of_cnn": 0.5,
+  "threshold_on_ai_score": 0.2804,
+  "old": 92.43,
+  "old_ai": 93.64,
+  "new": 83.68,
+  "jpeg": 87.47,
+  "mean_old_new": 88.06,
+  "tried": {
+   "0.25": {
+    "threshold_on_ai_score": 0.21905,
+    "old": 94.49,
+    "old_ai": 92.37,
+    "new": 78.12,
+    "jpeg": 86.15,
+    "mean_old_new": 86.31
+   },
+   "0.5": {
+    "threshold_on_ai_score": 0.2804,
+    "old": 92.43,
+    "old_ai": 93.64,
+    "new": 83.68,
+    "jpeg": 87.47,
+    "mean_old_new": 88.06
+   },
+   "0.75": {
+    "threshold_on_ai_score": 0.288087,
+    "old": 88.65,
+    "old_ai": 91.53,
+    "new": 82.29,
+    "jpeg": 84.42,
+    "mean_old_new": 85.47
+   }
+  },
+  "parts_alone": {
+   "r3_B_raw": {
+    "old": 82.59,
+    "old_ai": 74.58,
+    "new": 81.94,
+    "jpeg": 79.06,
+    "mean_old_new": 82.27
+   },
+   "commfor": {
+    "old": 92.43,
+    "old_ai": 92.58,
+    "new": 70.49,
+    "jpeg": 82.52,
+    "mean_old_new": 81.46
+   }
+  },
+  "adopted": true
  }
 }
