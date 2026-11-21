@@ -8,15 +8,42 @@ Graduation project (Bachelor of Cybersecurity). It fine-tunes a detector that te
 - Every number, by set, source and generator: [COMPARISON.md](COMPARISON.md)
 - How decisions were taken: [PROTOCOL.md](PROTOCOL.md)
 
+<!-- live-system: the one sentence that names the system of the public demonstration; change it when that changes -->
+**Status at the time of writing (21 November 2026):** the public demonstration (the online demo and the model on Hugging Face, and the public page on Amazon Web Services) still runs the system of the second round; whether the system of the third round replaces it has not been decided.
+
 ## Results on held-out images
 
-Percent of images classified correctly (real photographs correct / AI images correct). Each approach was scored once, after all decisions had been committed. JPEG 90 means that every image was re-compressed first. Claude Sonnet 5.5 was tested on the images as downloaded only.
+Percent of images classified correctly (real photographs correct / AI images correct). In each round every approach was scored once on that round's held-out sets, after all decisions of the round had been committed. JPEG 90 means that every image was re-compressed first. Claude Sonnet 5.5 was tested in the second round only, on the images as downloaded. The Seedream 5.0 control holds generated images only.
 
 <!-- results -->
+**Third round: held-out sets (scored once, after the decisions of the third round)**
+
+| Approach | Final test set 3 (384) | Final test set 3 (384), JPEG 90 | ChatGPT and Gemini set 3 (384) | ChatGPT and Gemini set 3 (384), JPEG 90 | Reddit set 3 (384) | Reddit set 3 (384), JPEG 90 | Seedream 5.0 control (48) | Seedream 5.0 control (48), JPEG 90 |
+|---|---|---|---|---|---|---|---|---|
+| Combination of the second round: CNN of this project (setting 5) and Community Forensics detector | 94.5% (189/174) | 89.8% (189/156) | 75.5% (191/99) | 69.8% (191/77) | 71.9% (189/87) | 70.8% (189/83) | 43.8% (0/21) | 45.8% (0/22) |
+| Combination of the third round, with the run of candidate B with seed 1 | 93.8% (181/179) | 90.4% (181/166) | 79.7% (170/136) | 78.1% (177/123) | 82.6% (183/134) | 82.3% (183/133) | 81.2% (0/39) | 83.3% (0/40) |
+| Combination of the third round, with the run of candidate B with seed 2 | 93.2% (181/177) | 91.4% (183/168) | 80.5% (175/134) | 78.9% (181/122) | 82.0% (184/131) | 81.5% (184/129) | 75.0% (0/36) | 81.2% (0/39) |
+| Combination of the third round: CNN of this project (candidate B) and Community Forensics detector | 92.4% (176/179) | 90.6% (179/169) | 81.8% (170/144) | 80.2% (175/133) | 84.1% (181/142) | 84.1% (182/141) | 85.4% (0/41) | 87.5% (0/42) |
+| Community Forensics detector, threshold tuned on the development images of the third round | 91.9% (177/176) | 87.2% (179/156) | 73.7% (189/94) | 70.6% (189/82) | 69.0% (174/91) | 69.8% (175/93) | 50.0% (0/24) | 52.1% (0/25) |
+| Community Forensics detector | 88.8% (190/151) | 83.1% (190/129) | 63.8% (192/53) | 61.5% (192/44) | 62.0% (190/48) | 61.7% (190/47) | 31.2% (0/15) | 25.0% (0/12) |
+| CNN of this project, setting 5 (published) | 82.8% (172/146) | 81.2% (177/135) | 71.9% (155/121) | 69.8% (169/99) | 73.2% (184/97) | 72.9% (185/95) | 39.6% (0/19) | 37.5% (0/18) |
+| CNN of this project, third round (adopted candidate) | 82.6% (178/139) | 78.4% (178/123) | 77.6% (164/134) | 77.9% (170/129) | 83.1% (183/136) | 82.3% (183/133) | 79.2% (0/38) | 79.2% (0/38) |
+| CNN of this project, third round, candidate A | 82.0% (176/139) | 80.5% (176/133) | 76.6% (156/138) | 77.3% (165/132) | 82.8% (183/135) | 81.8% (183/131) | 77.1% (0/37) | 77.1% (0/37) |
+| CNN of this project, setting 4 (first round) | 81.8% (142/172) | 81.0% (154/157) | 67.4% (109/150) | 67.4% (124/135) | 83.1% (177/142) | 80.7% (178/132) | 47.9% (0/23) | 45.8% (0/22) |
+| CNN of this project, third round, candidate B, run with seed 1 | 81.5% (173/140) | 78.9% (176/127) | 76.3% (153/140) | 76.0% (159/133) | 84.1% (182/141) | 82.8% (180/138) | 81.2% (0/39) | 81.2% (0/39) |
+| CNN of this project, third round, candidate B, run with seed 2 | 81.2% (170/142) | 78.4% (171/130) | 76.6% (153/141) | 76.0% (158/134) | 83.9% (182/140) | 83.3% (182/138) | 83.3% (0/40) | 83.3% (0/40) |
+| Ateeqq SigLIP 2 detector | 77.3% (162/135) | 77.6% (161/137) | 81.0% (161/150) | 80.5% (156/153) | 82.0% (146/169) | 82.0% (145/170) | 91.7% (0/44) | 91.7% (0/44) |
+| CNN of this project, third round, candidate C | 73.7% (161/122) | 70.8% (159/113) | 89.1% (176/166) | 87.8% (178/159) | 85.9% (172/158) | 84.9% (172/154) | 60.4% (0/29) | 60.4% (0/29) |
+| Manish18 ViT detector | 65.6% (80/172) | 65.1% (83/167) | 69.0% (104/161) | 71.9% (115/161) | 61.7% (88/149) | 62.0% (89/149) | 68.8% (0/33) | 68.8% (0/33) |
+| umm-maybe Swin detector | 54.7% (164/46) | 53.1% (165/39) | 59.6% (161/68) | 61.5% (167/69) | 63.5% (167/77) | 63.3% (168/75) | 12.5% (0/6) | 10.4% (0/5) |
+| prithivMLmods SigLIP 2 detector | 53.1% (101/103) | 52.9% (100/103) | 60.9% (114/120) | 60.9% (114/120) | 45.6% (76/99) | 45.6% (75/100) | 39.6% (0/19) | 39.6% (0/19) |
+
+**Second round: held-out sets (scored once, after the decisions of the second round; development data of the third round)**
+
 | Approach | Final test set (384) | Final test set (384), JPEG 90 | ChatGPT and Gemini set (168) | ChatGPT and Gemini set (168), JPEG 90 | Reddit set (120) | Reddit set (120), JPEG 90 |
 |---|---|---|---|---|---|---|
 | Claude Sonnet 5.5 | 96.6% (190/181) |  | 85.1% (62/81) |  | 96.7% (59/57) |  |
-| Combination: CNN of this project and Community Forensics detector | 95.3% (188/178) | 90.1% (189/157) | 69.0% (71/45) | 62.5% (71/34) | 70.8% (59/26) | 70.8% (60/25) |
+| Combination of the second round: CNN of this project (setting 5) and Community Forensics detector | 95.3% (188/178) | 90.1% (189/157) | 69.0% (71/45) | 62.5% (71/34) | 70.8% (59/26) | 70.8% (60/25) |
 | Community Forensics detector, threshold tuned on the development images | 94.0% (183/178) | 88.5% (187/153) | 61.3% (70/33) | 58.3% (71/27) | 70.8% (58/27) | 70.0% (57/27) |
 | Community Forensics detector | 92.2% (190/164) | 82.3% (190/126) | 57.7% (71/26) | 50.6% (71/14) | 64.2% (60/17) | 65.8% (60/19) |
 | CNN of this project, setting 5, third run | 83.9% (173/149) | 83.6% (180/141) | 70.8% (60/59) | 66.7% (66/46) | 70.8% (56/29) | 69.2% (56/27) |
@@ -32,7 +59,17 @@ Percent of images classified correctly (real photographs correct / AI images cor
 | prithivMLmods SigLIP 2 detector | 50.0% (102/90) | 49.7% (101/90) | 57.7% (45/52) | 57.1% (43/53) | 46.7% (26/30) | 46.7% (26/30) |
 <!-- /results -->
 
-### What the held-out results show
+### What the third round shows
+
+The third round trained the CNN further on 4,920 new images from OpenFake v2.1 only (photographs from LAION, Pexels and photography subreddits; images of recent API generators and from AI subreddits), chose among three candidates by a rule committed in advance, and scored every approach once on four new held-out sets ([PROTOCOL.md](PROTOCOL.md)).
+
+1. **Better on new kinds of image, not overall.** The combination of the third round (candidate B with the Community Forensics detector, weight 0.5) scores 82.9% on ChatGPT and Gemini set 3 and Reddit set 3 together (768 images), against 73.7% for the combination of the second round (102 images right only with the new one, 31 only with the old; exact McNemar test, p = 4.9e-10). On final test set 3, of the older kinds, it scores 92.4% against 94.5% (6 against 14; p = 0.12, not significant).
+2. **The cost is more false alarms on photographs.** The new combination accepts 176 of the 192 photographs of final test set 3 (second round: 189) and 76 of the 96 ImageNet photographs of ChatGPT and Gemini set 3 (second round: 96).
+3. **Forgetting is real.** Candidate C, trained from the base network on the new data only, was rejected on the development data because it lost the older generators. On the held-out sets it is the most accurate approach on ChatGPT and Gemini set 3 (89.1%) and Reddit set 3 (85.9%), and the least accurate CNN on final test set 3 (73.7%).
+4. **Runs differ.** Of three training runs of candidate B, the published seed-42 run is the best on the new kinds (82.9%, 81.1%, 81.2% in the combination) and the lowest on final test set 3 (92.4%, 93.8%, 93.2%). The Seedream 5.0 control, a generator in no training data, varies most (75.0% to 85.4% for the combination) and has only 48 images.
+5. **Limits.** The generators of ChatGPT and Gemini set 3 and the subreddits of Reddit set 3 are in the new training data, from the same platforms at other times, so these two sets measure new images of the kinds trained on and may flatter the round. The full notes, deviations included, are at the end of [COMPARISON.md](COMPARISON.md).
+
+### What the second-round results show
 
 1. **Images of known kinds (final test set, 384 images).** Claude Sonnet 5.5 96.6%, the combination 95.3%, the published Community Forensics detector 92.2%, the CNN of this project, setting 5 (published), 81.5%, the four other published detectors 50.0% to 75.8%. The combination is significantly better than the Community Forensics detector as distributed (exact McNemar test, p = 0.004). Much of that gain comes from the decision threshold: with a threshold tuned on the same development images, that detector alone reaches 94.0%, and what the CNN adds beyond it is not significant (p = 0.302). The difference between the combination and Claude Sonnet 5.5 is not significant either (p = 0.458).
 2. **JPEG re-compression.** The Community Forensics detector falls from 92.2% to 82.3%, because it then misses generated images (126 recognised instead of 164); the combination falls from 95.3% to 90.1%.
@@ -49,15 +86,20 @@ The answer of any of these detectors is an indication, not proof.
 1. **First round.** A pilot test set of 48 images was too small and too much like the data used for tuning: an early model scored far higher on it than on a test set of 384 images (point 6 above). All approaches were then scored once on that larger set (`results/main/`).
 2. **Why a second round.** Those results showed where the fine-tuned CNN was weak, so any further change would have been tuned on that test set. It was demoted to the *development test set*. The check set and the development test set together (541 images) are called the *development images* in this README; every decision of the second round was taken on them.
 3. **Second round.** Three new sets were drawn and held out: a final test set of 384 images, a set of images from the generators behind ChatGPT and Gemini, and a set of images as shared on Reddit. The decision rules (which training setting to adopt, how to choose the threshold, whether to combine detectors, which comparisons count) were committed in [PROTOCOL.md](PROTOCOL.md) before any of these images was scored. `decide.py` applies the rules to the results database. The decisions were committed in commit `7b8e05d`; every approach was then scored once on the three held-out sets, and nothing was changed afterwards.
+4. **Third round.** The second round's held-out sets showed that the system was weak on new generators and on images as shared online, so all five scored sets became development data (1,213 images) and four new sets were drawn: final test set 3, ChatGPT and Gemini set 3, a Seedream 5.0 control and Reddit set 3. The training data (only new data, from OpenFake v2.1, 4,920 images; `make_train_set.py`, list in `results/round3/`), three candidates (A: setting 5 trained further; B: the same with the processing of a sharing platform; C: the base network trained on the new data only), the rule for adopting one, the held-out sets and the primary comparisons were committed in [PROTOCOL.md](PROTOCOL.md) (commit `4aa51fd`) before any image of the round was downloaded; the reduction of the training set to about 5,000 images at the student's request was committed before any download (`c2f4104`). The decisions were committed in `6a47cc0` before any held-out image was scored, and the final scoring in `5cb2054`. `decide.py round3` reproduces the decisions from the database.
 
 | Set | Folder | Images | Role |
 |---|---|---|---|
 | Pilot test set | `results/` | 48 | first round: early scores |
-| Check set | `results/check/` | 157 | choosing training settings; processing test |
-| Development test set | `results/main/` | 384 | first round: test. Second round: development |
-| **Final test set** | `results/final/` | 384 | held out, scored once |
-| **ChatGPT and Gemini set** | `results/chat/` | 168 | held out, scored once |
-| **Reddit set** | `results/wild/` | 120 | held out, scored once; labels may be noisy |
+| Check set | `results/check/` | 157 | choosing training settings; processing test; development in every round |
+| Development test set | `results/main/` | 384 | first round: test. Second and third rounds: development |
+| **Final test set** | `results/final/` | 384 | second round: held out, scored once. Third round: development |
+| **ChatGPT and Gemini set** | `results/chat/` | 168 | second round: held out, scored once. Third round: development |
+| **Reddit set** | `results/wild/` | 120 | second round: held out, scored once; labels may be noisy. Third round: development |
+| **Final test set 3** | `results/final3/` | 384 | third round: held out, scored once |
+| **ChatGPT and Gemini set 3** | `results/chat3/` | 384 | third round: held out, scored once |
+| **Seedream 5.0 control** | `results/control3/` | 48 | third round: held out, scored once; generated images of a generator in no training data |
+| **Reddit set 3** | `results/wild3/` | 384 | third round: held out, scored once; labels may be noisy |
 
 Each folder holds the list of its images (`*_set.csv`, columns file, class, source, author_or_generator, licence, url), the metrics of every approach, its answer for every image and a confusion matrix. What the list records depends on where an image comes from:
 
@@ -65,7 +107,7 @@ Each folder holds the list of its images (`*_set.csv`, columns file, class, sour
 - Generated images from the Community Forensics evaluation set (same sets): the generator, the licence of the dataset (CC BY-NC-SA 4.0) and the dataset file and position of the image.
 - All images of the ChatGPT and Gemini set and of the Reddit set, which come from OpenFake and, for Nano Banana and Nano Banana Pro, from two community datasets: the dataset, the generator or the photo source (DOCCI, ImageNet, or the kind of subreddit), the licence of the dataset and the dataset file and row. The author and the rights of each of these images are not recorded; only the dataset's licence is.
 
-The images themselves are not in this repository; `make_test_set.py` downloads them.
+The lists of the third-round sets also give the SHA-256 of every file and the folder in which the images were kept. The images themselves are not in this repository; `make_test_set.py` downloads them.
 
 ## Try the detector
 
@@ -128,6 +170,8 @@ python train.py --seed 1 --out checkpoints/seed1               # a repeated run
 python train.py --setting 4 --out checkpoints/s4               # setting 4 (first round)
 python train.py --dry-run                                      # one epoch on 64 images, nothing uploaded
 ```
+
+**Third round.** `train.py --data round3` trains on the new data of `make_train_set.py` instead; `--init` starts from other weights and `--social` adds the processing of a sharing platform to the augmentation (the exact commands of candidates A, B and C are in the docstring of `train.py` and in `results/training/r3_*.json`). Candidate B, adopted by the rule of the third round, is not published: the model on the Hub is still setting 5 of the second round.
 
 The records of the published run (`results/training/s5_seed42.json`) and of setting 4 (`results/training/s4.json`) are in `results/training/`. Each holds the configuration of the run (command line, commit of the code, seed, setting, base model, epochs, batch size, learning rate, crop size, numbers of training and validation images) and its curves: training loss and learning rate every 25 steps, and validation accuracy and loss after each epoch. The run of setting 4 cannot be repeated exactly, because its classifier head was initialised before the seed was set. `python training_record.py TRAINER_STATE.json NAME --command ... --seed ... --setting ...` writes such a record from the `trainer_state.json` of a run.
 
@@ -205,5 +249,6 @@ A GitHub workflow (`.github/workflows/checks.yml`) runs on every push and pull r
 - The fine-tuned CNN needs about 2.1 seconds per image on a laptop processor (images of 1.75 megapixels on average).
 - Only one multimodal model was tested, once per image, and it saw JPEG copies with a longest side of at most 1568 px. Whether any test image was in the training data of Claude Sonnet 5.5 or of the published detectors is not known.
 - The published model is one of three training runs of setting 5 (seed 42, fixed in advance). The two repeated runs (seeds 1 and 2) were trained and scored after the final scoring, with the same code and rules; on the final test set the three runs range from 81.5% to 83.9% (mean 83.0%, standard deviation 1.3 points), so differences of one or two points between single runs are within the variation between runs. Three runs give only a rough estimate of that variation.
+- **Third round.** The generators of ChatGPT and Gemini set 3 and the subreddits of Reddit set 3 are in the third-round training data (from the same platforms, at other times), so these two sets measure new images of the kinds trained on, not unseen generators; final test set 3 and the Seedream 5.0 control (48 images) measure generators absent from all training data. The gain of the third round is on the new kinds of image; on final test set 3 the new system is 2.1 points less accurate (not significant) and accepts fewer photographs. On the sets of 384 images the three training runs of candidate B differ by up to 2.1 points, on the Seedream control by up to 10.4.
 - Partly synthetic images, edited photographs, screenshots, video and deliberate evasion were not tested.
 - The model may be used for non-commercial purposes only (CC BY-NC-SA 4.0, following its training data).

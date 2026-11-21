@@ -39,7 +39,7 @@ MODELS = {  # name: (label, kind, training data as stated by its publisher)
     "commfor": ("Community Forensics detector", "published detector", "the authors' full Community Forensics data: 2.7 million images from 4,803 generators"),
     "commfor_tuned": ("Community Forensics detector, threshold tuned on the development images", "published detector, tuned",
                       "as the published detector; only its decision threshold was chosen on the development images of this project"),
-    "fusion": ("Combination: CNN of this project and Community Forensics detector", "this project", "weighted mean of the two detectors' scores; weight and threshold chosen on development data"),
+    "fusion": ("Combination of the second round: CNN of this project (setting 5) and Community Forensics detector", "this project", "weighted mean of the two detectors' scores; weight and threshold chosen on development data"),
     "cnn_s5": ("CNN of this project, setting 5 (published)", "this project", "as setting 4, with stronger shrinking in the augmentation; decision threshold chosen on development data"),
     "cnn_s5_seed1": ("CNN of this project, setting 5, second run", "this project", "as setting 5, another seed"),
     "cnn_s5_seed2": ("CNN of this project, setting 5, third run", "this project", "as setting 5, another seed"),
@@ -62,12 +62,12 @@ MODELS = {  # name: (label, kind, training data as stated by its publisher)
                              "candidate B trained again with another seed; default threshold of 50%") for s in (1, 2)},
     **{f"cnn_r3_seed{s}": (f"CNN of this project, third round, candidate B, run with seed {s}", "this project",
                            "candidate B trained again with another seed, its threshold chosen on the development data and built in") for s in (1, 2)},
-    **{f"fusion3_seed{s}": (f"Combination of the third round with the run of seed {s}", "this project",
+    **{f"fusion3_seed{s}": (f"Combination of the third round, with the run of candidate B with seed {s}", "this project",
                             "as the combination of the third round, with the CNN of the run of seed {s}; threshold chosen again on the development data".format(s=s))
        for s in (1, 2)},
     "cnn_r3": ("CNN of this project, third round (adopted candidate)", "this project",
                "the candidate adopted by the rule of the third round, its threshold built in"),
-    "fusion3": ("Combination of the third round: CNN of this project and Community Forensics detector", "this project",
+    "fusion3": ("Combination of the third round: CNN of this project (candidate B) and Community Forensics detector", "this project",
                 "weighted mean of the two detectors' scores; weight and threshold chosen on the development data of the third round"),
     "commfor_tuned3": ("Community Forensics detector, threshold tuned on the development images of the third round", "published detector, tuned",
                        "as the published detector; only its decision threshold was chosen on the 1,213 development images of the third round"),
@@ -247,16 +247,38 @@ def table(header, rows):
                       *("| " + " | ".join("" if x is None else str(x) for x in row) + " |" for row in rows)]) + "\n"
 
 
+def third_round(model):
+    """A model of the third round (PROTOCOL.md): a candidate, the adopted CNN, its combination or a re-thresholded detector."""
+    return model.startswith(("r3_", "cnn_r3", "fusion3")) or model == "commfor_tuned3"
+
+
+# The tables of section 2 of COMPARISON.md: heading, sets, which models. The first two are also written into README.md.
+ACCURACY_TABLES = [
+    # r3_B (candidate B with its threshold) is the adopted CNN, cnn_r3; the candidates before their thresholds appear in the per-set sections
+    ("Third round: held-out sets (scored once, after the decisions of the third round)", ("final3", "chat3", "wild3", "control3"),
+     lambda m: not m.endswith("_raw") and m != "r3_B"),
+    ("Second round: held-out sets (scored once, after the decisions of the second round; development data of the third round)",
+     ("final", "chat", "wild"), lambda m: not third_round(m)),
+    ("Third round: development data (the five sets scored in the first two rounds), models of the third round",
+     ("check", "main", "final", "chat", "wild"), lambda m: third_round(m) or m in ("cnn_s5_raw", "commfor")),
+    ("First and second rounds: development data", ("pilot", "check", "main"), lambda m: not third_round(m))]
+
+
 def comparison(db):
     q = lambda sql, *args: db.execute(sql, args).fetchall()
     label = dict(q("SELECT model, label FROM models"))
     have = {(m, s, c) for m, s, c in q("SELECT DISTINCT model, set_name, condition FROM predictions")}
-    primary = "final" if any(s == "final" for _, s, _ in have) else "main"  # the set of the final measurement
+    primary = next(s for s in ("final3", "final", "main") if any(x == s for _, x, _ in have))  # the set of the latest final measurement
     title = {"pilot": "Pilot test set", "check": "Check set", "main": "Development test set", "final": "Final test set",
-             "chat": "ChatGPT and Gemini set", "wild": "Reddit set"}
+             "chat": "ChatGPT and Gemini set", "wild": "Reddit set", "final3": "Final test set 3", "chat3": "ChatGPT and Gemini set 3",
+             "control3": "Seedream 5.0 control", "wild3": "Reddit set 3"}
     size = dict(q("SELECT set_name, COUNT(*) FROM images GROUP BY set_name"))
-    ranked = [m for m, in q("SELECT model FROM scores WHERE set_name=? AND condition='as downloaded' ORDER BY accuracy DESC", primary)]
-    ranked += [m for m in MODELS if m not in ranked]
+
+    def by_accuracy(set_name, models):
+        order = [m for m, in q("SELECT model FROM scores WHERE set_name=? AND condition='as downloaded' ORDER BY accuracy DESC", set_name)]
+        return [m for m in order if m in models] + [m for m in MODELS if m in models and m not in order]
+
+    ranked = by_accuracy(primary, list(MODELS))
     # From the counts, not from the view's accuracy: that is already rounded to two decimals (322/384 = 83.85), and
     # rounding it again would print 83.8% instead of 83.9%.
     cell = {(m, s, c): f"{percent(rc + ac, n)}% ({rc}/{ac})" for m, s, c, n, rc, ac in q("SELECT model, set_name, condition, images, real_correct, ai_correct FROM scores")}
@@ -276,20 +298,27 @@ def comparison(db):
            "\n".join(f"- **{lab}:** {training}." for lab, training in q("SELECT label, training FROM models ORDER BY kind DESC, label")) + "\n",
            "## 2. Accuracy on every set\n",
            "Percent of images classified correctly (real photographs correct / AI images correct). JPEG 90 = every image re-compressed first.\n"]
-    for heading, sets in (("Held-out sets (scored once, after all decisions)", ("final", "chat", "wild")), ("Development data", ("pilot", "check", "main"))):
+    held_out = []  # the held-out tables, for README.md
+    for heading, sets, wanted in ACCURACY_TABLES:
+        models = [m for m in MODELS if wanted(m)]
         columns = [(s, c, f"{title[s]} ({size[s]})" + ("" if c == "as downloaded" else ", JPEG 90")) for s in sets if s in size
-                   for c in ("as downloaded", "jpeg90") if any((m, s, c) in have for m in MODELS)]
-        shown = [m for m in ranked if any((m, s, c) in have for s, c, _ in columns)]
+                   for c in ("as downloaded", "jpeg90") if any((m, s, c) in have for m in models)]
+        shown = [m for m in by_accuracy(sets[0], models) if any((m, s, c) in have for s, c, _ in columns)]
         if columns:
             out += [f"**{heading}**\n", table(["Approach", *(c[2] for c in columns)], [[label[m], *(cell.get((m, s, c), "") for s, c, _ in columns)] for m in shown])]
-            readme = Path("README.md")
-            text = readme.read_text(encoding="utf-8") if readme.exists() else ""
-            if heading.startswith("Held-out") and "<!-- results -->" in text:  # the README shows the held-out results
-                start, end = text.index("<!-- results -->"), text.index("<!-- /results -->")
-                readme.write_text(text[:start] + "<!-- results -->\n" + out[-1] + text[end:], encoding="utf-8", newline="\n")
-    for number, set_name in enumerate([s for s in ("final", "chat", "wild", "main") if any((m, s, "as downloaded") in have for m in MODELS)], 3):
+            if "held-out" in heading:
+                held_out += [f"**{heading}**\n", out[-1]]
+    readme = Path("README.md")
+    text = readme.read_text(encoding="utf-8") if readme.exists() else ""
+    if held_out and "<!-- results -->" in text:  # the README shows the held-out results of both rounds
+        start, end = text.index("<!-- results -->"), text.index("<!-- /results -->")
+        readme.write_text(text[:start] + "<!-- results -->\n" + "\n".join(held_out) + text[end:], encoding="utf-8", newline="\n")
+    sections = [s for s in ("final3", "chat3", "wild3", "control3", "final", "chat", "wild", "main") if any((m, s, "as downloaded") in have for m in MODELS)]
+    for number, set_name in enumerate(sections, 3):
         out.append(f"## {number}. {title[set_name]}: images classified correctly, by source and generator\n")
-        shown = [m for m, in q("SELECT model FROM scores WHERE set_name=? AND condition='as downloaded' ORDER BY accuracy DESC", set_name)]
+        third = set_name.endswith("3")  # on the earlier sets only the models of the first two rounds (the candidates are in section 2)
+        shown = [m for m, in q("SELECT model FROM scores WHERE set_name=? AND condition='as downloaded' ORDER BY accuracy DESC", set_name)
+                 if third or not third_round(m)]
         kinds = q("SELECT class, generator, COUNT(*) FROM images WHERE set_name=? GROUP BY class, generator ORDER BY class DESC, COUNT(*) DESC, generator", set_name)
         got = {(m, g): c for m, g, c in q("SELECT model, generator, correct FROM by_generator WHERE set_name=? AND condition='as downloaded'", set_name)}
         groups = q("SELECT class, source_group, COUNT(*) FROM images WHERE set_name=? GROUP BY class, source_group ORDER BY class DESC, source_group", set_name)

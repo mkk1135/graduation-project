@@ -233,3 +233,8 @@ Accuracy on the held-out sets, as downloaded, for the seeds 42 / 1 / 2, with the
 After JPEG 90, combination: final test set 3 90.6 / 90.4 / 91.4, ChatGPT and Gemini set 3 and Reddit set 3 82.2 / 80.2 / 80.2; candidate B alone: 78.4 / 78.9 / 78.4 and 80.1 / 79.4 / 79.7.
 
 Against the system of the second round (73.7% on the 768 images of the new kinds, 94.5% on final test set 3), the combinations of the two other runs score 81.1% and 81.2% on the new kinds (right only with the new system / only with the old: 88 / 31, p = 1.7e-7; 83 / 25, p = 1.9e-8), and 93.8% and 93.2% on final test set 3 (6 / 9, p = 0.61; 5 / 10, p = 0.30). The published seed-42 run is among the better ones on the new kinds and the lowest of the three on final test set 3; the gain on the new kinds holds for all three runs, and the difference on final test set 3 is not significant for any of them. The primary comparisons remain those of the seed-42 run, as fixed in advance.
+
+## Notes of 21 November 2026, after the scoring of the third round
+
+- **Tie-break of the fusion weight.** Decision 4 says that the weight with the highest mean of old and new is taken, but not what happens in a tie. `decide.py` breaks a tie by the higher JPEG figure and then by the smaller weight. No tie occurred (means 86.31, 88.06 and 85.47 for the weights 0.25, 0.5 and 0.75), so the rule had no effect.
+- **Wording.** In the record of the repeated runs above, "among the better ones on the new kinds" should read: the best of the three runs on the new kinds (82.9% against 81.1% and 81.2%) and the lowest on final test set 3.
