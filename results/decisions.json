@@ -231,5 +231,51 @@
    }
   },
   "adopted": true
+ },
+ "round3_seeds": {
+  "seed1": {
+   "model": "r3_B_seed1_raw",
+   "threshold_on_ai_score": 0.7486,
+   "threshold_on_real_score": 0.2514,
+   "shift_of_real_logit": 1.091159,
+   "old": 82.38,
+   "old_ai": 76.06,
+   "new": 80.21,
+   "jpeg": 79.31,
+   "mean_old_new": 81.29
+  },
+  "seed2": {
+   "model": "r3_B_seed2_raw",
+   "threshold_on_ai_score": 0.77575,
+   "threshold_on_real_score": 0.22425,
+   "shift_of_real_logit": 1.241069,
+   "old": 82.49,
+   "old_ai": 76.91,
+   "new": 80.21,
+   "jpeg": 79.88,
+   "mean_old_new": 81.35
+  }
+ },
+ "round3_seeds_fusion": {
+  "seed1": {
+   "cnn": "cnn_r3_seed1",
+   "weight_of_cnn": 0.5,
+   "threshold_on_ai_score": 0.335475,
+   "old": 92.65,
+   "old_ai": 92.8,
+   "new": 81.94,
+   "jpeg": 86.97,
+   "mean_old_new": 87.3
+  },
+  "seed2": {
+   "cnn": "cnn_r3_seed2",
+   "weight_of_cnn": 0.5,
+   "threshold_on_ai_score": 0.35025,
+   "old": 92.65,
+   "old_ai": 92.58,
+   "new": 81.94,
+   "jpeg": 86.89,
+   "mean_old_new": 87.3
+  }
  }
 }

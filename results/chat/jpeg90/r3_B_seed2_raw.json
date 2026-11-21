@@ -1,0 +1,17 @@
+{
+  "model": "checkpoints/r3_B_seed2",
+  "name": "r3_B_seed2_raw",
+  "images": 168,
+  "tp": 45,
+  "fn": 27,
+  "fp": 16,
+  "tn": 80,
+  "accuracy": 74.4,
+  "precision": 73.77,
+  "recall": 62.5,
+  "f1": 67.67,
+  "accuracy_ci95": [
+    67.3,
+    80.4
+  ]
+}
